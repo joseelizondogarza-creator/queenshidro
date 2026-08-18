@@ -1,4 +1,5 @@
 supabase/.temp/
 queenshidro.zip
 *.local
-.envopencode.json
+.env
+opencode.json
