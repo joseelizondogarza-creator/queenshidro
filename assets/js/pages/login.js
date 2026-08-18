@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var errorEl = document.getElementById('error');
     var successEl = document.getElementById('success');
     var tabs = document.querySelectorAll('.auth-card__tab');
+    var dashboardLoading = false;
 
     var navUser = document.getElementById('navUser');
     var userAvatar = document.getElementById('userAvatar');
@@ -50,7 +51,17 @@ document.addEventListener('DOMContentLoaded', function () {
         successEl.style.display = 'none';
     }
 
-    function showDashboard(user) {
+    async function showDashboard(user) {
+        if (dashboardLoading) return;
+        dashboardLoading = true;
+
+        var profileResult = await supabase.from('profiles').select('role').eq('id', user.id).maybeSingle();
+        if (profileResult.data && profileResult.data.role === 'admin') {
+            window.location.replace('admin.html');
+            return;
+        }
+
+        dashboardLoading = false;
         loginForm.style.display = 'none';
         registerForm.style.display = 'none';
         tabs.forEach(function (t) { t.style.display = 'none'; });
