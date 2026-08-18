@@ -112,6 +112,8 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .hero-card__actions{display:flex;gap:6px}
 
 .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.stock-editor{display:flex;align-items:center;gap:8px;margin:10px 0}
+.stock-editor .form-input{max-width:110px;padding:7px 10px;font-size:0.78rem}
 
 .auth-check{display:flex;align-items:center;justify-content:center;min-height:100vh;flex-direction:column;gap:16px}
 .auth-check h2{font-family:var(--font-h);color:var(--gold-hi)}
@@ -476,6 +478,9 @@ document.addEventListener('click',function(e){
   if(btn.classList.contains('prod-btn-edit')){
     editProduct(btn.dataset.id);
   }
+  if(btn.classList.contains('prod-stock-save')){
+    saveInlineStock(btn.dataset.id);
+  }
   if(btn.classList.contains('prod-btn-del')){
     deleteProduct(btn.dataset.id);
   }
@@ -771,6 +776,11 @@ async function loadProducts(){
             '<label class="switch" title="Alternar Agotado/Disponible"><input type="checkbox" class="prod-stock-toggle" data-id="'+p.id+'"'+(p.stock===0?'':' checked')+'><span class="switch__slider"></span></label>'+
           '</div>'+
         '</div>'+
+        '<div class="stock-editor">'+
+          '<label class="form-label" for="stock-'+p.id+'" style="margin:0;white-space:nowrap">Cantidad</label>'+ 
+          '<input class="form-input prod-stock-input" id="stock-'+p.id+'" data-id="'+p.id+'" type="number" min="0" step="1" value="'+(p.stock===null||p.stock===undefined?'':p.stock)+'" placeholder="Ilimitado">'+
+          '<button class="btn btn--gold btn--sm prod-stock-save" data-id="'+p.id+'">Guardar</button>'+ 
+        '</div>'+ 
         '<div style="display:flex;gap:6px;flex-wrap:wrap">'+
           '<span class="badge '+(p.active!==false?'badge--confirmado':'')+'" style="font-size:0.65rem">'+(p.active!==false?'Activo':'Inactivo')+'</span>'+
           '<button class="btn btn--outline btn--sm prod-btn-edit" data-id="'+p.id+'">Editar</button>'+
@@ -941,6 +951,21 @@ async function setStockToggle(id,disponible){
   var {error}=await sb.from('products').update({stock:disponible?null:0}).eq('id',id);
   if(error){toast('Error: '+error.message,'err');loadProducts();return}
   toast(disponible?'Producto disponible':'Producto agotado');
+  loadProducts();
+}
+
+async function saveInlineStock(id){
+  var input=document.querySelector('.prod-stock-input[data-id="'+id+'"]');
+  if(!input)return;
+  var raw=input.value.trim();
+  var stock=raw===''?null:Number(raw);
+  if(stock!==null&&(!Number.isFinite(stock)||stock<0||Math.floor(stock)!==stock)){
+    toast('El stock debe ser un número entero igual o mayor que cero','err');
+    return;
+  }
+  var {error}=await sb.from('products').update({stock:stock}).eq('id',id);
+  if(error){toast('Error: '+error.message,'err');return}
+  toast(stock===null?'Stock ilimitado':'Stock actualizado');
   loadProducts();
 }
 
