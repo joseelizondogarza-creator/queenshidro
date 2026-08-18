@@ -58,6 +58,9 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%}
 .form-input,.form-textarea,.form-select{width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:var(--white);font-size:0.86rem;font-family:var(--font-b);outline:none;transition:border-color 0.3s}
 .form-input:focus,.form-textarea:focus,.form-select:focus{border-color:var(--gold)}
 .form-textarea{resize:vertical;min-height:80px}
+.form-richtext{min-height:100px;white-space:pre-wrap;overflow:auto;resize:vertical;cursor:text}
+.form-richtext:focus{border-color:var(--gold)}
+.form-help{font-size:0.68rem;color:var(--muted);margin-top:6px}
 .form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
 .form-select option{background:var(--card);color:#e0ddd8}
 .form-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
@@ -475,15 +478,15 @@ document.addEventListener('click',function(e){
   if(btn.classList.contains('hero-btn-del')){
     deleteSlide(btn.dataset.id);
   }
-  if(btn.classList.contains('prod-btn-edit')){
-    editProduct(btn.dataset.id);
-  }
-  if(btn.classList.contains('prod-stock-save')){
-    saveInlineStock(btn.dataset.id);
-  }
-  if(btn.classList.contains('prod-btn-del')){
-    deleteProduct(btn.dataset.id);
-  }
+   if(btn.classList.contains('prod-btn-edit')){
+     editProduct(btn.dataset.id);
+   }
+   if(btn.classList.contains('prod-stock-save')){
+     saveInlineStock(btn.dataset.id);
+   }
+   if(btn.classList.contains('prod-btn-del')){
+     deleteProduct(btn.dataset.id);
+   }
   if(btn.classList.contains('modal-btn-cancel')){
     closeModal();
   }
@@ -545,6 +548,13 @@ document.addEventListener('change',function(e){
     updateOrderStatus(e.target.dataset.id,e.target.value);
   }
 });
+document.addEventListener('blur',function(e){
+  var el=e.target;
+  if(el.matches&&el.matches('input[type="text"],input[type="email"],input[type="tel"],textarea')){
+    el.value=normalizeEditableText(el.value);
+  }
+  if(el.isContentEditable)el.innerHTML=sanitizeRichMarkup(el.innerHTML);
+},true);
 document.getElementById('btnAddSlide').addEventListener('click',openHeroModal);
 document.getElementById('btnAddProduct').addEventListener('click',function(){openProductModal('')});
 /* CRM button listeners */
@@ -651,7 +661,7 @@ function openHeroModal(){
 }
 
 async function saveHeroSlide(){
-  var alt=document.getElementById('heroAltInput').value;
+  var alt=normalizeEditableText(document.getElementById('heroAltInput').value).trim();
   var file=window._heroFile||(function(){
     var input=document.getElementById('heroFileInput');
     return input&&input.files[0];
@@ -776,12 +786,12 @@ async function loadProducts(){
             '<label class="switch" title="Alternar Agotado/Disponible"><input type="checkbox" class="prod-stock-toggle" data-id="'+p.id+'"'+(p.stock===0?'':' checked')+'><span class="switch__slider"></span></label>'+
           '</div>'+
         '</div>'+
-        '<div class="stock-editor">'+
-          '<label class="form-label" for="stock-'+p.id+'" style="margin:0;white-space:nowrap">Cantidad</label>'+ 
-          '<input class="form-input prod-stock-input" id="stock-'+p.id+'" data-id="'+p.id+'" type="number" min="0" step="1" value="'+(p.stock===null||p.stock===undefined?'':p.stock)+'" placeholder="Ilimitado">'+
-          '<button class="btn btn--gold btn--sm prod-stock-save" data-id="'+p.id+'">Guardar</button>'+ 
-        '</div>'+ 
-        '<div style="display:flex;gap:6px;flex-wrap:wrap">'+
+         '<div class="stock-editor">'+
+           '<label class="form-label" for="stock-'+p.id+'" style="margin:0;white-space:nowrap">Cantidad</label>'+ 
+           '<input class="form-input prod-stock-input" id="stock-'+p.id+'" data-id="'+p.id+'" type="number" min="0" step="1" value="'+(p.stock===null||p.stock===undefined?'':p.stock)+'" placeholder="Ilimitado">'+
+           '<button class="btn btn--gold btn--sm prod-stock-save" data-id="'+p.id+'">Guardar</button>'+ 
+         '</div>'+ 
+         '<div style="display:flex;gap:6px;flex-wrap:wrap">'+
           '<span class="badge '+(p.active!==false?'badge--confirmado':'')+'" style="font-size:0.65rem">'+(p.active!==false?'Activo':'Inactivo')+'</span>'+
           '<button class="btn btn--outline btn--sm prod-btn-edit" data-id="'+p.id+'">Editar</button>'+
           '<button class="btn btn--red btn--sm prod-btn-del" data-id="'+p.id+'">Eliminar</button>'+
@@ -896,15 +906,15 @@ function openProductModal(id){
 }
 
 async function saveProduct(id){
-  var name=document.getElementById('prodName').value.trim();
+  var name=editableValue('prodName');
   if(!name){toast('El nombre es obligatorio','err');return}
   var file=window._prodFile||(function(){var i=document.getElementById('prodFileInput');return i&&i.files[0]})();
   var data={
     name:name,
-    description:document.getElementById('prodDesc').value,
+    description:editableValue('prodDesc',false),
     alcohol_percent:parseFloat(document.getElementById('prodAbv').value)||0,
     volume_ml:parseInt(document.getElementById('prodVol').value)||355,
-    sweetness:document.getElementById('prodSweet').value,
+    sweetness:editableValue('prodSweet'),
     price:parseFloat(document.getElementById('prodPrice').value)||0,
     stock:document.getElementById('prodStock').value===''?null:parseInt(document.getElementById('prodStock').value)||0,
     active:document.getElementById('prodActive').checked
@@ -1068,7 +1078,7 @@ async function savePlan(id){
   var perBottle=parseFloat(document.getElementById('planPerBottle').value)||65;
   var shipping=parseFloat(document.getElementById('planShipping').value)||150;
   var data={
-    name:document.getElementById('planName').value.trim(),
+    name:editableValue('planName'),
     bottle_count:bottleCount,
     price:bottleCount*perBottle+shipping,
     price_per_bottle:perBottle,
@@ -1154,6 +1164,7 @@ var KEY_LABELS={
   nosotros_title:'Título',nosotros_sub:'Subtítulo',nosotros_text:'Texto',
   footer_desc_short:'Descripción corta',footer_desc_long:'Descripción larga'
 };
+var RICH_TEXT_KEYS={hero_title:true,index_tribe_title:true,nosotros_text:true};
 function sectionTitle(sec){return (SECTION_META[sec]&&SECTION_META[sec].title)||sec}
 function sectionIco(sec){return (SECTION_META[sec]&&SECTION_META[sec].ico)||'bi-journal-text'}
 function keyLabel(key){return KEY_LABELS[key]||key.replace(/_/g,' ')}
@@ -1186,15 +1197,17 @@ async function loadContent(){
       '</summary>'+
       '<div class="accordion__body">';
     sections[sec].forEach(function(c){
-      var isLong=c.value.length>80;
+      var value=normalizeEditableText(c.value);
+      var isRich=!!RICH_TEXT_KEYS[c.key];
+      var isLong=value.length>80;
       var isImg=c.key.indexOf('img_')===0;
       if(isImg){
         var label=c.key.replace('img_','').replace(/_/g,' ');
-        var imgSrc=c.value||'';
+        var imgSrc=value||'';
         html+='<div class="form-group" style="margin-bottom:20px">'+
           '<label class="form-label">'+label+'</label>'+
           '<div class="img-preview" id="cprev_'+c.key+'" style="'+(imgSrc?'':'display:none;')+'margin-bottom:10px;aspect-ratio:16/10;max-width:360px">'+
-            (imgSrc?'<img src="'+imgSrc+'" alt="preview">':'<img src="" alt="preview">')+
+            (imgSrc?'<img src="'+escapeHtml(imgSrc)+'" alt="preview">':'<img src="" alt="preview">')+
           '</div>'+
           '<div class="upload-zone content-img-zone" data-key="'+c.key+'" style="padding:18px">'+
             '<p>Click o arrastra una imagen</p>'+
@@ -1205,7 +1218,7 @@ async function loadContent(){
       }else{
         html+='<div class="form-group" style="margin-bottom:12px">'+
           '<label class="form-label">'+keyLabel(c.key)+'</label>'+
-          (isLong?'<textarea class="form-textarea" data-key="'+c.key+'" rows="3">'+c.value+'</textarea>':'<input class="form-input" data-key="'+c.key+'" value="'+escapeHtml(c.value)+'">')+
+          (isRich?'<div class="form-textarea form-richtext" contenteditable="true" data-key="'+c.key+'" data-editable="true" role="textbox" aria-multiline="true">'+sanitizeRichMarkup(value)+'</div><p class="form-help">Edita el texto directamente; el formato visual se conserva sin mostrar etiquetas.</p>':(isLong?'<textarea class="form-textarea" data-key="'+c.key+'" data-editable="true" rows="3">'+escapeHtml(value)+'</textarea>':'<input class="form-input" data-key="'+c.key+'" data-editable="true" value="'+escapeHtml(value)+'">'))+
         '</div>';
       }
     });
@@ -1236,14 +1249,59 @@ async function loadContent(){
 }
 
 function escapeHtml(text){var d=document.createElement('div');d.textContent=text;return d.innerHTML}
-function unescapeHtml(html){var d=document.createElement('div');d.innerHTML=html;return d.textContent}
+function normalizeEditableText(value){
+  var text=String(value==null?'':value);
+  if(text.normalize)text=text.normalize('NFC');
+  return text
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g,'')
+    .replace(/[\u200B-\u200F\u202A-\u202E\u2060-\u206F\uFEFF\uFFFD]/g,'')
+    .replace(/\u00A0/g,' ')
+    .replace(/\r\n?/g,'\n');
+}
+function editableValue(id,trim){
+  var el=document.getElementById(id);
+  var value=normalizeEditableText(el?el.value:'');
+  return trim===false?value:value.trim();
+}
+function sanitizeRichMarkup(value){
+  var source=document.createElement('template');
+  source.innerHTML=normalizeEditableText(value);
+  var output=document.createElement('div');
+  var allowed={BR:true,EM:true,I:true,STRONG:true,B:true};
+  var blocked={SCRIPT:true,STYLE:true,IFRAME:true,OBJECT:true,EMBED:true,IMG:true,SVG:true,MATH:true,LINK:true,META:true};
+  function appendNode(node,parent){
+    if(node.nodeType===3){parent.appendChild(document.createTextNode(normalizeEditableText(node.nodeValue)));return}
+    if(node.nodeType!==1)return;
+    var tag=node.tagName.toUpperCase();
+    if(blocked[tag])return;
+    if(tag==='BR'){parent.appendChild(document.createElement('br'));return}
+    if(tag==='DIV'||tag==='P'){
+      Array.prototype.forEach.call(node.childNodes,function(child){appendNode(child,parent)});
+      if(parent.lastChild&&parent.lastChild.nodeName!=='BR')parent.appendChild(document.createElement('br'));
+      return;
+    }
+    if(!allowed[tag]){
+      Array.prototype.forEach.call(node.childNodes,function(child){appendNode(child,parent)});
+      return;
+    }
+    var clean=document.createElement(tag.toLowerCase());
+    if(tag==='EM'||tag==='I'){
+      if(node.classList.contains('accent--rasp'))clean.className='accent--rasp';
+      if(node.classList.contains('accent--teal'))clean.className='accent--teal';
+    }
+    Array.prototype.forEach.call(node.childNodes,function(child){appendNode(child,clean)});
+    parent.appendChild(clean);
+  }
+  Array.prototype.forEach.call(source.content.childNodes,function(node){appendNode(node,output)});
+  return output.innerHTML;
+}
 
 async function saveAllContent(){
-  var inputs=document.querySelectorAll('#tab-content [data-key]');
+  var inputs=document.querySelectorAll('#tab-content [data-editable]');
   var promises=[];
   inputs.forEach(function(el){
     var key=el.dataset.key;
-    var val=el.tagName==='TEXTAREA'?el.value:unescapeHtml(el.value);
+    var val=el.isContentEditable?sanitizeRichMarkup(el.innerHTML):normalizeEditableText(el.value).trim();
     promises.push(sb.from('site_content').update({value:val,updated_at:new Date().toISOString()}).eq('key',key));
   });
   var files=window._contentFiles||{};
@@ -1274,7 +1332,7 @@ async function loadDistribuye(){
   html+='<div style="margin-bottom:28px">';
   html+='<label class="form-label" style="margin-bottom:8px">Imagen Principal</label>';
   html+='<div class="img-preview" id="distPrev" style="'+(m.img_distribuye_hero_image?'':'display:none;')+'aspect-ratio:16/10;max-width:400px;margin-bottom:10px">';
-  html+=(m.img_distribuye_hero_image?'<img src="'+m.img_distribuye_hero_image+'" alt="preview">':'<img src="" alt="preview">');
+  html+=(m.img_distribuye_hero_image?'<img src="'+escapeHtml(m.img_distribuye_hero_image)+'" alt="preview">':'<img src="" alt="preview">');
   html+='</div>';
   html+='<div class="upload-zone" id="distUploadZone" style="max-width:400px;padding:18px"><p>Click o arrastra una imagen</p><input type="file" accept="image/*" id="distFileInput"></div>';
   html+=(m.img_distribuye_hero_image?'<p style="font-size:0.68rem;color:var(--gold-lo);margin-top:6px">Actual: '+m.img_distribuye_hero_image.substring(0,60)+'...</p>':'<p style="font-size:0.68rem;color:var(--muted);margin-top:6px">Sin imagen. Se usará el default.</p>');
@@ -1303,7 +1361,7 @@ async function loadDistribuye(){
     var val=m[f.key]||'';
     html+='<div class="form-group" style="margin-bottom:12px">'+
       '<label class="form-label">'+f.label+'</label>'+
-      (f.l?'<textarea class="form-textarea" data-key="'+f.key+'" rows="2">'+val+'</textarea>':'<input class="form-input" data-key="'+f.key+'" value="'+escapeHtml(val)+'">')+
+      (f.l?'<textarea class="form-textarea" data-key="'+f.key+'" data-editable="true" rows="2">'+escapeHtml(normalizeEditableText(val))+'</textarea>':'<input class="form-input" data-key="'+f.key+'" data-editable="true" value="'+escapeHtml(normalizeEditableText(val))+'">')+
     '</div>';
   });
 
@@ -1330,11 +1388,11 @@ async function loadDistribuye(){
 }
 
 async function saveDistribuye(){
-  var inputs=document.querySelectorAll('#tab-distribuye [data-key]');
+  var inputs=document.querySelectorAll('#tab-distribuye [data-editable]');
   var promises=[];
   inputs.forEach(function(el){
     var key=el.dataset.key;
-    var val=el.tagName==='TEXTAREA'?el.value:unescapeHtml(el.value);
+    var val=normalizeEditableText(el.value).trim();
     promises.push(sb.from('site_content').update({value:val,updated_at:new Date().toISOString()}).eq('key',key));
   });
   if(_distFile){
@@ -1585,14 +1643,14 @@ function openLeadModal(id){
 
 async function saveLead(id){
   var data={
-    full_name:document.getElementById('leadName').value.trim(),
-    email:document.getElementById('leadEmail').value.trim(),
-    phone:document.getElementById('leadPhone').value.trim(),
-    company:document.getElementById('leadCompany').value.trim(),
+    full_name:editableValue('leadName'),
+    email:editableValue('leadEmail'),
+    phone:editableValue('leadPhone'),
+    company:editableValue('leadCompany'),
     source:document.getElementById('leadSource').value,
     status:document.getElementById('leadStatus').value,
     lead_type:document.getElementById('leadType').value,
-    notes:document.getElementById('leadNotes').value,
+    notes:editableValue('leadNotes',false),
     updated_at:new Date().toISOString()
   };
   if(!data.full_name){toast('El nombre es obligatorio','err');return}
@@ -1688,15 +1746,15 @@ function openOppModal(id){
 
 async function saveOpp(id){
   var data={
-    title:document.getElementById('oppTitle').value.trim(),
-    company:document.getElementById('oppCompany').value.trim(),
+    title:editableValue('oppTitle'),
+    company:editableValue('oppCompany'),
     value:parseFloat(document.getElementById('oppValue').value)||0,
-    contact_name:document.getElementById('oppContact').value.trim(),
-    contact_email:document.getElementById('oppEmail').value.trim(),
-    contact_phone:document.getElementById('oppPhone').value.trim(),
+    contact_name:editableValue('oppContact'),
+    contact_email:editableValue('oppEmail'),
+    contact_phone:editableValue('oppPhone'),
     expected_close_date:document.getElementById('oppCloseDate').value||null,
     stage:document.getElementById('oppStage').value,
-    notes:document.getElementById('oppNotes').value,
+    notes:editableValue('oppNotes',false),
     updated_at:new Date().toISOString()
   };
   if(!data.title){toast('El título es obligatorio','err');return}
@@ -1778,8 +1836,8 @@ function openTaskModal(id){
 
 async function saveTask(id){
   var data={
-    title:document.getElementById('taskTitle').value.trim(),
-    description:document.getElementById('taskDesc').value.trim(),
+    title:editableValue('taskTitle'),
+    description:editableValue('taskDesc'),
     priority:document.getElementById('taskPriority').value,
     status:document.getElementById('taskStatus').value,
     due_date:document.getElementById('taskDue').value||null
@@ -1850,9 +1908,9 @@ function openInteractionModal(etype,eid){
 async function saveInteraction(){
   var data={
     entity_type:document.getElementById('interEntityType').value,
-    entity_id:document.getElementById('interEntityId').value.trim(),
+    entity_id:editableValue('interEntityId'),
     interaction_type:document.getElementById('interType').value,
-    summary:document.getElementById('interSummary').value.trim(),
+    summary:editableValue('interSummary'),
     created_by:currentUser?currentUser.id:null
   };
   if(!data.entity_id){toast('El ID de entidad es obligatorio','err');return}

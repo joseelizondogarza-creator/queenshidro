@@ -8,7 +8,72 @@
     var SUPABASE_KEY='sb_publishable_wEhcM5S2Y-8In-kDUfLeEA_AsiIcK0u';
     var sb=null;
     try{ sb=window.supabase?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null; }catch(e){ sb=null; }
-    window.QH={ sb:sb, updateCartCount:updateCartCount };
+
+    function normalizeEditableText(value){
+        var text=String(value==null?'':value);
+        if(text.normalize)text=text.normalize('NFC');
+        return text
+            .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g,'')
+            .replace(/[\u200B-\u200F\u202A-\u202E\u2060-\u206F\uFEFF\uFFFD]/g,'')
+            .replace(/\u00A0/g,' ')
+            .replace(/\r\n?/g,'\n');
+    }
+
+    var SAFE_RICH_TAGS={BR:true,EM:true,I:true,STRONG:true,B:true};
+    var BLOCKED_RICH_TAGS={SCRIPT:true,STYLE:true,IFRAME:true,OBJECT:true,EMBED:true,IMG:true,SVG:true,MATH:true,LINK:true,META:true};
+
+    function renderEditableRichText(element,value){
+        if(!element)return;
+        var source=document.createElement('template');
+        source.innerHTML=normalizeEditableText(value);
+        var fragment=document.createDocumentFragment();
+
+        function appendNode(node,parent){
+            if(node.nodeType===3){
+                parent.appendChild(document.createTextNode(normalizeEditableText(node.nodeValue)));
+                return;
+            }
+            if(node.nodeType!==1)return;
+            var tag=node.tagName.toUpperCase();
+            if(BLOCKED_RICH_TAGS[tag])return;
+            if(tag==='BR'){
+                parent.appendChild(document.createElement('br'));
+                return;
+            }
+            if(tag==='DIV'||tag==='P'){
+                Array.prototype.forEach.call(node.childNodes,function(child){appendNode(child,parent)});
+                if(parent.lastChild&&parent.lastChild.nodeName!=='BR')parent.appendChild(document.createElement('br'));
+                return;
+            }
+            if(!SAFE_RICH_TAGS[tag]){
+                Array.prototype.forEach.call(node.childNodes,function(child){appendNode(child,parent)});
+                return;
+            }
+            var clean=document.createElement(tag.toLowerCase());
+            if(tag==='EM'||tag==='I'){
+                if(node.classList.contains('accent--rasp'))clean.className='accent--rasp';
+                if(node.classList.contains('accent--teal'))clean.className='accent--teal';
+            }
+            Array.prototype.forEach.call(node.childNodes,function(child){appendNode(child,clean)});
+            parent.appendChild(clean);
+        }
+
+        Array.prototype.forEach.call(source.content.childNodes,function(node){appendNode(node,fragment)});
+        while(element.firstChild)element.removeChild(element.firstChild);
+        element.appendChild(fragment);
+    }
+
+    function setEditableText(element,value){
+        if(element)element.textContent=normalizeEditableText(value).trim();
+    }
+
+    window.QH={
+        sb:sb,
+        updateCartCount:updateCartCount,
+        normalizeEditableText:normalizeEditableText,
+        renderEditableRichText:renderEditableRichText,
+        setEditableText:setEditableText
+    };
 
     var NAV_LINKS=[
         {label:'Tienda',href:'tienda.html'},
@@ -205,7 +270,7 @@
                 var m={};r.data.forEach(function(c){m[c.key]=c.value;});
                 var el=document.getElementById('footerDesc');
                 if(el&&(m.footer_desc_long||m.footer_desc_short)){
-                    el.textContent=m.footer_desc_long||m.footer_desc_short;
+                    setEditableText(el,m.footer_desc_long||m.footer_desc_short);
                 }
             });
         }

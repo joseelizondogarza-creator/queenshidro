@@ -382,6 +382,7 @@ body[data-hero="true"] .cover-hero{margin-top:0}
     left:0;right:0;
     z-index:10;
     max-width:1280px;
+    width:100%;
     margin:0 auto;
     padding:0 32px;
 }
@@ -401,7 +402,9 @@ body[data-hero="true"] .cover-hero{margin-top:0}
     letter-spacing:-0.015em;
     color:var(--text);
     margin-bottom:24px;
-    max-width:880px;
+    max-width:920px;
+    text-wrap:balance;
+    overflow-wrap:anywhere;
     text-shadow:0 2px 40px rgba(0,0,0,.6);
 }
 .hero__sub{
@@ -434,8 +437,13 @@ body[data-hero="true"] .cover-hero{margin-top:0}
 .hero__arr--r{right:20px}
 @media(max-width:768px){
     .hero{height:78vh;min-height:540px}
+    .hero__text{bottom:64px;padding:0 20px}
+    .hero__title{max-width:100%;margin-bottom:18px}
+    .hero__sub{max-width:100%;margin-bottom:24px}
+    .hero__ctas{width:100%;align-items:stretch}
+    .hero__ctas .btn{width:100%}
     .hero__arr{display:none}
-    .hero__dots{right:50%;transform:translateX(50%);bottom:5%}
+    .hero__dots{right:50%;transform:translateX(50%);bottom:18px}
 }
 
 /* ---------- Ticker / marquee ---------- */
@@ -517,6 +525,11 @@ body[data-hero="true"] .cover-hero{margin-top:0}
     .tribe-strip__card,.tribe-strip__card:first-child,.tribe-strip__card:nth-child(2),.tribe-strip__card:nth-child(3),.tribe-strip__card:nth-child(4),.tribe-strip__card:nth-child(5){
         grid-column:span 12;aspect-ratio:4/5;
     }
+}
+@media(min-width:981px){
+    /* Let the collage rows define the height so portrait cards do not leave dead space. */
+    .tribe-strip__card:first-child{aspect-ratio:3/2.2}
+    .tribe-strip__card:nth-child(2),.tribe-strip__card:nth-child(3),.tribe-strip__card:nth-child(5){aspect-ratio:auto}
 }
 
 /* ---------- Mapa (index) ---------- */

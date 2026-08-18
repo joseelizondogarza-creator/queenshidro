@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
             toggleBtns.forEach(function (x) { x.classList.remove('on'); });
             b.classList.add('on');
             leadType = b.getAttribute('data-type') || 'botella';
-            if (hintEl) hintEl.textContent = hints[leadType] || '';
+            if (hintEl) window.QH.setEditableText(hintEl, hints[leadType] || '');
         });
     });
 
@@ -36,9 +36,9 @@ document.addEventListener('DOMContentLoaded', function () {
             var elId = textKeys[c.key];
             if (!elId) return;
             var el = document.getElementById(elId);
-            if (el && c.value) el.textContent = c.value;
+            if (el && c.value) window.QH.setEditableText(el, c.value);
         });
-        if (hintEl) hintEl.textContent = hints[leadType] || '';
+        if (hintEl) window.QH.setEditableText(hintEl, hints[leadType] || '');
     });
 
     document.getElementById('distForm').addEventListener('submit', async function (e) {

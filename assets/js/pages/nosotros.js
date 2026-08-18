@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!r.data) return;
         var m = {};
         r.data.forEach(function (c) { m[c.key] = c.value; });
-        if (m.nosotros_title) document.getElementById('nosTitle').textContent = m.nosotros_title;
-        if (m.nosotros_sub) document.getElementById('nosSub').textContent = m.nosotros_sub;
-        if (m.nosotros_text) document.getElementById('nosText').innerHTML = m.nosotros_text;
+        if (m.nosotros_title) window.QH.setEditableText(document.getElementById('nosTitle'), m.nosotros_title);
+        if (m.nosotros_sub) window.QH.setEditableText(document.getElementById('nosSub'), m.nosotros_sub);
+        if (m.nosotros_text) window.QH.renderEditableRichText(document.getElementById('nosText'), m.nosotros_text);
     });
 });

@@ -106,19 +106,19 @@
         <div class="container">
             <div class="section__head">
                 <div>
-                    <p class="kicker"><span class="sec-num">01</span> La experiencia Queens</p>
-                    <h2 class="display display--lg" id="tribeTitle">Así se vive la experiencia <em class="accent--rasp">Queens</em></h2>
+                    <p class="kicker"><span class="sec-num">01</span> Fuera de lo común</p>
+                    <h2 class="display display--lg" id="tribeTitle">Una hidromiel única, <em class="accent--rasp">hecha para vivirla.</em></h2>
                 </div>
-                <p class="section__head-sub" id="tribeSub">Gente real, festivales reales y un hidromiel que sabe a fruta. Así se vive Queens.</p>
+                <p class="section__head-sub" id="tribeSub">Fruta real, miel mexicana y fermentación artesanal: un sabor distinto que convierte cada brindis en una experiencia.</p>
             </div>
         </div>
         <div class="container">
             <div class="tribe-strip__grid">
-                <div class="tribe-strip__card"><span class="tribe-strip__card-num">01</span><img src="TRIBU/IMG_5282.webp" alt="Brindis masivo" loading="lazy" width="600" height="760"><span class="tribe-strip__card-label">Festival de la cerveza · Monterrey</span></div>
-                <div class="tribe-strip__card"><span class="tribe-strip__card-num">02</span><img src="TRIBU/IMG_5335.webp" alt="Experiencia Queens" loading="lazy" width="600" height="760"><span class="tribe-strip__card-label">Festival de la cerveza · Monterrey</span></div>
-                <div class="tribe-strip__card"><span class="tribe-strip__card-num">03</span><img src="TRIBU/IMG_5355.webp" alt="Brindis nocturno" loading="lazy" width="600" height="760"><span class="tribe-strip__card-label">Festival de la cerveza · Monterrey</span></div>
-                <div class="tribe-strip__card"><span class="tribe-strip__card-num">04</span><img src="TRIBU/IMG_5398.webp" alt="Festival al aire libre" loading="lazy" width="600" height="760"><span class="tribe-strip__card-label">Festival de la cerveza · Monterrey</span></div>
-                <div class="tribe-strip__card"><span class="tribe-strip__card-num">05</span><img src="TRIBU/IMG_5498.webp" alt="Público vibrando" loading="lazy" width="600" height="760"><span class="tribe-strip__card-label">Festival de la cerveza · Monterrey</span></div>
+                <div class="tribe-strip__card"><span class="tribe-strip__card-num">01</span><img src="TRIBU/IMG_5282.webp" alt="Brindis masivo" loading="lazy" width="600" height="760"><span class="tribe-strip__card-label">La banda reunida · Monterrey</span></div>
+                <div class="tribe-strip__card"><span class="tribe-strip__card-num">02</span><img src="TRIBU/IMG_5335.webp" alt="Experiencia Queens" loading="lazy" width="600" height="760"><span class="tribe-strip__card-label">Brindis que se recuerdan · Monterrey</span></div>
+                <div class="tribe-strip__card"><span class="tribe-strip__card-num">03</span><img src="TRIBU/IMG_5355.webp" alt="Brindis nocturno" loading="lazy" width="600" height="760"><span class="tribe-strip__card-label">Noche de fruta real · Monterrey</span></div>
+                <div class="tribe-strip__card"><span class="tribe-strip__card-num">04</span><img src="TRIBU/IMG_5398.webp" alt="Festival al aire libre" loading="lazy" width="600" height="760"><span class="tribe-strip__card-label">Queens en modo festival · Monterrey</span></div>
+                <div class="tribe-strip__card"><span class="tribe-strip__card-num">05</span><img src="TRIBU/IMG_5498.webp" alt="Público vibrando" loading="lazy" width="600" height="760"><span class="tribe-strip__card-label">La vibra se comparte · Monterrey</span></div>
             </div>
         </div>
     </section>
@@ -192,7 +192,12 @@
                 heroSlides.forEach(function(s,i){
                     var div=document.createElement('div');
                     div.className='hero__slide'+(i===0?' on':'');
-                    div.innerHTML='<img src="'+s.image_url+'" alt="'+s.alt+'" loading="'+(i===0?'eager':'lazy')+'"'+(i===0?' fetchpriority="high"':'')+'>';
+                    var img=document.createElement('img');
+                    img.src=s.image_url;
+                    img.alt=window.QH.normalizeEditableText(s.alt||'Queens Hidro').trim();
+                    img.loading=i===0?'eager':'lazy';
+                    if(i===0)img.setAttribute('fetchpriority','high');
+                    div.appendChild(img);
                     track.appendChild(div);
                     var dot=document.createElement('button');
                     dot.className='hero__dot'+(i===0?' on':'');
@@ -222,22 +227,22 @@
                 if(r.data&&r.data.length)initHero(r.data);
             });
 
-            sb.from('site_content').select('*').eq('section','hero').then(function(r){
-                if(!r.data)return;
-                var m={};r.data.forEach(function(c){m[c.key]=c.value});
-                if(m.hero_kicker)document.getElementById('heroKicker').textContent=m.hero_kicker;
-                if(m.hero_title)document.getElementById('heroTitle').innerHTML=m.hero_title;
-                if(m.hero_sub)document.getElementById('heroSub').textContent=m.hero_sub;
-                if(m.hero_cta_text)document.getElementById('heroCta').textContent=m.hero_cta_text;
-                if(m.hero_cta_link)document.getElementById('heroCta').href=m.hero_cta_link;
-            });
+             sb.from('site_content').select('*').eq('section','hero').then(function(r){
+                 if(!r.data)return;
+                 var m={};r.data.forEach(function(c){m[c.key]=c.value});
+                 if(m.hero_kicker)window.QH.setEditableText(document.getElementById('heroKicker'),m.hero_kicker);
+                 if(m.hero_title)window.QH.renderEditableRichText(document.getElementById('heroTitle'),m.hero_title);
+                 if(m.hero_sub)window.QH.setEditableText(document.getElementById('heroSub'),m.hero_sub);
+                 if(m.hero_cta_text)window.QH.setEditableText(document.getElementById('heroCta'),m.hero_cta_text);
+                 if(m.hero_cta_link&&!/^\s*(?:javascript|data|vbscript):/i.test(m.hero_cta_link))document.getElementById('heroCta').href=window.QH.normalizeEditableText(m.hero_cta_link).trim();
+             });
 
-            sb.from('site_content').select('*').eq('section','index').then(function(r){
-                if(!r.data)return;
-                var m={};r.data.forEach(function(c){m[c.key]=c.value});
-                if(m.index_tribe_title)document.getElementById('tribeTitle').innerHTML=m.index_tribe_title;
-                if(m.index_tribe_sub)document.getElementById('tribeSub').textContent=m.index_tribe_sub;
-            });
+             sb.from('site_content').select('*').eq('section','index').then(function(r){
+                 if(!r.data)return;
+                 var m={};r.data.forEach(function(c){m[c.key]=c.value});
+                 if(m.index_tribe_title)window.QH.renderEditableRichText(document.getElementById('tribeTitle'),m.index_tribe_title);
+                 if(m.index_tribe_sub)window.QH.setEditableText(document.getElementById('tribeSub'),m.index_tribe_sub);
+             });
 
             var tc=document.querySelectorAll('.tribe-strip__card');
             tc.forEach(function(e,i){e.style.transitionDelay=(i*0.08)+'s'});
