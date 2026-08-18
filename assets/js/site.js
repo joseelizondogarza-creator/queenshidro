@@ -134,7 +134,7 @@
         var user='<div class="nav__user" id="navUser"><button class="nav__avatar" id="userAvatar"></button><div class="nav__dropdown" id="userDropdown"><a href="cuenta.html">Mi cuenta</a><button class="nav__logout" id="navLogoutBtn">Cerrar sesión</button></div></div>';
         return '<nav class="nav"><div class="container">'+logo+burger+
             '<div class="nav__links">'+links+
-                '<span class="nav__more">Más <i class="bi bi-chevron-down"></i><div class="nav__more-items">'+more+'</div></span>'+
+                '<div class="nav__more"><span class="nav__more-label">Más <i class="bi bi-chevron-down"></i></span><div class="nav__more-items">'+more+'</div></div>'+
                 '<a href="membresia.html" class="nav__cta">Entrar</a>'+
             '</div>'+
             '<div class="nav__right">'+cart+user+'</div>'+
@@ -202,7 +202,7 @@
                 b.setAttribute('aria-expanded',o?'true':'false');
             });
             l.addEventListener('click',function(e){
-                if(e.target.closest('.nav__links>a')||e.target.closest('.nav__cta')){
+                if(e.target.closest('.nav__links a')){
                     l.classList.remove('open');b.classList.remove('open');
                     b.setAttribute('aria-expanded','false');
                 }
