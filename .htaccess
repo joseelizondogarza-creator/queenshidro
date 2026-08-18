@@ -1,0 +1,4 @@
+RewriteEngine On
+
+# Keep repository and backend source files out of the public website.
+RewriteRule ^(?:supabase|\.git)(?:/|$) - [F,L]
