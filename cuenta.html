@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Administra tu cuenta, membresía y pedidos de Queens Hidro. Ediciones limitadas, envíos y beneficios de miembro.">
+    <title>Mi Cuenta | Queens Hidro</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="canonical" href="https://queenshidro.com/cuenta.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Queens Hidro">
+    <meta property="og:title" content="Mi Cuenta | Queens Hidro">
+    <meta property="og:description" content="Administra tu cuenta, membresía y pedidos de Queens Hidro.">
+    <meta property="og:url" content="https://queenshidro.com/cuenta.html">
+    <meta property="og:image" content="https://queenshidro.com/assets/img/og-default.jpg">
+    <meta property="og:locale" content="es_MX">
+    <meta name="theme-color" content="#0a0a0c">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192.png">
+    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.gstatic.com/s/fraunces/v38/6NU78FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0KxC9TeA.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://fonts.gstatic.com/s/fraunces/v38/6NU58FyLNQOQZAnv9ZwNjucMHVn85Ni7emAe9lKqZTnbB-gzTK0K1ChjeveQ.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="assets/js/site.js" defer></script>
+    <style>
+        :root{--bg:#0a0a0c;--bg-alt:#0e0e12;--card:#141419;--card-hover:#1b1b22;--gold:#d4a845;--gold-hi:#e8c166;--gold-lo:#9c7a2e;--white:#fff;--muted:#9c9aa2;--green:#2ecc71;--red:#ff4d6d;--danger:#ff4d6d;--font-h:'BurfordBase','Fraunces','Georgia',serif;--font-b:'Inter','Segoe UI',system-ui,sans-serif;--font-m:'IBM Plex Mono',monospace;--nav-h:72px}
+        .account{padding:20px 0 100px}
+        .account__card{background:var(--card);border-radius:14px;padding:40px;border:1px solid rgba(255,255,255,0.06)}
+        .account__avatar{width:80px;height:80px;border-radius:50%;background:var(--gold-lo);display:flex;align-items:center;justify-content:center;font-size:2.3rem;color:#0a0a0a;font-weight:700;font-family:var(--font-h);margin:0 auto 24px}
+        .account__name{font-family:var(--font-h);font-size:1.6rem;color:var(--white);text-align:center;margin-bottom:4px}
+        .account__email{text-align:center;color:var(--muted);font-size:1.02rem;margin-bottom:32px}
+        .account__info{display:flex;flex-direction:column;gap:14px}
+        .account__row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:rgba(255,255,255,0.03);border-radius:8px;border:1px solid rgba(255,255,255,0.06)}
+        .account__label{font-size:0.86rem;letter-spacing:0.08em;text-transform:uppercase;color:#b0b0b0;font-weight:600}
+        .account__value{font-size:1.05rem;color:var(--white);font-weight:500}
+        .account__actions{margin-top:28px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+        .account__btn{display:inline-flex;align-items:center;gap:8px;padding:12px 26px;border-radius:50px;font-size:0.92rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;transition:all 0.3s;font-family:var(--font-b)}
+        .account__btn--gold{background:var(--gold);color:#0a0a0a;border:none}
+        .account__btn--gold:hover{background:var(--gold-hi)}
+        .account__btn--outline{background:transparent;border:1.5px solid var(--gold);color:var(--gold)}
+        .account__btn--outline:hover{background:var(--gold);color:#0a0a0a}
+        .account__btn--danger{background:transparent;border:1.5px solid rgba(231,76,60,0.4);color:#e74c3c}
+        .account__btn--danger:hover{background:#e74c3c;color:#fff;border-color:#e74c3c}
+        .sub-card{margin:0 0 40px;background:var(--card);border-radius:14px;padding:32px;border:1px solid rgba(255,255,255,0.06)}
+        .sub-card__title{font-family:var(--font-h);font-size:1.25rem;color:var(--white);margin-bottom:16px;font-weight:600}
+        .sub-card__plan{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+        .sub-card__plan-icon{width:48px;height:48px;border-radius:50%;background:rgba(212,168,69,0.12);display:flex;align-items:center;justify-content:center;font-size:1.5rem}
+        .sub-card__plan-name{font-family:var(--font-h);font-size:1.2rem;color:var(--white)}
+        .sub-card__plan-detail{font-size:0.9rem;color:var(--muted)}
+        .sub-card__rows{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+        .sub-card__row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(255,255,255,0.02);border-radius:8px;border:1px solid rgba(255,255,255,0.04)}
+        .sub-card__label{font-size:0.82rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+        .sub-card__value{font-size:0.98rem;color:var(--white)}
+        .sub-card__badge{display:inline-block;padding:3px 12px;border-radius:50px;font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em}
+        .sub-card__badge--active{background:rgba(46,204,113,0.12);color:#2ecc71}
+        .sub-card__badge--cancelled{background:rgba(255,255,255,0.06);color:var(--muted)}
+        .sub-card__empty{text-align:center;padding:20px}
+        .sub-card__empty p{color:var(--muted);margin-bottom:14px;font-size:1rem}
+        .sub-card__actions{display:flex;gap:10px;flex-wrap:wrap}
+        .sub-card__btn{display:inline-flex;align-items:center;gap:6px;padding:10px 22px;border-radius:50px;font-size:0.88rem;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;cursor:pointer;transition:all 0.3s;font-family:var(--font-b)}
+        .sub-card__btn--gold{background:var(--gold);color:#0a0a0a;border:none}.sub-card__btn--gold:hover{background:var(--gold-hi)}
+        .sub-card__btn--danger{background:transparent;border:1.5px solid rgba(231,76,60,0.4);color:#e74c3c}.sub-card__btn--danger:hover{background:#e74c3c;color:#fff;border-color:#e74c3c}
+        .account__loading{text-align:center;padding:60px 0;color:var(--muted)}
+    </style>
+</head>
+<body data-nav="full">
+
+    
+
+    <div class="page-hdr">
+        <p class="page-hdr__tag">Mi Cuenta</p>
+        <h1 class="page-hdr__title">Tu perfil</h1>
+        <p class="page-hdr__sub">Tu perfil, tu suscripción, tu experiencia.</p>
+    </div>
+
+    <section class="account">
+        <div class="container">
+            <div class="sub-card" id="subCard"><div class="sub-card__empty"><p>Cargando suscripción...</p></div></div>
+            <div class="account__card">
+                <div class="account__loading" id="loading">Cargando...</div>
+                <div id="profileContent" style="display:none">
+                    <div class="account__avatar" id="profAvatar"></div>
+                    <p class="account__name" id="profName"></p>
+                    <p class="account__email" id="profEmail"></p>
+                    <div class="account__info">
+                        <div class="account__row">
+                            <span class="account__label">Miembro desde</span>
+                            <span class="account__value" id="profCreated"></span>
+                        </div>
+                        <div class="account__row">
+                            <span class="account__label">Email verificado</span>
+                            <span class="account__value" id="profVerified"></span>
+                        </div>
+                        <div class="account__row">
+                            <span class="account__label">Último acceso</span>
+                            <span class="account__value" id="profLastSignIn"></span>
+                        </div>
+                    </div>
+                    <div class="account__actions">
+                        <a href="index.html" class="account__btn account__btn--gold">Ir al inicio</a>
+                        <a href="membresia.html" class="account__btn account__btn--outline">Membresía</a>
+                        <button class="account__btn account__btn--danger" id="logoutBtn">Cerrar sesión</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <script src="assets/js/pages/cuenta.js"></script>
+</body>
+</html>

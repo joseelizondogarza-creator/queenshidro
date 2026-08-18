@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Queens Hidro — Hidromiel artesanal de fruta real y miel mexicana. Cada botella apoya a los apicultores de Nuevo León. Compra en línea o encuéntranos en Monterrey.">
+    <title>Queens Hidro | Hidromiel Artesanal — Experiencia Queens</title>
+    <link rel="canonical" href="https://queenshidro.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Queens Hidro">
+    <meta property="og:title" content="Queens Hidro | Hidromiel Artesanal — Experiencia Queens">
+    <meta property="og:description" content="Hidromiel artesanal de fruta real y miel mexicana. Cada botella apoya a los apicultores de Nuevo León. Se toma frío, se vive en grande.">
+    <meta property="og:url" content="https://queenshidro.com/">
+    <meta property="og:image" content="https://queenshidro.com/assets/img/og-default.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="es_MX">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Queens Hidro | Hidromiel Artesanal — Experiencia Queens">
+    <meta name="twitter:description" content="Hidromiel artesanal de fruta real y miel mexicana. Cada botella apoya a los apicultores de Nuevo León.">
+    <meta name="twitter:image" content="https://queenshidro.com/assets/img/og-default.jpg">
+    <meta name="theme-color" content="#0a0a0c">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192.png">
+    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "Organization",
+                "@id": "https://queenshidro.com/#organization",
+                "name": "Queens Hidro",
+                "url": "https://queenshidro.com/",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://queenshidro.com/logo2.png",
+                    "width": 1155,
+                    "height": 404
+                },
+                "image": "https://queenshidro.com/assets/img/og-default.jpg",
+                "sameAs": [
+                    "https://instagram.com/queenshidro"
+                ],
+                "areaServed": "México",
+                "foundingLocation": "Monterrey, Nuevo León, México"
+            },
+            {
+                "@type": "WebSite",
+                "@id": "https://queenshidro.com/#website",
+                "url": "https://queenshidro.com/",
+                "name": "Queens Hidro",
+                "description": "Hidromiel artesanal de fruta real y miel mexicana.",
+                "inLanguage": "es-MX",
+                "publisher": { "@id": "https://queenshidro.com/#organization" }
+            },
+            {
+                "@type": "WebPage",
+                "@id": "https://queenshidro.com/#webpage",
+                "url": "https://queenshidro.com/",
+                "name": "Queens Hidro | Hidromiel Artesanal — Experiencia Queens",
+                "isPartOf": { "@id": "https://queenshidro.com/#website" },
+                "about": { "@id": "https://queenshidro.com/#organization" }
+            }
+        ]
+    }
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.gstatic.com/s/fraunces/v38/6NU78FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0KxC9TeA.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://fonts.gstatic.com/s/fraunces/v38/6NU58FyLNQOQZAnv9ZwNjucMHVn85Ni7emAe9lKqZTnbB-gzTK0K1ChjeveQ.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="preconnect" href="https://lqyphfiolymbjnsglonj.supabase.co" crossorigin>
+    <link rel="preconnect" href="https://a.basemaps.cartocdn.com" crossorigin>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="assets/js/site.js" defer></script>
+</head>
+<body data-nav="full" data-active="index" data-hero="true">
+
+    <section class="hero">
+        <div class="hero__track" id="heroTrack"><div class="hero__slide on"><img src="HERO/HERO2.webp" alt="Queens Hidro" fetchpriority="high" width="1920" height="1080"></div></div>
+        <div class="hero__text">
+            <span class="hero__kicker" id="heroKicker">Fruta real &middot; Miel mexicana &middot; Hecho en MTY</span>
+            <h1 class="hero__title" id="heroTitle">Hidromiel artesanal que <em class="accent--rasp">sabe a fruta real.</em><br>Miel mexicana, <em class="accent--teal">pura vibra.</em></h1>
+            <p class="hero__sub" id="heroSub">Miel de Nuevo León y fruta real fermentada a mano. Se toma frío, se vive en grande.</p>
+            <div class="hero__ctas">
+                <a href="membresia.html" class="btn btn--primary" id="heroCta">Quiero probarlo</a>
+                <a href="tienda.html" class="btn btn--outline">Ver la tienda</a>
+            </div>
+        </div>
+        <button class="hero__arr hero__arr--l" aria-label="Anterior"><i class="bi bi-arrow-left"></i></button>
+        <button class="hero__arr hero__arr--r" aria-label="Siguiente"><i class="bi bi-arrow-right"></i></button>
+        <div class="hero__dots"></div>
+    </section>
+
+    <div class="ticker" aria-hidden="true">
+        <div class="ticker__track">
+            <div class="ticker__item"><i>&#10022;</i> Fruta real <i>&#10022;</i> Miel mexicana <i>&#10022;</i> Hecho en Monterrey <i>&#10022;</i> Ediciones de festival <i>&#10022;</i> Se toma frío <i>&#10022;</i> Pura vibra <i>&#10022;</i> Fruta real <i>&#10022;</i> Miel mexicana <i>&#10022;</i> Hecho en Monterrey <i>&#10022;</i> Ediciones de festival <i>&#10022;</i> Se toma frío <i>&#10022;</i> Pura vibra</div>
+        </div>
+    </div>
+
+    <section class="tribe-strip section">
+        <div class="container">
+            <div class="section__head">
+                <div>
+                    <p class="kicker"><span class="sec-num">01</span> La experiencia Queens</p>
+                    <h2 class="display display--lg" id="tribeTitle">Así se vive la experiencia <em class="accent--rasp">Queens</em></h2>
+                </div>
+                <p class="section__head-sub" id="tribeSub">Gente real, festivales reales y un hidromiel que sabe a fruta. Así se vive Queens.</p>
+            </div>
+        </div>
+        <div class="container">
+            <div class="tribe-strip__grid">
+                <div class="tribe-strip__card"><span class="tribe-strip__card-num">01</span><img src="TRIBU/IMG_5282.webp" alt="Brindis masivo" loading="lazy" width="600" height="760"><span class="tribe-strip__card-label">Festival de la cerveza · Monterrey</span></div>
+                <div class="tribe-strip__card"><span class="tribe-strip__card-num">02</span><img src="TRIBU/IMG_5335.webp" alt="Experiencia Queens" loading="lazy" width="600" height="760"><span class="tribe-strip__card-label">Festival de la cerveza · Monterrey</span></div>
+                <div class="tribe-strip__card"><span class="tribe-strip__card-num">03</span><img src="TRIBU/IMG_5355.webp" alt="Brindis nocturno" loading="lazy" width="600" height="760"><span class="tribe-strip__card-label">Festival de la cerveza · Monterrey</span></div>
+                <div class="tribe-strip__card"><span class="tribe-strip__card-num">04</span><img src="TRIBU/IMG_5398.webp" alt="Festival al aire libre" loading="lazy" width="600" height="760"><span class="tribe-strip__card-label">Festival de la cerveza · Monterrey</span></div>
+                <div class="tribe-strip__card"><span class="tribe-strip__card-num">05</span><img src="TRIBU/IMG_5498.webp" alt="Público vibrando" loading="lazy" width="600" height="760"><span class="tribe-strip__card-label">Festival de la cerveza · Monterrey</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="map-find section--alt">
+        <div class="container">
+            <div class="section__head">
+                <div>
+                    <p class="kicker kicker--teal"><span class="sec-num" style="color:var(--teal-hi)">02</span> Encuéntranos</p>
+                    <h2 class="display display--lg">Hidromiel <em class="accent--teal">cerca de ti</em></h2>
+                </div>
+                <p class="section__head-sub">Queens Hidro disponible en toda la zona metropolitana de Monterrey.</p>
+            </div>
+            <div class="map-find__grid">
+                <div class="map-find__map">
+                    <div id="mapContainer"></div>
+                </div>
+                <div class="map-find__list">
+                    <div class="map-find__place">
+                        <div class="map-find__place-dot map-find__place-dot--stock"></div>
+                        <span class="map-find__place-name">El Pionero Food Park</span>
+                        <span class="map-find__place-badge map-find__place-badge--stock">con stock</span>
+                    </div>
+                    <div class="map-find__place">
+                        <div class="map-find__place-dot map-find__place-dot--stock"></div>
+                        <span class="map-find__place-name">Bratwurst</span>
+                        <span class="map-find__place-badge map-find__place-badge--stock">con stock</span>
+                    </div>
+                    <div class="map-find__place">
+                        <div class="map-find__place-dot map-find__place-dot--nostock"></div>
+                        <span class="map-find__place-name">Principia</span>
+                        <span class="map-find__place-badge map-find__place-badge--nostock">sin stock</span>
+                    </div>
+                    <div class="map-find__place">
+                        <div class="map-find__place-dot map-find__place-dot--nostock"></div>
+                        <span class="map-find__place-name">Almacén 42</span>
+                        <span class="map-find__place-badge map-find__place-badge--nostock">sin stock</span>
+                    </div>
+                    <div class="map-find__place">
+                        <div class="map-find__place-dot map-find__place-dot--nostock"></div>
+                        <span class="map-find__place-name">Metapatio</span>
+                        <span class="map-find__place-badge map-find__place-badge--nostock">sin stock</span>
+                    </div>
+                    <div class="map-find__place">
+                        <div class="map-find__place-dot map-find__place-dot--nostock"></div>
+                        <span class="map-find__place-name">Destilados LB</span>
+                        <span class="map-find__place-badge map-find__place-badge--nostock">sin stock</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded',function(){
+            if(!window.QH||!window.QH.sb)return;
+            var sb=window.QH.sb;
+
+            var nv=document.getElementById('navUser'),av=document.getElementById('userAvatar'),dd=document.getElementById('userDropdown');
+
+            var heroSlides=[],heroTimer=null,heroIdx=0;
+            function initHero(slides){
+                heroSlides=slides.filter(function(s){return s.active});
+                var track=document.getElementById('heroTrack');
+                var dots=document.querySelector('.hero__dots');
+                var prev=document.querySelector('.hero__arr--l');
+                var next=document.querySelector('.hero__arr--r');
+                if(!heroSlides.length)return;
+                track.innerHTML='';dots.innerHTML='';
+                heroSlides.forEach(function(s,i){
+                    var div=document.createElement('div');
+                    div.className='hero__slide'+(i===0?' on':'');
+                    div.innerHTML='<img src="'+s.image_url+'" alt="'+s.alt+'" loading="'+(i===0?'eager':'lazy')+'"'+(i===0?' fetchpriority="high"':'')+'>';
+                    track.appendChild(div);
+                    var dot=document.createElement('button');
+                    dot.className='hero__dot'+(i===0?' on':'');
+                    dot.setAttribute('aria-label','Slide '+(i+1));
+                    dot.addEventListener('click',function(){goTo(i);resetTimer()});
+                    dots.appendChild(dot);
+                });
+                function goTo(idx){
+                    var ss=track.querySelectorAll('.hero__slide');
+                    var ds=dots.querySelectorAll('.hero__dot');
+                    if(ss[heroIdx])ss[heroIdx].classList.remove('on');
+                    if(ds[heroIdx])ds[heroIdx].classList.remove('on');
+                    heroIdx=(idx+heroSlides.length)%heroSlides.length;
+                    if(ss[heroIdx])ss[heroIdx].classList.add('on');
+                    if(ds[heroIdx])ds[heroIdx].classList.add('on');
+                }
+                function nextSlide(){goTo(heroIdx+1)}
+                function prevSlide(){goTo(heroIdx-1)}
+                function startTimer(){heroTimer=setInterval(nextSlide,6000)}
+                function resetTimer(){clearInterval(heroTimer);startTimer()}
+                if(prev)prev.addEventListener('click',function(){prevSlide();resetTimer()});
+                if(next)next.addEventListener('click',function(){nextSlide();resetTimer()});
+                if(heroSlides.length>1)startTimer();
+            }
+
+            sb.from('hero_slides').select('*').order('sort_order').then(function(r){
+                if(r.data&&r.data.length)initHero(r.data);
+            });
+
+            sb.from('site_content').select('*').eq('section','hero').then(function(r){
+                if(!r.data)return;
+                var m={};r.data.forEach(function(c){m[c.key]=c.value});
+                if(m.hero_kicker)document.getElementById('heroKicker').textContent=m.hero_kicker;
+                if(m.hero_title)document.getElementById('heroTitle').innerHTML=m.hero_title;
+                if(m.hero_sub)document.getElementById('heroSub').textContent=m.hero_sub;
+                if(m.hero_cta_text)document.getElementById('heroCta').textContent=m.hero_cta_text;
+                if(m.hero_cta_link)document.getElementById('heroCta').href=m.hero_cta_link;
+            });
+
+            sb.from('site_content').select('*').eq('section','index').then(function(r){
+                if(!r.data)return;
+                var m={};r.data.forEach(function(c){m[c.key]=c.value});
+                if(m.index_tribe_title)document.getElementById('tribeTitle').innerHTML=m.index_tribe_title;
+                if(m.index_tribe_sub)document.getElementById('tribeSub').textContent=m.index_tribe_sub;
+            });
+
+            var tc=document.querySelectorAll('.tribe-strip__card');
+            tc.forEach(function(e,i){e.style.transitionDelay=(i*0.08)+'s'});
+            function rt(){var wh=window.innerHeight;tc.forEach(function(e){var t=e.getBoundingClientRect().top;if(t<wh-80)e.classList.add('tribe-strip__card--visible')})}
+            window.addEventListener('scroll',rt,{passive:true});rt();
+
+            var mc=document.getElementById('mapContainer');
+            if(mc&&window.L){
+                var mm=L.map(mc,{attributionControl:false,zoomControl:false}).setView([25.67,-100.31],12);
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:18}).addTo(mm);
+                var mkStock=L.icon({iconUrl:'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36" viewBox="0 0 28 36"><path d="M14 0C6.3 0 0 6.3 0 14c0 10.5 14 22 14 22s14-11.5 14-22C28 6.3 21.7 0 14 0z" fill="#02b4b7"/><circle cx="14" cy="13" r="5" fill="#0a0a0c"/></svg>'),iconSize:[28,36],iconAnchor:[14,36],popupAnchor:[0,-36]});
+                var mkNoStock=L.icon({iconUrl:'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36" viewBox="0 0 28 36"><path d="M14 0C6.3 0 0 6.3 0 14c0 10.5 14 22 14 22s14-11.5 14-22C28 6.3 21.7 0 14 0z" fill="#ff4d6d"/><circle cx="14" cy="13" r="5" fill="#0a0a0c"/></svg>'),iconSize:[28,36],iconAnchor:[14,36],popupAnchor:[0,-36]});
+                var spots=[
+                    {n:'El Pionero Food Park',a:'5 de Mayo 610 Nte, Apodaca Centro',p:[25.7465,-100.1836],s:true},
+                    {n:'Bratwurst',a:'Nueva Lindavista, Guadalupe',p:[25.6910,-100.2350],s:true},
+                    {n:'Principia',a:'Tasting Room, San Pedro Garza García',p:[25.6570,-100.3720],s:false},
+                    {n:'Almacén 42',a:'C. Mariano Matamoros 852, Centro',p:[25.6683,-100.3079],s:false},
+                    {n:'Metapatio',a:'Centro de Monterrey',p:[25.6695,-100.3120],s:false},
+                    {n:'Destilados LB',a:'Barrio Antiguo, Monterrey',p:[25.6725,-100.3070],s:false}
+                ];
+                var bnds=L.latLngBounds([]);
+                spots.forEach(function(s){var icon=s.s?mkStock:mkNoStock;var c=s.s?'#02b4b7':'#ff4d6d';var st=s.s?'con stock':'sin stock';var m=L.marker(s.p,{icon:icon}).addTo(mm).bindPopup('<b style="color:'+c+'">'+s.n+'</b><br><small style="color:#9c9aa2">'+s.a+'</small><br><small style="color:'+c+'">'+st+'</small>');bnds.extend(s.p)});
+                mm.fitBounds(bnds.pad(0.08));
+            }
+        });
+    </script>
+</body>
+</html>

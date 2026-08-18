@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /cuenta.html
+Disallow: /login.html
+Disallow: /carrito.html
+
+Sitemap: https://queenshidro.com/sitemap.xml

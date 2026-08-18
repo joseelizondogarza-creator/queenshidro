@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Accede a tu cuenta de Queens Hidro. La experiencia Queens te espera.">
+    <title>Ingresar | Queens Hidro</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="canonical" href="https://queenshidro.com/login.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Queens Hidro">
+    <meta property="og:title" content="Ingresar | Queens Hidro">
+    <meta property="og:description" content="Accede a tu cuenta de Queens Hidro. La experiencia Queens te espera.">
+    <meta property="og:url" content="https://queenshidro.com/login.html">
+    <meta property="og:image" content="https://queenshidro.com/assets/img/og-default.jpg">
+    <meta property="og:locale" content="es_MX">
+    <meta name="theme-color" content="#0a0a0c">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192.png">
+    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.gstatic.com/s/fraunces/v38/6NU78FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0KxC9TeA.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://fonts.gstatic.com/s/fraunces/v38/6NU58FyLNQOQZAnv9ZwNjucMHVn85Ni7emAe9lKqZTnbB-gzTK0K1ChjeveQ.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="assets/js/site.js" defer></script>
+    <style>
+        :root{--bg:#0a0a0c;--bg-alt:#0e0e12;--card:#141419;--card-hover:#1b1b22;--gold:#d4a845;--gold-hi:#e8c166;--gold-lo:#9c7a2e;--white:#fff;--muted:#9c9aa2;--green:#2ecc71;--red:#ff4d6d;--danger:#ff4d6d;--font-h:'BurfordBase','Fraunces','Georgia',serif;--font-b:'Inter','Segoe UI',system-ui,sans-serif;--font-m:'IBM Plex Mono',monospace;--nav-h:72px}
+        .auth-page{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:100px 20px 40px;background:var(--bg)}
+        .auth-page .auth-card{display:block}
+        .auth-card__logo{text-align:center;margin-bottom:28px}
+        .auth-card__logo img{height:56px;width:auto;margin:0 auto}
+        .auth-card__switch{text-align:center;margin-top:22px;font-size:0.95rem;color:var(--muted)}
+        .auth-card__switch a{color:var(--gold);font-weight:600;cursor:pointer;transition:color 0.25s}
+        .auth-card__switch a:hover{color:var(--gold-hi)}
+        .auth-dashboard{display:none;flex-direction:column;align-items:center;text-align:center;gap:16px}
+        .auth-dashboard__avatar{width:72px;height:72px;border-radius:50%;background:var(--gold-lo);display:flex;align-items:center;justify-content:center;font-size:2.1rem;color:#0a0a0a;font-weight:700;font-family:var(--font-h)}
+        .auth-dashboard__name{font-family:var(--font-h);font-size:1.6rem;color:var(--white)}
+        .auth-dashboard__email{font-size:1rem;color:var(--muted)}
+        .auth-dashboard__actions{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap;justify-content:center}
+        .auth-dashboard__btn{display:inline-flex;align-items:center;gap:8px;padding:12px 26px;border-radius:50px;font-size:0.92rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;transition:all 0.3s;font-family:var(--font-b)}
+        .auth-dashboard__btn--outline{background:transparent;border:1.5px solid var(--gold);color:var(--gold)}
+        .auth-dashboard__btn--outline:hover{background:var(--gold);color:#0a0a0a}
+        .auth-dashboard__btn--danger{background:transparent;border:1.5px solid rgba(231,76,60,0.4);color:var(--danger)}
+        .auth-dashboard__btn--danger:hover{background:var(--danger);color:#fff;border-color:var(--danger)}
+    </style>
+</head>
+<body data-nav="full">
+
+    
+
+    <section class="auth-page">
+        <div class="auth-card">
+            <div class="auth-card__logo">
+                <img src="logo2.webp" alt="Queens Hidro" width="1155" height="404">
+            </div>
+
+            <div class="auth-card__tabs">
+                <button class="auth-card__tab active" data-tab="login">Iniciar Sesión</button>
+                <button class="auth-card__tab" data-tab="register">Registrarse</button>
+            </div>
+
+            <div class="auth-card__error" id="error"></div>
+            <div class="auth-card__success" id="success"></div>
+
+            <form id="loginForm">
+                <div class="auth-card__field">
+                    <label class="auth-card__label" for="loginEmail">Correo electrónico</label>
+                    <input class="auth-card__input" type="email" id="loginEmail" placeholder="tu@correo.com" required autocomplete="email">
+                </div>
+                <div class="auth-card__field">
+                    <label class="auth-card__label" for="loginPassword">Contraseña</label>
+                    <input class="auth-card__input" type="password" id="loginPassword" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+                <button class="auth-card__submit" type="submit" id="loginSubmit">Entrar</button>
+            </form>
+
+            <form id="registerForm" style="display:none">
+                <div class="auth-card__field">
+                    <label class="auth-card__label" for="registerName">Nombre completo</label>
+                    <input class="auth-card__input" type="text" id="registerName" placeholder="Tu nombre" required autocomplete="name">
+                </div>
+                <div class="auth-card__field">
+                    <label class="auth-card__label" for="registerEmail">Correo electrónico</label>
+                    <input class="auth-card__input" type="email" id="registerEmail" placeholder="tu@correo.com" required autocomplete="email">
+                </div>
+                <div class="auth-card__field">
+                    <label class="auth-card__label" for="registerPassword">Contraseña</label>
+                    <input class="auth-card__input" type="password" id="registerPassword" placeholder="Mínimo 6 caracteres" required minlength="6" autocomplete="new-password">
+                </div>
+                <button class="auth-card__submit" type="submit" id="registerSubmit">Crear cuenta</button>
+            </form>
+
+            <div class="auth-dashboard" id="dashboard">
+                <div class="auth-dashboard__avatar" id="dashAvatar"></div>
+                <p class="auth-dashboard__name" id="dashName"></p>
+                <p class="auth-dashboard__email" id="dashEmail"></p>
+                <div class="auth-dashboard__actions">
+                    <a href="index.html" class="auth-dashboard__btn auth-dashboard__btn--outline">Ir al inicio</a>
+                    <button class="auth-dashboard__btn auth-dashboard__btn--danger" id="logoutBtn">Cerrar sesión</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <script src="assets/js/pages/login.js"></script>
+</body>
+</html>

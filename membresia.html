@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Suscríbete a Queens Hidro y recibe hidromiel artesanal a tu puerta cada mes en zona MTY. Envío incluido, ediciones limitadas y precios de miembro.">
+    <title>Suscripción | Queens Hidro</title>
+    <link rel="canonical" href="https://queenshidro.com/membresia.html">
+    <meta property="og:type" content="product">
+    <meta property="og:site_name" content="Queens Hidro">
+    <meta property="og:title" content="Membresía | Queens Hidro — Hidromiel a tu puerta">
+    <meta property="og:description" content="Elige tus botellas al mes y te las llevamos a la puerta. Envío incluido en zona MTY, ediciones limitadas y beneficios de miembro.">
+    <meta property="og:url" content="https://queenshidro.com/membresia.html">
+    <meta property="og:image" content="https://queenshidro.com/assets/img/og-default.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="es_MX">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Membresía | Queens Hidro">
+    <meta name="twitter:description" content="Hidromiel artesanal a tu puerta cada mes. Envío incluido en zona MTY.">
+    <meta name="twitter:image" content="https://queenshidro.com/assets/img/og-default.jpg">
+    <meta name="theme-color" content="#0a0a0c">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192.png">
+    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "@id": "https://queenshidro.com/membresia.html#product",
+        "name": "Membresía Queens Hidro",
+        "url": "https://queenshidro.com/membresia.html",
+        "image": "https://queenshidro.com/assets/img/og-default.jpg",
+        "description": "Suscripción mensual de hidromiel artesanal con envío incluido en zona MTY, ediciones limitadas y beneficios de miembro.",
+        "brand": { "@type": "Brand", "name": "Queens Hidro" },
+        "offers": {
+            "@type": "AggregateOffer",
+            "url": "https://queenshidro.com/membresia.html",
+            "availability": "https://schema.org/InStock",
+            "priceCurrency": "MXN",
+            "offers": [
+                { "@type": "Offer", "name": "Suscripción mensual", "priceCurrency": "MXN", "availability": "https://schema.org/InStock" },
+                { "@type": "Offer", "name": "Pago prepago", "priceCurrency": "MXN", "availability": "https://schema.org/InStock" }
+            ]
+        }
+    }
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.gstatic.com/s/fraunces/v38/6NU78FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0KxC9TeA.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://fonts.gstatic.com/s/fraunces/v38/6NU58FyLNQOQZAnv9ZwNjucMHVn85Ni7emAe9lKqZTnbB-gzTK0K1ChjeveQ.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="assets/js/site.js" defer></script>
+</head>
+<body data-nav="full" data-active="membresia" data-hero="true">
+
+    <section class="cover-hero">
+        <img class="cover-hero__bg" id="coverImg" src="HERO/HERO2.webp" alt="Hidromiel a tu puerta" fetchpriority="high">
+        <header class="page-hdr">
+            <div class="container">
+                <p class="kicker"><span class="sec-num">02</span> Suscripción mensual</p>
+                <h1 class="page-hdr__title display display--xl">Hidromiel <em class="accent--teal">a tu puerta</em></h1>
+                <p class="page-hdr__sub">Elige tus botellas al mes y te las llevamos a la puerta. Envío incluido en zona MTY.</p>
+                <div class="page-hdr__meta">
+                    <span>Envío incluido</span>
+                    <span>Prepago o mensual</span>
+                    <span>Zona MTY</span>
+                </div>
+            </div>
+        </header>
+    </section>
+
+    <section class="sub">
+        <div class="container" id="subWrapper">
+            <div class="auth-card" id="authCard">
+                <div class="auth-card__tabs">
+                    <button class="auth-card__tab active" data-tab="login">Iniciar Sesión</button>
+                    <button class="auth-card__tab" data-tab="register">Registrarse</button>
+                </div>
+                <div class="auth-card__error" id="authError"></div>
+                <div class="auth-card__success" id="authSuccess"></div>
+                <form id="loginForm">
+                    <div class="auth-card__field"><label class="auth-card__label" for="loginEmail">Correo electrónico</label><input class="auth-card__input" type="email" id="loginEmail" placeholder="tu@correo.com" required autocomplete="email"></div>
+                    <div class="auth-card__field"><label class="auth-card__label" for="loginPassword">Contraseña</label><input class="auth-card__input" type="password" id="loginPassword" placeholder="••••••••" required autocomplete="current-password"></div>
+                    <button class="auth-card__submit" type="submit" id="loginSubmit">Entrar</button>
+                </form>
+                <form id="registerForm" style="display:none">
+                    <div class="auth-card__field"><label class="auth-card__label" for="registerName">Nombre completo</label><input class="auth-card__input" type="text" id="registerName" placeholder="Tu nombre" required autocomplete="name"></div>
+                    <div class="auth-card__field"><label class="auth-card__label" for="registerEmail">Correo electrónico</label><input class="auth-card__input" type="email" id="registerEmail" placeholder="tu@correo.com" required autocomplete="email"></div>
+                    <div class="auth-card__field"><label class="auth-card__label" for="registerPassword">Contraseña</label><input class="auth-card__input" type="password" id="registerPassword" placeholder="Mínimo 6 caracteres" required minlength="6" autocomplete="new-password"></div>
+                    <button class="auth-card__submit" type="submit" id="registerSubmit">Crear cuenta</button>
+                </form>
+            </div>
+            <div id="subContent" style="display:none"><div class="sub__loading">Cargando planes...</div></div>
+        </div>
+    </section>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function(){
+        if(!window.QH||!window.QH.sb)return;
+        var sb=window.QH.sb;
+        var MTY_MUNICIPIOS=[
+            'Apodaca','Escobedo','Guadalupe','Monterrey',
+            'San Nicolás','San Pedro','Santa Catarina'
+        ];
+        var currentUser=null;
+        var selectedPlanId=null;
+
+        sb.auth.getSession().then(function(r){
+            if(r.data.session&&r.data.session.user){
+                currentUser=r.data.session.user;
+            }
+            showMembershipContent();
+        });
+        sb.auth.onAuthStateChange(function(e,s){
+            if(e==='SIGNED_IN'&&s){currentUser=s.user;showMembershipContent()}
+            else if(e==='SIGNED_OUT'){currentUser=null;showMembershipContent()}
+        });
+
+        function showAuthCard(){
+            document.getElementById('authCard').style.display='block';
+            document.getElementById('subContent').style.display='none';
+        }
+        window._showAuth=showAuthCard;
+        function showMembershipContent(){
+            document.getElementById('authCard').style.display='none';
+            document.getElementById('subContent').style.display='block';
+            checkExistingSub();
+            loadPlans();
+        }
+
+        var authTabs=document.querySelectorAll('.auth-card__tab');
+        authTabs.forEach(function(tab){
+            tab.addEventListener('click',function(){
+                document.getElementById('authError').style.display='none';
+                document.getElementById('authSuccess').style.display='none';
+                authTabs.forEach(function(t){t.classList.remove('active')});
+                tab.classList.add('active');
+                var isLogin=tab.dataset.tab==='login';
+                document.getElementById('loginForm').style.display=isLogin?'block':'none';
+                document.getElementById('registerForm').style.display=isLogin?'none':'block';
+            });
+        });
+
+        document.getElementById('loginForm').addEventListener('submit',async function(e){
+            e.preventDefault();
+            var errorEl=document.getElementById('authError');
+            var successEl=document.getElementById('authSuccess');
+            errorEl.style.display='none';successEl.style.display='none';
+            var email=document.getElementById('loginEmail').value.trim();
+            var password=document.getElementById('loginPassword').value;
+            var btn=document.getElementById('loginSubmit');
+            btn.disabled=true;btn.textContent='Ingresando...';
+            var {data,error}=await sb.auth.signInWithPassword({email:email,password:password});
+            btn.disabled=false;btn.textContent='Entrar';
+            if(error){
+                errorEl.textContent=error.message==='Invalid login credentials'?'Correo o contraseña incorrectos.':error.message;
+                errorEl.style.display='block';
+            }
+        });
+
+        document.getElementById('registerForm').addEventListener('submit',async function(e){
+            e.preventDefault();
+            var errorEl=document.getElementById('authError');
+            var successEl=document.getElementById('authSuccess');
+            errorEl.style.display='none';successEl.style.display='none';
+            var name=document.getElementById('registerName').value.trim();
+            var email=document.getElementById('registerEmail').value.trim();
+            var password=document.getElementById('registerPassword').value;
+            var btn=document.getElementById('registerSubmit');
+            btn.disabled=true;btn.textContent='Creando cuenta...';
+            var {data,error}=await sb.auth.signUp({email:email,password:password,options:{data:{full_name:name}}});
+            btn.disabled=false;btn.textContent='Crear cuenta';
+            if(error){
+                errorEl.textContent=error.message;errorEl.style.display='block';
+            }else if(data.user&&data.user.identities&&data.user.identities.length===0){
+                errorEl.textContent='Ya existe una cuenta con este correo. Inicia sesión.';errorEl.style.display='block';
+            }else{
+                successEl.textContent='Cuenta creada. Revisa tu correo para confirmar tu email.';successEl.style.display='block';
+            }
+        });
+
+        async function checkExistingSub(){
+            if(!currentUser)return;
+            var {data}=await sb.from('subscriptions').select('*,subscription_plans(name,bottle_count,price)').eq('user_id',currentUser.id).order('created_at',{ascending:false}).limit(1).maybeSingle();
+            if(data){
+                var p=data.subscription_plans||{};
+                var isRecurring=data.billing_type==='recurring';
+                var priceLine=isRecurring
+                    ? '$'+parseFloat(data.total_paid).toFixed(2)+' MXN/mes · renovable'
+                    : '$'+parseFloat(data.total_paid).toFixed(2)+' MXN prepago ('+(data.duration_months||2)+' meses)';
+                var dateLine=isRecurring
+                    ? 'Siguiente cargo: '+new Date(data.current_period_end).toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'})
+                    : 'Compromiso hasta: '+new Date(data.current_period_end).toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'});
+                if(data.status==='active'){
+                    document.getElementById('subContent').innerHTML='<div class="sub__success">'+
+                        '<p class="sub__success-icon"><i class="bi bi-check-circle-fill" style="color:var(--teal-hi)"></i></p>'+
+                        '<p class="sub__success-title">¡Ya tienes suscripción activa!</p>'+
+                        '<p class="sub__success-text">Plan <strong>'+p.name+'</strong> ('+p.bottle_count+' botellas/mes)<br>'+priceLine+' · Envío a '+data.shipping_municipality+'<br>'+dateLine+'</p>'+
+                        '<a href="cuenta.html" class="btn btn--primary">Ir a mi cuenta</a>'+
+                    '</div>';
+                }else if(data.status==='pending'){
+                    document.getElementById('subContent').innerHTML='<div class="sub__success">'+
+                        '<p class="sub__success-icon"><i class="bi bi-hourglass-split" style="color:var(--teal-hi)"></i></p>'+
+                        '<p class="sub__success-title">Tu suscripción está pendiente de confirmación</p>'+
+                        '<p class="sub__success-text">Plan <strong>'+p.name+'</strong> ('+p.bottle_count+' botellas/mes).<br>Estamos confirmando tu pago; en cuanto quede listo te avisamos.</p>'+
+                        '<a href="cuenta.html" class="btn btn--primary">Ir a mi cuenta</a>'+
+                    '</div>';
+                }
+            }
+        }
+
+        function showToast(msg,type){
+            var t=document.createElement('div');
+            t.textContent=msg;
+            t.style.cssText='position:fixed;top:24px;right:24px;z-index:10000;padding:14px 24px;border-radius:2px;font-size:0.85rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;font-family:var(--font-m);box-shadow:0 8px 30px rgba(0,0,0,0.5);pointer-events:none';
+            t.style.animation='fadeIn 0.3s ease';
+            if(type==='err'){t.style.background='#1c0a10';t.style.border='1px solid rgba(255,77,109,0.4)';t.style.color='#ff4d6d'}
+            else{t.style.background='#051412';t.style.border='1px solid rgba(2,180,183,0.4)';t.style.color='#3ee0e3'}
+            document.body.appendChild(t);
+            setTimeout(function(){t.remove()},3500);
+        }
+
+        var DURATION_TIERS=[];
+        var selectedDuration=2;
+        var selectedMode='prepaid';
+        var RECURRING_DISCOUNT_PCT=5;
+        var REGULAR_BOTTLE_PRICE=80;
+
+        function numVal(v,d){var n=parseFloat(v);return isNaN(n)?d:n}
+
+        async function loadPricingConfig(){
+            var {data,error}=await sb.from('site_content').select('key,value').eq('section','suscripcion');
+            var m={};
+            (data||[]).forEach(function(c){m[c.key]=c.value});
+            RECURRING_DISCOUNT_PCT=numVal(m.recurring_discount,5);
+            REGULAR_BOTTLE_PRICE=numVal(m.regular_bottle_price,80);
+            var tiers=[
+                {months:2,key:'prepaid_2m',def:6},
+                {months:3,key:'prepaid_3m',def:8},
+                {months:6,key:'prepaid_6m',def:12},
+                {months:12,key:'prepaid_12m',def:15}
+            ];
+            DURATION_TIERS=tiers.map(function(t){return{months:t.months,discount:numVal(m[t.key],t.def),label:t.months+' meses'}});
+        }
+
+        async function loadPlans(){
+            var container=document.getElementById('subContent');
+            if(!container)return;
+            await loadPricingConfig();
+            var {data:plans,error}=await sb.from('subscription_plans').select('*').eq('active',true).order('sort_order');
+            if(error){container.innerHTML='<div class="sub__error">Error al cargar planes.</div>';return}
+            if(!plans||!plans.length){container.innerHTML='<div class="sub__error">No hay planes disponibles.</div>';return}
+
+            var options=plans.map(function(p){
+                var perBottle=parseFloat(p.price_per_bottle||65);
+                var ship=parseFloat(p.shipping_flat||150);
+                var subTotal=(p.bottle_count*perBottle)+ship;
+                var savingPerBottle=REGULAR_BOTTLE_PRICE-perBottle;
+                var savingPct=Math.round((savingPerBottle/REGULAR_BOTTLE_PRICE)*100);
+                var totalSaving=p.bottle_count*savingPerBottle;
+                return '<option value="'+p.id+'" data-bottles="'+p.bottle_count+'" data-subtotal="'+subTotal.toFixed(2)+'" data-saving="'+totalSaving.toFixed(2)+'" data-saving-pct="'+savingPct+'" data-per-bottle="'+perBottle.toFixed(2)+'">'+p.bottle_count+' botellas/mes — $'+subTotal.toFixed(2)+' MXN</option>';
+            }).join('');
+
+            var maxDiscount=Math.max.apply(null,DURATION_TIERS.map(function(t){return t.discount}));
+            var durationBtns=DURATION_TIERS.map(function(t,i){
+                return '<div class="sub__duration-opt'+(t.months===selectedDuration?' sub__duration-opt--selected':'')+'" onclick="window._setDuration('+t.months+')" data-m="'+t.months+'">'+
+                    '<span class="sub__duration-opt__months">'+t.months+'</span>'+
+                    '<span class="sub__duration-opt__discount">'+(t.discount>0?t.discount+'% desc':'precio base')+'</span>'+
+                '</div>';
+            }).join('');
+
+            var mtyOptions=MTY_MUNICIPIOS.map(function(m){return '<option value="'+m+'">'+m+'</option>'}).join('');
+
+            container.innerHTML=
+                '<div class="sub__selector">'+
+                    '<div class="sub__mode">'+
+                        '<button type="button" class="sub__mode-opt sub__mode-opt--selected" data-mode="prepaid" onclick="window._setMode(\'prepaid\')">'+
+                            '<span class="sub__mode-opt__title">Prepago</span>'+
+                            '<span class="sub__mode-opt__sub">Hasta '+maxDiscount+'% de descuento</span>'+
+                        '</button>'+
+                        '<button type="button" class="sub__mode-opt" data-mode="recurring" onclick="window._setMode(\'recurring\')">'+
+                            '<span class="sub__mode-opt__title">Suscripción mensual</span>'+
+                            '<span class="sub__mode-opt__sub">'+RECURRING_DISCOUNT_PCT+'% desc · cancela cuando quieras</span>'+
+                        '</button>'+
+                    '</div>'+
+                    '<p class="sub__selector-label">¿Cuántas botellas quieres al mes?</p>'+
+                    '<select class="sub__selector-dropdown" id="planDropdown" onchange="window._recalc()"><option value="">— Elige cantidad —</option>'+options+'</select>'+
+                    '<div class="sub__price-display" id="priceDisplay" style="display:none">'+
+                        '<span class="sub__price-total" id="priceTotal">$0</span>'+
+                        '<span class="sub__price-month" id="priceMonthLabel">MXN / mes (envío incluido)</span>'+
+                        '<div class="sub__savings" id="savingsBadge">'+
+                            '<span class="sub__savings-text" id="savingsText">Ahorras XX%</span>'+
+                            '<span class="sub__savings-detail" id="savingsDetail">vs $0 c/u sin suscripción</span>'+
+                        '</div>'+
+                        '<div class="sub__per-bottle">'+
+                            '<span>con suscripción: <strong id="perBottleSub">$65</strong> c/botella</span>'+
+                            '<span>normal: <strong style="text-decoration:line-through;color:var(--muted);font-weight:400">$'+REGULAR_BOTTLE_PRICE+'</strong> c/botella</span>'+
+                        '</div>'+
+                        '<div class="sub__duration-section" id="subDurationSection">'+
+                            '<p class="sub__selector-label">¿Por cuántos meses?</p>'+
+                            '<div class="sub__duration-options" id="durationOptions">'+durationBtns+'</div>'+
+                            '<div class="sub__prepago" id="prepagoDisplay">'+
+                                '<span class="sub__prepago-label">Total prepago</span>'+
+                                '<span class="sub__prepago-total" id="prepagoTotal">$0</span>'+
+                                '<br><span class="sub__prepago-saving" id="prepagoSaving"></span>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'+
+                '</div>'+
+                (currentUser
+                    ? '<div class="sub__form" id="subForm" style="display:none">'+
+                        '<p class="sub__form-title">Datos de envío</p>'+
+                        '<div class="sub__form-row">'+
+                            '<div class="form-group"><label class="form-label">Nombre completo</label><input class="form-input" id="subName" value="'+((currentUser.user_metadata&&currentUser.user_metadata.full_name)||'')+'"></div>'+
+                            '<div class="form-group"><label class="form-label">Teléfono</label><input class="form-input" id="subPhone" type="tel" placeholder="81 1234 5678"></div>'+
+                        '</div>'+
+                        '<div class="form-group"><label class="form-label">Municipio</label><select class="form-select" id="subMunicipio"><option value="">Selecciona tu municipio</option>'+mtyOptions+'</select></div>'+
+                        '<div class="form-group"><label class="form-label">Dirección completa</label><textarea class="form-textarea" id="subAddress" placeholder="Calle, número, colonia, CP..." rows="2"></textarea></div>'+
+                        '<div class="sub__zone-note" id="subZoneNote">Solo disponible en Monterrey y área metropolitana. Envío flat de $150 incluido en cada entrega mensual. Pago único por adelantado. Con tu suscripción, tus pedidos sueltos de la tienda también pagan solo $150 de envío (en vez de $199).</div>'+
+                        '<div class="sub__summary" id="subSummary">'+
+                            '<div class="sub__summary-row"><span>Botellas</span><span id="sumBottles">—</span></div>'+
+                            '<div class="sub__summary-row"><span>Precio por botella</span><span id="sumPerBottle">$65.00</span></div>'+
+                            '<div class="sub__summary-row"><span>Envío</span><span id="sumShipping">$150.00</span></div>'+
+                            '<div class="sub__summary-row" style="color:var(--teal-hi)"><span>Ahorro</span><span id="sumSaving">—</span></div>'+
+                            '<div class="sub__summary-divider"></div>'+
+                            '<div class="sub__summary-row"><span>Mensual</span><span id="sumMonthly">$0.00</span></div>'+
+                            '<div class="sub__summary-row"><span>Duración</span><span id="sumDuration">2 meses</span></div>'+
+                            '<div class="sub__summary-total" style="margin-top:12px"><span id="sumTotalLabel">Total prepago</span><span id="sumTotal">$0.00</span></div>'+
+                        '</div>'+
+                        '<button class="btn btn--primary btn--full" id="btnSubscribe">Suscribirme</button>'+
+                    '</div>'
+                    : '<div class="sub__login-cta"><p class="sub__login-cta-text">Inicia sesión para suscribirte</p><button class="btn btn--gold" id="subLoginBtn">Entrar</button></div>'
+                );
+        }
+
+        window._setDuration=function(months){
+            selectedDuration=months;
+            document.querySelectorAll('.sub__duration-opt').forEach(function(b){
+                b.classList.toggle('sub__duration-opt--selected',parseInt(b.dataset.m)===months);
+            });
+            window._recalc();
+        };
+
+        window._setMode=function(mode){
+            selectedMode=mode;
+            document.querySelectorAll('.sub__mode-opt').forEach(function(b){
+                b.classList.toggle('sub__mode-opt--selected',b.dataset.mode===mode);
+            });
+            var dur=document.getElementById('subDurationSection');
+            if(dur){dur.style.display=(mode==='recurring')?'none':''}
+            var price=document.getElementById('priceDisplay');
+            if(price){price.style.display='none'}
+            var form=document.getElementById('subForm');
+            if(form){form.style.display='none';form.classList.remove('open')}
+            var dd=document.getElementById('planDropdown');
+            if(dd&&dd.value){window._recalc()}
+        };
+
+        window._recalc=function(){
+            var dd=document.getElementById('planDropdown');
+            if(!dd||!dd.value){return}
+            var opt=dd.options[dd.selectedIndex];
+            var bottles=parseInt(opt.dataset.bottles);
+            var perBottle=parseFloat(opt.dataset.perBottle);
+            var regularPerBottle=REGULAR_BOTTLE_PRICE;
+            var shipping=150;
+            selectedPlanId=dd.value;
+
+            var discPerBottle;
+            var monthlyTotal;
+            var savingsText;
+            var sumSaving;
+            var sumMonthlyText;
+            var sumDurationText;
+            var sumTotalLabel;
+            var sumTotalText;
+            var btnLabel;
+
+            if(selectedMode==='recurring'){
+                discPerBottle=perBottle*(1-RECURRING_DISCOUNT_PCT/100);
+                monthlyTotal=bottles*discPerBottle+shipping;
+                savingsText='Ahorras '+RECURRING_DISCOUNT_PCT+'% por botella';
+                sumSaving='-'+(bottles*(regularPerBottle-discPerBottle)).toFixed(2)+' /mes';
+                sumMonthlyText='$'+monthlyTotal.toFixed(2)+' MXN/mes';
+                sumDurationText='Mes a mes · cancela cuando quieras';
+                sumTotalLabel='Cargo mensual';
+                sumTotalText='$'+monthlyTotal.toFixed(2)+' MXN/mes';
+                btnLabel='Suscribirme mensualmente · $'+monthlyTotal.toFixed(2)+' MXN/mes';
+                document.getElementById('subZoneNote').textContent='Solo disponible en Monterrey y área metropolitana. Envío flat de $150 incluido en cada entrega. Cargo mensual recurrente de $'+monthlyTotal.toFixed(2)+' MXN. Cancela cuando quieras. Con tu suscripción, tus pedidos sueltos de la tienda también pagan solo $150 de envío (en vez de $199).';
+            }else{
+                var tier=DURATION_TIERS.find(function(t){return t.months===selectedDuration})||DURATION_TIERS[0];
+                discPerBottle=perBottle*(1-tier.discount/100);
+                monthlyTotal=bottles*discPerBottle+shipping;
+                var prepagoTotal=monthlyTotal*selectedDuration;
+                var basePrepago=(bottles*perBottle+shipping)*selectedDuration;
+                var prepagoSaving=basePrepago-prepagoTotal;
+                savingsText='Ahorras '+opt.dataset.savingPct+'% por botella';
+                if(tier.discount>0){
+                    savingsText='Ahorras '+opt.dataset.savingPct+'% + '+tier.discount+'% extra por prepago';
+                }
+                sumSaving='-'+(parseFloat(opt.dataset.saving)+(bottles*perBottle*tier.discount/100)*selectedDuration).toFixed(2)+' total';
+                sumMonthlyText='$'+monthlyTotal.toFixed(2)+' × '+selectedDuration;
+                sumDurationText=selectedDuration+' meses';
+                sumTotalLabel='Total prepago';
+                sumTotalText='$'+prepagoTotal.toFixed(2)+' MXN';
+                btnLabel='Suscribirme · $'+prepagoTotal.toFixed(2)+' MXN';
+                document.getElementById('prepagoTotal').textContent='$'+prepagoTotal.toFixed(2);
+                document.getElementById('prepagoSaving').textContent=prepagoSaving>0?'Ahorras $'+prepagoSaving.toFixed(2)+' vs pagar mes a mes':'';
+                document.getElementById('subZoneNote').textContent='Solo disponible en Monterrey y área metropolitana. Envío flat de $150 incluido en cada entrega mensual. Pago único por adelantado. Con tu suscripción, tus pedidos sueltos de la tienda también pagan solo $150 de envío (en vez de $199).';
+            }
+
+            document.getElementById('priceDisplay').style.display='block';
+            document.getElementById('priceTotal').textContent='$'+monthlyTotal.toFixed(2);
+            document.getElementById('savingsText').textContent=savingsText;
+            document.getElementById('savingsDetail').textContent='vs $'+regularPerBottle+' c/u sin suscripción';
+            document.getElementById('savingsDetail').style.textDecoration='none';
+            document.getElementById('perBottleSub').textContent='$'+discPerBottle.toFixed(2);
+            document.getElementById('sumBottles').textContent=bottles+' botellas/mes';
+            document.getElementById('sumPerBottle').textContent='$'+discPerBottle.toFixed(2)+' c/u (normal $'+regularPerBottle+')';
+            document.getElementById('sumShipping').textContent='$150.00/mes';
+            document.getElementById('sumSaving').textContent=sumSaving;
+            document.getElementById('sumMonthly').textContent=sumMonthlyText;
+            document.getElementById('sumDuration').textContent=sumDurationText;
+            document.getElementById('sumTotalLabel').textContent=sumTotalLabel;
+            document.getElementById('sumTotal').textContent=sumTotalText;
+            document.getElementById('btnSubscribe').textContent=btnLabel;
+
+            var form=document.getElementById('subForm');
+            if(form){form.style.display='block';setTimeout(function(){form.classList.add('open')},10)}
+        };
+
+        document.addEventListener('click',async function(e){
+            if(e.target.id==='subLoginBtn'){
+                showAuthCard();
+                return;
+            }
+            if(e.target.id==='btnSubscribe'){
+                e.preventDefault();
+                var btn=e.target;
+                var planId=selectedPlanId;
+                if(!planId){showToast('Selecciona un plan','err');return}
+                var name=document.getElementById('subName').value.trim();
+                var phone=document.getElementById('subPhone').value.trim();
+                var municipio=document.getElementById('subMunicipio').value;
+                var address=document.getElementById('subAddress').value.trim();
+                if(!name||!phone||!municipio||!address){showToast('Completa todos los campos','err');return}
+                if(MTY_MUNICIPIOS.indexOf(municipio)===-1){showToast('El municipio debe estar en el área metropolitana de Monterrey','err');return}
+
+                btn.disabled=true;btn.textContent='Creando suscripción...';
+
+                var backUrl=window.location.origin+window.location.pathname;
+                var {data:resp,error}=await sb.functions.invoke('create-subscription',{
+                    body:{
+                        plan_id:planId,
+                        mode:selectedMode,
+                        duration_months:selectedDuration,
+                        shipping:{name:name,phone:phone,address:address,municipality:municipio},
+                        back_url:backUrl
+                    }
+                });
+                if(error||!resp||!resp.ok){
+                    showToast('Error: '+((resp&&resp.error)||(error&&error.message)||'No se pudo crear la suscripción'),'err');
+                    btn.disabled=false;
+                    btn.textContent='Suscribirme';
+                    return;
+                }
+                sessionStorage.setItem('qh_sub_id',resp.subscription_id);
+                window.location.href=resp.init_point;
+            }
+        });
+
+        (function handleSubReturn(){
+            var params=new URLSearchParams(window.location.search);
+            var sub=params.get('sub');
+            if(!sub)return;
+            history.replaceState(null,'',window.location.pathname);
+            if(sub==='failure'){showToast('Pago no completado. Puedes intentarlo de nuevo.','err');return;}
+            if(sub==='success'){
+                showToast('Estamos confirmando tu pago...');
+                setTimeout(function(){if(currentUser)checkExistingSub()},3000);
+                setTimeout(function(){if(currentUser)checkExistingSub()},6000);
+            }
+        })();
+    });
+    </script>
+</body>
+</html>

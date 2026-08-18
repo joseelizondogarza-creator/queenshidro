@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Compra hidromiel artesanal Queens Hidro en línea. Ediciones limitadas de fruta real y miel mexicana hechas en Monterrey. Envíos a todo México.">
+    <title>Tienda | Queens Hidro</title>
+    <link rel="canonical" href="https://queenshidro.com/tienda.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Queens Hidro">
+    <meta property="og:title" content="Tienda | Queens Hidro — Compra hidromiel artesanal">
+    <meta property="og:description" content="Ediciones limitadas de hidromiel de fruta real y miel mexicana. Hecho en Monterrey, envíos a todo México.">
+    <meta property="og:url" content="https://queenshidro.com/tienda.html">
+    <meta property="og:image" content="https://queenshidro.com/assets/img/og-default.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="es_MX">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Tienda | Queens Hidro">
+    <meta name="twitter:description" content="Ediciones limitadas de hidromiel de fruta real y miel mexicana. Hecho en Monterrey.">
+    <meta name="twitter:image" content="https://queenshidro.com/assets/img/og-default.jpg">
+    <meta name="theme-color" content="#0a0a0c">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192.png">
+    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LiquorStore",
+        "@id": "https://queenshidro.com/tienda.html#store",
+        "name": "Queens Hidro",
+        "url": "https://queenshidro.com/tienda.html",
+        "image": "https://queenshidro.com/assets/img/og-default.jpg",
+        "description": "Tienda en línea de hidromiel artesanal de fruta real y miel mexicana. Ediciones limitadas hechas en Monterrey.",
+        "priceRange": "$$",
+        "telephone": "",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Monterrey",
+            "addressRegion": "Nuevo León",
+            "addressCountry": "MX"
+        },
+        "areaServed": "México",
+        "parentOrganization": { "@id": "https://queenshidro.com/#organization" }
+    }
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.gstatic.com/s/fraunces/v38/6NU78FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0KxC9TeA.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://fonts.gstatic.com/s/fraunces/v38/6NU58FyLNQOQZAnv9ZwNjucMHVn85Ni7emAe9lKqZTnbB-gzTK0K1ChjeveQ.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="assets/js/site.js" defer></script>
+    <script src="assets/js/cart.js" defer></script>
+</head>
+<body data-nav="full" data-cart="true" data-active="tienda" data-hero="true">
+
+    <section class="cover-hero">
+        <img class="cover-hero__bg" id="coverImg" src="HERO/HERO4.webp" alt="Selección Queens Hidro" fetchpriority="high">
+        <header class="page-hdr">
+            <div class="container">
+                <p class="kicker"><span class="sec-num">01</span> Selección Queens</p>
+                <h1 class="page-hdr__title display display--xl">Nuestro <em class="accent--rasp">Hidromiel</em></h1>
+                <p class="page-hdr__sub">Ediciones que no se repiten, momentos que no se olvidan.</p>
+                <div class="page-hdr__meta">
+                    <span>100% natural</span>
+                    <span>Fruta real</span>
+                    <span>Monterrey, NL</span>
+                </div>
+            </div>
+        </header>
+    </section>
+
+    <section class="store">
+        <div class="container">
+            <div class="store__grid" id="storeGrid">
+                <div class="store__loading">Cargando hidromieles...</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-panel" id="cartPanel">
+        <div class="cart-panel__hdr">
+            <p class="cart-panel__title">Tu Carrito</p>
+            <button class="cart-panel__close" id="cartCloseBtn" aria-label="Cerrar">&times;</button>
+        </div>
+        <div class="cart-sub-cta" id="cartSubCta" style="display:none"><i class="bi bi-stars"></i><span></span></div>
+        <div class="cart-panel__items" id="cartItems">
+            <p class="cart-panel__empty">Tu carrito está vacío</p>
+        </div>
+        <div class="cart-panel__foot" id="cartFoot" style="display:none">
+            <div class="cart-panel__total">
+                <span class="cart-panel__total-label">Total</span>
+                <span class="cart-panel__total-amount" id="cartTotal">$0</span>
+            </div>
+            <div class="cart-panel__ship" id="cartShipRow" style="display:none">
+                <span>Envío</span>
+                <span id="cartShipAmount"></span>
+            </div>
+            <button class="cart-panel__checkout" id="cartCheckoutBtn">Ir al carrito</button>
+            <a href="tienda.html" class="cart-panel__link" id="cartContinue">Seguir comprando</a>
+            <div class="cart-panel__trust">
+                <i class="bi bi-shield-lock"></i>
+                <span>Pago seguro</span><span>Tarjetas</span><span>Transferencia</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modalContent"></div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function(){
+        if(!window.QH||!window.QH.sb||!window.QH.cart)return;
+        var sb=window.QH.sb;
+        var cartModule=window.QH.cart;
+
+        var productLookup = {};
+
+        function showToast(msg, type) {
+            var t = document.createElement('div');
+            t.textContent = msg;
+            t.style.cssText = 'position:fixed;top:24px;right:24px;z-index:10000;padding:14px 24px;border-radius:2px;font-size:0.85rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;font-family:var(--font-m);animation:slideInToast 0.3s ease;box-shadow:0 8px 30px rgba(0,0,0,0.5);pointer-events:none;';
+            if (type === 'err') {
+                t.style.background = '#1c0a10'; t.style.border = '1px solid rgba(255,77,109,0.4)'; t.style.color = '#ff4d6d';
+            } else {
+                t.style.background = '#051412'; t.style.border = '1px solid rgba(2,180,183,0.4)'; t.style.color = '#3ee0e3';
+            }
+            document.body.appendChild(t);
+            setTimeout(function(){ t.remove(); }, 3000);
+        }
+
+        function stockInfo(item) {
+            var p = productLookup[item.id];
+            if (p && p.stock !== null && p.stock !== undefined) return Number(p.stock);
+            return null;
+        }
+        function maxFor(item) {
+            var stock = stockInfo(item);
+            var maxQty = cartModule.settings().maxQty;
+            if (stock === null) return maxQty;
+            return Math.min(maxQty, stock);
+        }
+
+        function renderSubCta() {
+            var el = document.getElementById('cartSubCta');
+            if (!el) return;
+            if (!cartModule.items().length || cartModule.isSubscriber()) {
+                el.style.display = 'none';
+                return;
+            }
+            var s = cartModule.settings();
+            el.style.display = 'flex';
+            el.querySelector('span').innerHTML = 'Suscríbete y paga <strong>' + cartModule.fmt(s.shippingFlatSubscriber) + '</strong> de envío en vez de ' + cartModule.fmt(s.shippingFlat) + '. <a href="membresia.html">Ver planes</a>';
+        }
+
+        function renderCartItems() {
+            var container = document.getElementById('cartItems');
+            var foot = document.getElementById('cartFoot');
+            var totalEl = document.getElementById('cartTotal');
+            var items = cartModule.items();
+            if (!items.length) {
+                container.innerHTML = '<p class="cart-panel__empty">Tu carrito está vacío</p>' +
+                    '<a href="tienda.html" class="cart-panel__link" style="margin-top:0">Explorar hidromieles</a>';
+                foot.style.display = 'none';
+                return;
+            }
+            container.innerHTML = items.map(function(item) {
+                var sub = item.price * item.quantity;
+                var specs = [item.alcohol_percent ? item.alcohol_percent + '% alc' : '', item.volume_ml ? item.volume_ml + 'ml' : '', item.sweetness || ''].filter(Boolean).join(' · ');
+                var imgHtml = item.image_url ? '<img src="' + item.image_url + '" alt="' + item.name + '">' : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.6rem"><i class="bi bi-cup-straw"></i></div>';
+                var stock = stockInfo(item);
+                var max = maxFor(item);
+                var stockHtml = '';
+                if (stock !== null && stock <= 0) {
+                    stockHtml = '<p class="cart-panel__stockout">Agotado — se quitará al pagar</p>';
+                }
+                var plusDisabled = item.quantity >= max ? ' style="opacity:.35;cursor:not-allowed"' : '';
+                return '<div class="cart-item">' +
+                    '<div class="cart-item__img">' + imgHtml + '</div>' +
+                    '<div class="cart-item__info">' +
+                        '<p class="cart-item__name">' + item.name + '</p>' +
+                        '<p class="cart-item__meta">' + specs + '</p>' +
+                        '<div class="cart-item__qty">' +
+                            '<button onclick="window._qhCartQty(\'' + item.id + '\',-1)" aria-label="Disminuir">-</button>' +
+                            '<span>' + item.quantity + '</span>' +
+                            '<button onclick="window._qhCartQty(\'' + item.id + '\',1)" aria-label="Aumentar"' + plusDisabled + '>+</button>' +
+                        '</div>' +
+                        stockHtml +
+                    '</div>' +
+                    '<div class="cart-item__right">' +
+                        '<span class="cart-item__price">' + cartModule.fmt(sub) + '</span>' +
+                        '<button class="cart-item__remove" onclick="window._qhCartRemove(\'' + item.id + '\')">Eliminar</button>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+            totalEl.textContent = cartModule.fmt(cartModule.total());
+            var shipRow = document.getElementById('cartShipRow');
+            var shipAmt = document.getElementById('cartShipAmount');
+            if (shipRow && shipAmt) {
+                shipRow.style.display = 'flex';
+                shipAmt.textContent = cartModule.fmt(cartModule.shippingFee()) + (cartModule.isSubscriber() ? ' · suscriptor' : '');
+            }
+            foot.style.display = 'block';
+            renderSubCta();
+        }
+
+        window._qhCartQty = function(id, delta) {
+            var item = cartModule.items().filter(function(i){ return String(i.id) === String(id); })[0];
+            if (!item) return;
+            var nq = item.quantity + delta;
+            if (nq < 1) { cartModule.remove(id); return; }
+            var max = maxFor(item);
+            if (nq > max) { showToast('Solo puedes pedir ' + max + ' de este producto', 'err'); return; }
+            cartModule.setQty(id, nq);
+        };
+        window._qhCartRemove = function(id) {
+            cartModule.remove(id);
+        };
+
+        function openCart() {
+            document.getElementById('cartOverlay').classList.add('open');
+            document.getElementById('cartPanel').classList.add('open');
+        }
+        function closeCart() {
+            document.getElementById('cartOverlay').classList.remove('open');
+            document.getElementById('cartPanel').classList.remove('open');
+        }
+        var cartBtn = document.getElementById('navCartBtn');
+        if (cartBtn) cartBtn.addEventListener('click', function() {
+            var panel = document.getElementById('cartPanel');
+            if (panel.classList.contains('open')) closeCart(); else openCart();
+        });
+        document.getElementById('cartCloseBtn').addEventListener('click', closeCart);
+        document.getElementById('cartOverlay').addEventListener('click', closeCart);
+        document.getElementById('cartCheckoutBtn').addEventListener('click', function() {
+            window.location.href = 'carrito.html';
+        });
+        document.getElementById('cartContinue').addEventListener('click', closeCart);
+
+        function slugify(text){return text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,'-')}
+
+        function openProductModal(product) {
+            var stock = (product.stock !== null && product.stock !== undefined) ? Number(product.stock) : null;
+            var max = stock === null ? cartModule.settings().maxQty : Math.min(cartModule.settings().maxQty, stock);
+            var soldout = stock === 0;
+            var images = product.images || (product.image_url ? [product.image_url] : []);
+            var currentImg = 0;
+            function renderGallery() {
+                var gallery = document.getElementById('modalGallery');
+                gallery.querySelector('img').src = images[currentImg] || '';
+                gallery.querySelector('img').style.opacity = '1';
+                var dots = gallery.querySelectorAll('.modal__gallery-dots span');
+                dots.forEach(function(d, i) { d.classList.toggle('active', i === currentImg); });
+                var prev = gallery.querySelector('.modal__gallery-arr--prev');
+                var next = gallery.querySelector('.modal__gallery-arr--next');
+                prev.style.display = images.length > 1 ? 'flex' : 'none';
+                next.style.display = images.length > 1 ? 'flex' : 'none';
+            }
+            var dotsHtml = images.length > 1 ? '<div class="modal__gallery-dots">' + images.map(function(_, i) { return '<span class="' + (i === 0 ? ' active' : '') + '" onclick="window._qhModalGoTo(' + i + ')"></span>'; }).join('') + '</div>' : '';
+            var imgSrc = images.length > 0 ? images[0] : '';
+            var stockHtml = soldout ? '<p class="cart-panel__stockout" style="margin-top:10px">Agotado por el momento</p>' : '';
+            var addBtnHtml = soldout
+                ? '<button class="modal__add-btn" disabled style="opacity:.45;cursor:not-allowed">Agotado</button>'
+                : '<button class="modal__add-btn" id="modalAddBtn">Agregar al carrito</button>';
+            var html = '<button class="modal__close" id="modalCloseBtn" aria-label="Cerrar">&times;</button>' +
+                '<div class="modal__gallery" id="modalGallery">' +
+                    (imgSrc ? '<img src="' + imgSrc + '" alt="' + product.name + '">' : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:5rem"><i class="bi bi-cup-straw"></i></div>') +
+                    '<button class="modal__gallery-arr modal__gallery-arr--prev" id="modalPrev" style="display:' + (images.length > 1 ? 'flex' : 'none') + '" onclick="window._qhModalNav(-1)"><i class="bi bi-chevron-left"></i></button>' +
+                    '<button class="modal__gallery-arr modal__gallery-arr--next" id="modalNext" style="display:' + (images.length > 1 ? 'flex' : 'none') + '" onclick="window._qhModalNav(1)"><i class="bi bi-chevron-right"></i></button>' +
+                    dotsHtml +
+                '</div>' +
+                '<div class="modal__body">' +
+                    '<p class="modal__name">' + product.name + '</p>' +
+                    '<p class="modal__price">' + (product.price > 0 ? cartModule.fmt(product.price) + ' MXN' : 'Precio no disponible') + '</p>' +
+                    '<div class="modal__specs">' +
+                        '<span class="modal__spec modal__spec--abv">' + product.alcohol_percent + '% ALC</span>' +
+                        '<span class="modal__spec modal__spec--vol">' + product.volume_ml + 'ml</span>' +
+                        '<span class="modal__spec modal__spec--sweet">' + product.sweetness + '</span>' +
+                    '</div>' +
+                    '<p class="modal__desc">' + (product.description || '') + '</p>' +
+                    stockHtml +
+                    '<div class="modal__qty-row">' +
+                        '<span class="modal__qty-label">Cantidad:</span>' +
+                        '<div class="modal__qty">' +
+                            '<button onclick="window._qhModalQty(-1)">-</button>' +
+                            '<span id="modalQtyVal">1</span>' +
+                            '<button onclick="window._qhModalQty(1)">+</button>' +
+                        '</div>' +
+                    '</div>' +
+                    addBtnHtml +
+                '</div>';
+            document.getElementById('modalContent').innerHTML = html;
+            document.getElementById('modalOverlay').classList.add('open');
+
+            var qty = 1;
+            window._qhModalQty = function(d) {
+                qty = Math.max(1, Math.min(max, qty + d));
+                document.getElementById('modalQtyVal').textContent = qty;
+            };
+            window._qhModalNav = function(d) {
+                currentImg = (currentImg + d + images.length) % images.length;
+                var gImg = document.getElementById('modalGallery').querySelector('img');
+                if (gImg) { gImg.style.opacity = '0'; setTimeout(function() { gImg.src = images[currentImg]; gImg.style.opacity = '1'; }, 150); }
+                var dots = document.querySelectorAll('.modal__gallery-dots span');
+                dots.forEach(function(dd, i) { dd.classList.toggle('active', i === currentImg); });
+            };
+            window._qhModalGoTo = function(i) { currentImg = i; var gImg = document.getElementById('modalGallery').querySelector('img'); if (gImg) { gImg.style.opacity = '0'; setTimeout(function() { gImg.src = images[currentImg]; gImg.style.opacity = '1'; }, 150); } var dots = document.querySelectorAll('.modal__gallery-dots span'); dots.forEach(function(dd, ii) { dd.classList.toggle('active', ii === currentImg); }); };
+
+            var addBtn = document.getElementById('modalAddBtn');
+            if (addBtn) addBtn.addEventListener('click', function() {
+                addToCart(product, qty);
+                closeModal();
+            });
+            document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+            document.getElementById('modalOverlay').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('open');
+            document.getElementById('modalContent').innerHTML = '';
+        }
+
+        function renderProducts(products, productImages) {
+            var grid = document.getElementById('storeGrid');
+            if (!products || !products.length) { grid.innerHTML = '<div class="store__error">No hay productos disponibles.</div>'; return; }
+
+            var imageMap = {};
+            products.forEach(function(p) { imageMap[p.id] = []; });
+            (productImages || []).forEach(function(pi) { if (imageMap[pi.product_id] !== undefined) imageMap[pi.product_id].push(pi.image_url); });
+
+            grid.innerHTML = products.map(function(p) {
+                var slug = slugify(p.name);
+                var mainImg = p.image_url || '';
+                var additional = imageMap[p.id] || [];
+                var allImages = mainImg ? [mainImg].concat(additional) : additional;
+                var hasMultiple = allImages.length > 1;
+
+                var imgHtml = mainImg
+                    ? '<img src="' + mainImg + '" alt="' + p.name + '" loading="lazy" class="store__img-main">'
+                    : '<div class="store__img-placeholder store__img-placeholder--' + slug + ' store__img-placeholder-default"><i class="bi bi-cup-straw"></i></div>';
+
+                var priceHtml = p.price > 0 ? '<span class="store__price">' + cartModule.fmt(p.price) + '</span>' : '';
+                var counterHtml = hasMultiple ? '<span class="store__img-counter">1/' + allImages.length + '</span>' : '';
+                var dotsHtml = hasMultiple ? '<div class="store__img-dots">' + allImages.map(function(_, i) { return '<span class="' + (i === 0 ? 'active' : '') + '"></span>'; }).join('') + '</div>' : '';
+
+                var stock = (p.stock !== null && p.stock !== undefined) ? Number(p.stock) : null;
+                var stockBadge = '';
+                var soldout = stock === 0;
+                if (soldout) {
+                    stockBadge = '<span class="store__stock-badge store__stock-badge--soldout">Agotado</span>';
+                }
+                var addBtnHtml = soldout
+                    ? '<button class="store__add-btn store__card-add" disabled>Agotado</button>'
+                    : '<button class="store__add-btn store__card-add">Agregar al carrito</button>';
+
+                return '<div class="store__card" data-id="' + p.id + '" data-images="' + encodeURIComponent(JSON.stringify(allImages)) + '">' +
+                    '<div class="store__img">' + imgHtml + priceHtml + counterHtml + dotsHtml + stockBadge + '<div class="store__img-overlay"><span>Ver detalles</span></div></div>' +
+                    '<div class="store__body">' +
+                        '<p class="store__name">' + p.name + '</p>' +
+                        '<p class="store__desc">' + (p.description || '') + '</p>' +
+                        '<div class="store__specs">' +
+                            '<span class="store__spec store__spec--abv">' + p.alcohol_percent + '% alc</span>' +
+                            '<span class="store__spec store__spec--vol">' + p.volume_ml + 'ml</span>' +
+                            '<span class="store__spec store__spec--sweet">' + p.sweetness + '</span>' +
+                        '</div>' +
+                        addBtnHtml +
+                    '</div>' +
+                '</div>';
+            }).join('');
+
+            document.querySelectorAll('.store__card').forEach(function(card) {
+                card.addEventListener('click', function(e) {
+                    if (e.target.closest('.store__add-btn')) return;
+                    var pid = card.dataset.id;
+                    var prod = productLookup[pid];
+                    if (prod) openProductModal(prod);
+                });
+
+                var imagesStr = card.dataset.images;
+                if (!imagesStr) return;
+                var urls = JSON.parse(decodeURIComponent(imagesStr));
+                if (urls.length <= 1) return;
+
+                var img = card.querySelector('.store__img-main');
+                var counter = card.querySelector('.store__img-counter');
+                var dots = card.querySelectorAll('.store__img-dots span');
+                var currentIdx = 0;
+                var interval;
+
+                card.addEventListener('mouseenter', function() {
+                    interval = setInterval(function() {
+                        currentIdx = (currentIdx + 1) % urls.length;
+                        if (img) img.src = urls[currentIdx];
+                        if (counter) counter.textContent = (currentIdx + 1) + '/' + urls.length;
+                        dots.forEach(function(d, i) { d.classList.toggle('active', i === currentIdx); });
+                    }, 1500);
+                });
+                card.addEventListener('mouseleave', function() {
+                    clearInterval(interval);
+                    currentIdx = 0;
+                    if (img) img.src = urls[0];
+                    if (counter) counter.textContent = '1/' + urls.length;
+                    dots.forEach(function(d, i) { d.classList.toggle('active', i === 0); });
+                });
+            });
+
+            document.querySelectorAll('.store__card-add').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    var pid = btn.closest('.store__card').dataset.id;
+                    var prod = productLookup[pid];
+                    if (prod) addToCart(prod, 1);
+                });
+            });
+        }
+
+        function addToCart(product, qty) {
+            var result = cartModule.add(product, qty || 1);
+            if (result.notice) showToast(result.notice, 'err');
+            else showToast('Agregado al carrito');
+            openCart();
+        }
+
+        async function loadStore() {
+            var [prodRes, imgRes] = await Promise.all([
+                sb.from('products').select('*').order('created_at', { ascending: true }),
+                sb.from('product_images').select('*').order('sort_order')
+            ]);
+            if (prodRes.error) { document.getElementById('storeGrid').innerHTML = '<div class="store__error">Error al cargar: ' + prodRes.error.message + '</div>'; return; }
+            var products = (prodRes.data || []).filter(function(p) { return p.active !== false; });
+            var productImages = imgRes.data || [];
+            productLookup = {};
+            products.forEach(function(p) {
+                var images = productImages.filter(function(pi) { return pi.product_id === p.id; }).map(function(pi) { return pi.image_url; });
+                productLookup[p.id] = { id: p.id, name: p.name, description: p.description, price: p.price, alcohol_percent: p.alcohol_percent, volume_ml: p.volume_ml, sweetness: p.sweetness, image_url: p.image_url, images: images, stock: p.stock };
+            });
+            renderProducts(products, productImages);
+        }
+
+        cartModule.init();
+        window.addEventListener('qh:cart:change', renderCartItems);
+        renderCartItems();
+        loadStore();
+    });
+    </script>
+</body>
+</html>

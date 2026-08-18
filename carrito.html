@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carrito | Queens Hidro</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Revisa tu carrito y finaliza la compra de hidromiel artesanal Queens Hidro. Envíos a todo México.">
+    <link rel="canonical" href="https://queenshidro.com/carrito.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Queens Hidro">
+    <meta property="og:title" content="Carrito | Queens Hidro">
+    <meta property="og:description" content="Revisa tu carrito y finaliza la compra de hidromiel artesanal Queens Hidro.">
+    <meta property="og:url" content="https://queenshidro.com/carrito.html">
+    <meta property="og:image" content="https://queenshidro.com/assets/img/og-default.jpg">
+    <meta property="og:locale" content="es_MX">
+    <meta name="theme-color" content="#0a0a0c">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192.png">
+    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root{--bg:#0a0a0c;--bg-alt:#0e0e12;--card:#141419;--card-hover:#1b1b22;--gold:#d4a845;--gold-hi:#e8c166;--gold-lo:#9c7a2e;--white:#fff;--muted:#9c9aa2;--green:#2ecc71;--red:#ff4d6d;--danger:#ff4d6d;--font-h:'BurfordBase','Fraunces','Georgia',serif;--font-b:'Inter','Segoe UI',system-ui,sans-serif;--font-m:'IBM Plex Mono',monospace;--nav-h:72px}
+        .page-hdr .container,.cart-page .container{max-width:1280px}
+        .page-hdr{text-align:center}
+        .page-hdr__title{margin-left:auto;margin-right:auto}
+        .page-hdr__count{margin-left:auto;margin-right:auto}
+        .cart-page{padding:60px 0 110px}
+        .cart-empty{text-align:center;padding:100px 20px}
+        .cart-empty__icon{font-size:3.6rem;margin-bottom:20px}
+        .cart-empty__text{font-size:1.08rem;color:var(--muted);margin-bottom:24px}
+        .cart-empty__link{display:inline-block;padding:14px 36px;border:1.5px solid var(--gold);border-radius:50px;color:var(--gold);font-weight:700;font-size:1rem;text-transform:uppercase;letter-spacing:0.06em;transition:all 0.3s}
+        .cart-empty__link:hover{background:var(--gold);color:#0a0a0a}
+        .cart-layout{display:grid;grid-template-columns:400px 1fr;gap:44px;align-items:start}
+        .cart-layout .cart-items{order:2}
+        .cart-layout .cart-summary{order:1}
+        @media(max-width:800px){.cart-layout{grid-template-columns:1fr}.cart-layout .cart-items,.cart-layout .cart-summary{order:0}}
+        .cart-items{border-radius:16px;overflow:hidden}
+        .cart-section-hdr{font-family:var(--font-m);font-size:0.8rem;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--teal-hi);display:flex;align-items:center;gap:12px;margin-bottom:18px}
+        .cart-section-hdr::before{content:"";width:36px;height:1px;background:var(--teal)}
+        .cart-item{display:flex;gap:24px;padding:28px;background:var(--card);border:1px solid rgba(255,255,255,0.05);border-radius:16px;margin-bottom:18px;align-items:center}
+        .cart-item__img{width:116px;height:116px;border-radius:14px;overflow:hidden;flex-shrink:0;background:rgba(255,255,255,0.03)}
+        .cart-item__img img{width:100%;height:100%;object-fit:cover}
+        .cart-item__info{flex:1;min-width:0}
+        .cart-item__name{font-family:var(--font-h);font-size:1.45rem;color:var(--white);margin-bottom:6px}
+        .cart-item__specs{font-size:0.95rem;color:var(--muted);margin-bottom:18px;line-height:1.7}
+        .cart-item__qty{display:flex;align-items:center;gap:0}
+        .cart-item__qty button{width:42px;height:42px;border:1px solid rgba(255,255,255,0.12);background:transparent;color:var(--muted);font-size:1.25rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;font-family:var(--font-b)}
+        .cart-item__qty button:first-child{border-radius:8px 0 0 8px}
+        .cart-item__qty button:last-child{border-radius:0 8px 8px 0}
+        .cart-item__qty button:hover{border-color:var(--gold);color:var(--gold-hi)}
+        .cart-item__qty span{width:52px;height:42px;display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:600;border-top:1px solid rgba(255,255,255,0.12);border-bottom:1px solid rgba(255,255,255,0.12);color:var(--white);font-family:var(--font-b)}
+        .cart-item__price{text-align:right}
+        .cart-item__subtotal{font-size:1.45rem;font-weight:700;color:var(--gold-hi);font-family:var(--font-b);line-height:1.2}
+        .cart-item__unit{font-size:0.92rem;color:var(--muted);margin-top:8px}
+        .cart-item__remove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.92rem;padding:6px;transition:color 0.2s;font-family:var(--font-b);margin-top:16px}
+        .cart-item__remove:hover{color:var(--red)}
+        .cart-summary{background:var(--card);border-radius:16px;border:1px solid rgba(255,255,255,0.05);border-top:2px solid var(--gold);padding:40px;position:sticky;top:calc(var(--nav-h) + 24px)}
+        .cart-summary__title{font-family:var(--font-h);font-size:1.55rem;color:var(--white);margin-bottom:30px;font-weight:600}
+        .cart-summary__row{display:flex;justify-content:space-between;margin-bottom:18px;font-size:1.1rem}
+        .cart-summary__row span:first-child{color:var(--muted)}
+        .cart-summary__row span:last-child{font-weight:600;color:var(--white)}
+        .cart-summary__divider{border-top:1px solid rgba(255,255,255,0.06);margin:24px 0}
+        .cart-summary__total{display:flex;justify-content:space-between;align-items:baseline}
+        .cart-summary__total-label{font-size:1.1rem;font-weight:500;color:var(--muted)}
+        .cart-summary__total-amount{font-family:var(--font-h);font-size:2.4rem;color:var(--gold-hi);font-weight:700;letter-spacing:-0.01em}
+        .checkout-form{margin-top:32px}
+        .checkout-form__hint{display:none;align-items:center;gap:8px;font-size:1rem;color:var(--muted);margin-bottom:18px}
+        .checkout-form__hint a{color:var(--gold-hi);font-weight:600;cursor:pointer;text-decoration:underline}
+        .checkout-form__hint a:hover{color:var(--white)}
+        .form-group{margin-bottom:22px}
+        .form-label{display:block;font-size:0.9rem;letter-spacing:0.08em;text-transform:uppercase;color:#b0b0b0;margin-bottom:8px;font-weight:600}
+        .form-input,.form-textarea{width:100%;padding:15px 16px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.16);border-radius:10px;color:var(--white);font-size:1.02rem;font-family:var(--font-b);outline:none;transition:border-color 0.3s}
+        .form-input:focus,.form-textarea:focus{border-color:var(--gold)}
+        .form-textarea{resize:vertical;min-height:70px}
+        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+        @media(max-width:400px){.form-row{grid-template-columns:1fr}}
+        .btn-place-order{width:100%;padding:17px 0;background:var(--gold);color:#0a0a0a;border:none;border-radius:50px;font-size:1.05rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;font-family:var(--font-b);transition:all 0.3s;margin-top:16px}
+        .btn-place-order:hover{background:var(--gold-hi);transform:translateY(-1px)}
+        .btn-place-order:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+        .order-confirm{text-align:center;padding:60px 20px}
+        .order-confirm__icon{font-size:3.5rem;margin-bottom:16px}
+        .order-confirm__title{font-family:var(--font-h);font-size:1.7rem;color:var(--white);margin-bottom:8px;font-weight:600}
+        .order-confirm__text{font-size:1.02rem;color:var(--muted);margin-bottom:20px}
+        @media(max-width:600px){
+            .cart-item{padding:22px;gap:16px}
+            .cart-item__img{width:96px;height:96px}
+            .cart-item__name{font-size:1.25rem}
+            .cart-item__qty button{width:38px;height:38px}
+            .cart-item__qty span{width:46px;height:38px}
+            .cart-item__subtotal{font-size:1.25rem}
+            .cart-summary{padding:28px}
+            .cart-summary__title{font-size:1.35rem}
+            .cart-summary__total-amount{font-size:2rem}
+        }
+        /* ============ Nuevo: checkout robusto ============ */
+        .cart-section-hdr--row{display:flex;align-items:center;justify-content:space-between}
+        .btn-clear{background:none;border:none;color:var(--muted);font-family:var(--font-m);font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:color .2s;margin-left:auto}
+        .btn-clear:hover{color:var(--red)}
+        .cart-item__stockwarn{font-family:var(--font-m);font-size:0.68rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold-hi);margin-top:8px}
+        .cart-delivery{display:flex;align-items:center;gap:8px;font-size:0.92rem;color:var(--muted);margin-bottom:18px}
+        .cart-delivery i{color:var(--gold-hi)}
+        .cart-trust{margin-top:26px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.06)}
+        .cart-trust__title{font-family:var(--font-m);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+        .cart-trust__methods{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+        .pay-badge{font-family:var(--font-m);font-size:0.68rem;font-weight:600;letter-spacing:0.06em;padding:6px 10px;border:1px solid rgba(255,255,255,0.14);border-radius:6px;color:#cfcfcf;background:rgba(255,255,255,0.04)}
+        .pay-badge--mp{color:var(--gold-hi);border-color:rgba(212,168,69,0.45)}
+        .cart-trust__note{font-size:0.82rem;color:var(--muted);display:flex;align-items:center;gap:7px;line-height:1.5}
+        .cart-trust__note i{color:var(--green)}
+        .age-check{display:flex;align-items:flex-start;gap:10px;margin:6px 0 20px;font-size:0.92rem;color:#b8b6bd;cursor:pointer;line-height:1.5}
+        .age-check input{width:17px;height:17px;accent-color:var(--gold);margin-top:2px;flex-shrink:0}
+        .age-check a{color:var(--gold-hi)}
+        .form-group.invalid .form-input{border-color:var(--red)}
+        .form-group.invalid .form-label{color:var(--red)}
+        .form-error{display:none;font-size:0.8rem;color:var(--red);margin-top:6px}
+        .form-group.invalid .form-error{display:block}
+        .toast-undo{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:10000;background:#141419;border:1px solid rgba(212,168,69,0.4);border-radius:10px;padding:13px 18px;display:flex;align-items:center;gap:16px;box-shadow:0 12px 40px rgba(0,0,0,.6);font-size:0.9rem;color:var(--white)}
+        .toast-undo button{background:var(--gold);border:none;color:#0a0a0a;font-weight:700;border-radius:6px;padding:7px 14px;cursor:pointer;font-family:var(--font-b);text-transform:uppercase;font-size:0.75rem;letter-spacing:0.06em}
+        .toast-undo button:hover{background:var(--gold-hi)}
+        .order-confirm__sub{font-size:0.95rem;color:var(--muted);margin-bottom:14px;line-height:1.6}
+        .order-confirm__steps{text-align:left;display:inline-block;margin:0 auto 22px;color:#b8b6bd;font-size:0.92rem;line-height:2.1}
+        .order-confirm__steps i{color:var(--gold-hi);margin-right:8px}
+        .checkout-note{font-size:0.82rem;color:var(--muted);text-align:center;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:6px;line-height:1.5}
+        .checkout-note i{color:var(--gold-hi)}
+        .cart-ship-badge{font-family:var(--font-m);font-size:0.62rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal-hi);border:1px solid rgba(2,180,183,0.4);background:rgba(2,180,183,0.08);padding:3px 7px;border-radius:5px;margin-left:6px;vertical-align:middle}
+        .cart-sub-cta{display:flex;align-items:flex-start;gap:8px;font-size:0.8rem;color:var(--muted);line-height:1.6;margin-bottom:16px;padding:10px 12px;border:1px solid rgba(212,168,69,0.25);border-radius:8px;background:rgba(212,168,69,0.05)}
+        .cart-sub-cta i{color:var(--gold-hi);margin-top:2px}
+        .cart-sub-cta strong{color:var(--teal-hi)}
+        .cart-sub-cta a{color:var(--gold-hi);font-weight:600;text-decoration:underline}
+        /* ============ Método de pago ============ */
+        .pay-method{display:grid;gap:10px;margin-bottom:18px}
+        .pay-method__opt{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1px solid rgba(255,255,255,0.12);border-radius:10px;cursor:pointer;transition:all .2s}
+        .pay-method__opt:hover{border-color:var(--gold)}
+        .pay-method__opt.selected{border-color:var(--gold);background:rgba(212,168,69,0.05)}
+        .pay-method__opt input{accent-color:var(--gold);margin-top:3px}
+        .pay-method__opt-title{font-weight:600;color:var(--white)}
+        .pay-method__opt-sub{font-size:0.82rem;color:var(--muted)}
+        .transfer-info{display:none;margin-bottom:18px;padding:16px;border:1px dashed rgba(2,180,183,0.4);border-radius:10px;background:rgba(2,180,183,0.05)}
+        .transfer-info.open{display:block}
+        .transfer-info__row{display:flex;justify-content:space-between;gap:12px;font-size:0.9rem;margin-bottom:8px}
+        .transfer-info__row span:first-child{color:var(--muted);flex-shrink:0}
+        .transfer-info__row span:last-child{color:var(--white);font-weight:600;text-align:right;word-break:break-all}
+        .transfer-info__clabe{font-family:var(--font-m);font-size:1.1rem;letter-spacing:0.04em;color:var(--teal-hi)}
+        .transfer-info__note{font-size:0.8rem;color:var(--muted);margin-top:10px;line-height:1.5}
+        .order-confirm__bank{text-align:left;display:inline-block;margin:0 auto 22px;background:rgba(2,180,183,0.06);border:1px dashed rgba(2,180,183,0.4);border-radius:10px;padding:18px 22px;color:#b8b6bd;font-size:0.9rem;line-height:2}
+        .order-confirm__bank strong{color:var(--teal-hi);font-family:var(--font-m);font-weight:600}
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.gstatic.com/s/fraunces/v38/6NU78FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0KxC9TeA.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://fonts.gstatic.com/s/fraunces/v38/6NU58FyLNQOQZAnv9ZwNjucMHVn85Ni7emAe9lKqZTnbB-gzTK0K1ChjeveQ.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="assets/js/site.js" defer></script>
+    <script src="assets/js/cart.js" defer></script>
+</head>
+<body data-nav="back" data-foot="false">
+    
+
+    <div class="page-hdr">
+        <div class="container">
+            <h1 class="page-hdr__title">Tu Carrito</h1>
+            <p class="page-hdr__count" id="cartItemCount"></p>
+        </div>
+    </div>
+
+    <section class="cart-page"><div class="container" id="cartContent"></div></section>
+
+    <script src="assets/js/pages/carrito.js"></script>
+</body>
+</html>

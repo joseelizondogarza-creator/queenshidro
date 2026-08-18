@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Distribuye Queens Hidro. Envíos a todo México y precio por volumen. ¿Tienes bar, restaurante o tienda? Trabajemos juntos.">
+    <title>Distribuye Queens | Queens Hidro</title>
+    <link rel="canonical" href="https://queenshidro.com/distribuye-queens.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Queens Hidro">
+    <meta property="og:title" content="Distribuye Queens | Queens Hidro — Precio por volumen">
+    <meta property="og:description" content="Distribuye Queens Hidro en tu bar, restaurante, tienda o festival. Envíos a todo México y precio por volumen.">
+    <meta property="og:url" content="https://queenshidro.com/distribuye-queens.html">
+    <meta property="og:image" content="https://queenshidro.com/assets/img/og-default.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="es_MX">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Distribuye Queens | Queens Hidro">
+    <meta name="twitter:description" content="Precio por volumen y envíos a todo México. Trabajemos juntos.">
+    <meta name="twitter:image" content="https://queenshidro.com/assets/img/og-default.jpg">
+    <meta name="theme-color" content="#0a0a0c">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192.png">
+    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": "https://queenshidro.com/distribuye-queens.html#service",
+        "name": "Distribución Queens Hidro",
+        "serviceType": "Distribución de hidromiel artesanal",
+        "url": "https://queenshidro.com/distribuye-queens.html",
+        "description": "Distribución de hidromiel artesanal para bares, restaurantes, tiendas y festivales. Envíos a todo México con precio por volumen.",
+        "provider": { "@id": "https://queenshidro.com/#organization" },
+        "areaServed": "México",
+        "inLanguage": "es-MX"
+    }
+    </script>
+    <style>
+        :root{--gold:#d4a845;--gold-hi:#e8c166;--gold-lo:#9c7a2e}
+        .dist{padding:90px 0 80px}
+        .dist__grid{display:grid;grid-template-columns:1fr;gap:40px}
+        .dist__kicker{margin-bottom:22px}
+        .dist__title{margin-bottom:20px}
+        .dist__sub{color:var(--muted);font-size:1rem;line-height:1.7;margin-bottom:8px}
+        .dist__pitch{color:var(--text);font-size:1.08rem;line-height:1.8;opacity:.85}
+        .dist__toggle{display:inline-flex;border:1px solid var(--line-strong);border-radius:3px;overflow:hidden;margin:26px 0 10px}
+        .dist__toggle-btn{background:transparent;border:none;border-right:1px solid var(--line);color:var(--muted);font-family:var(--font-m);font-size:0.85rem;letter-spacing:0.16em;text-transform:uppercase;padding:13px 28px;cursor:pointer;transition:all .25s}
+        .dist__toggle-btn:last-child{border-right:none}
+        .dist__toggle-btn:hover{color:var(--text)}
+        .dist__toggle-btn.on{background:var(--rasp);color:#fff}
+        .dist__hint{font-size:0.9rem;color:var(--teal-hi);font-family:var(--font-m);min-height:1.5em;margin-bottom:28px}
+        .dist__form{display:flex;flex-direction:column;gap:12px}
+        .dist__row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+        .dist__input{background:var(--card);border:1px solid var(--line-strong);border-radius:3px;padding:14px 16px;color:var(--text);font-family:var(--font-b);font-size:1rem;outline:none;transition:border-color .25s}
+        .dist__input:focus{border-color:var(--rasp)}
+        .dist__input::placeholder{color:rgba(255,255,255,0.35)}
+        .dist__textarea{resize:vertical;min-height:96px}
+        .dist__success{color:var(--ok);font-size:1.02rem;text-align:center;font-family:var(--font-m);margin-top:4px}
+        .dist__links{display:flex;gap:22px;margin-top:24px;flex-wrap:wrap}
+        .dist__links a{font-family:var(--font-m);font-size:0.86rem;letter-spacing:0.06em;color:var(--muted);display:inline-flex;align-items:center;gap:8px;transition:color .25s}
+        .dist__links a:hover{color:var(--teal-hi)}
+        .dist__links i{font-size:1.08rem}
+        .dist-feats{padding:100px 0}
+        .dist-feats__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px}
+        .dist-feat{background:var(--card);border:1px solid var(--line);padding:40px 30px;position:relative;transition:border-color .3s,transform .3s}
+        .dist-feat:hover{border-color:rgba(212,168,69,0.35);transform:translateY(-3px)}
+        .dist-feat__num{font-family:var(--font-m);font-size:0.8rem;letter-spacing:0.18em;color:var(--teal-hi);margin-bottom:16px;display:block}
+        .dist-feat__icon{font-size:1.6rem;color:var(--rasp-hi);margin-bottom:16px}
+        .dist-feat__title{font-family:var(--font-h);font-size:1.3rem;color:var(--text);margin-bottom:8px}
+        .dist-feat__desc{font-size:0.98rem;color:var(--muted);line-height:1.7}
+        @media(max-width:960px){.dist{padding-top:60px}.dist-feats__grid{grid-template-columns:1fr 1fr}}
+        @media(max-width:640px){.dist-feats__grid{grid-template-columns:1fr}.dist__row{grid-template-columns:1fr}.dist{padding-top:40px}.dist-feats{padding:70px 0}}
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.gstatic.com/s/fraunces/v38/6NU78FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0KxC9TeA.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://fonts.gstatic.com/s/fraunces/v38/6NU58FyLNQOQZAnv9ZwNjucMHVn85Ni7emAe9lKqZTnbB-gzTK0K1ChjeveQ.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="assets/js/site.js" defer></script>
+</head>
+<body data-nav="full" data-active="distribuye-queens" data-hero="true">
+
+    <section class="cover-hero">
+        <img class="cover-hero__bg" id="coverImg" src="HERO/HERO1.webp" alt="Distribuye Queens Hidro" fetchpriority="high">
+        <header class="page-hdr">
+            <div class="container">
+                <p class="kicker dist__kicker"><span class="sec-num">01</span> <span id="distTag">Distribuye Queens</span></p>
+                <h1 class="display display--lg dist__title" id="distTitle">Crece con Queens Hidro</h1>
+                <p class="dist__sub" id="distSub">Envíos a todo México y precio por volumen. ¿Tienes bar, restaurante o tienda? Trabajemos juntos.</p>
+            </div>
+        </header>
+    </section>
+
+    <section class="dist"><div class="container">
+        <div class="dist__grid">
+            <div class="dist__content">
+                <p class="dist__pitch" id="distText">Tú pones el espacio, nosotros ponemos el hidromiel y la comunidad. Precios especiales por volumen y envíos a todo México.</p>
+
+                <div class="dist__toggle" role="group" aria-label="Formato de distribución">
+                    <button type="button" class="dist__toggle-btn on" data-type="botella" id="distBtnBottle">Botella</button>
+                    <button type="button" class="dist__toggle-btn" data-type="barril" id="distBtnBarrel">Barril</button>
+                </div>
+                <p class="dist__hint" id="distHint">Botellas — desde 12 unidades, precio por volumen y envío a todo México.</p>
+
+                <form class="dist__form" id="distForm" novalidate>
+                    <input class="dist__input" type="text" placeholder="Tu nombre" id="ldName" required>
+                    <div class="dist__row">
+                        <input class="dist__input" type="email" placeholder="Tu correo" id="ldEmail">
+                        <input class="dist__input" type="tel" placeholder="Tu teléfono" id="ldPhone">
+                    </div>
+                    <input class="dist__input" type="text" placeholder="Nombre de tu negocio" id="ldCompany">
+                    <textarea class="dist__input dist__textarea" placeholder="Cuéntanos qué necesitas..." id="ldMessage"></textarea>
+                    <button class="btn btn--primary btn--full" type="submit" id="ldSubmit">Quiero distribuir</button>
+                    <p class="dist__success" id="ldSuccess" hidden>Mensaje enviado. Nos pondremos en contacto pronto.</p>
+                </form>
+
+                <div class="dist__links">
+                    <a href="mailto:hola@queenshidro.com"><i class="bi bi-envelope"></i> hola@queenshidro.com</a>
+                    <a href="https://instagram.com/queenshidro" target="_blank" rel="noopener"><i class="bi bi-instagram"></i> @queenshidro</a>
+                </div>
+            </div>
+        </div>
+    </div></section>
+
+    <section class="dist-feats section--alt"><div class="container">
+        <div class="section__head">
+            <div>
+                <p class="kicker"><span class="sec-num">02</span> Para tu negocio</p>
+                <h2 class="display display--lg" id="distContactTitle">Envíos, inventario e impacto real</h2>
+            </div>
+            <p class="section__head-sub" id="distContactSub">Precios por volumen, logística a toda la República y una comunidad que apoya a los apicultores de Nuevo León.</p>
+        </div>
+        <div class="dist-feats__grid">
+            <div class="dist-feat"><span class="dist-feat__num">01</span><div class="dist-feat__icon"><i class="bi bi-truck"></i></div><p class="dist-feat__title" id="distFeat1Title">Envíos a Todo México</p><p class="dist-feat__desc" id="distFeat1Desc">Llegamos a toda la República, hasta tu puerta.</p></div>
+            <div class="dist-feat"><span class="dist-feat__num">02</span><div class="dist-feat__icon"><i class="bi bi-box-seam"></i></div><p class="dist-feat__title" id="distFeat2Title">Inventario Flexible</p><p class="dist-feat__desc" id="distFeat2Desc">Tú decides el volumen y la frecuencia.</p></div>
+            <div class="dist-feat"><span class="dist-feat__num">03</span><div class="dist-feat__icon"><i class="bi bi-hand-index-thumb"></i></div><p class="dist-feat__title" id="distFeat3Title">Impacto Real</p><p class="dist-feat__desc" id="distFeat3Desc">Cada botella que mueves apoya a los apicultores de Nuevo León.</p></div>
+        </div>
+    </div></section>
+
+    <script src="assets/js/pages/distribuye.js"></script>
+</body>
+</html>
