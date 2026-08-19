@@ -8,6 +8,10 @@ document.addEventListener('DOMContentLoaded', function () {
     var timerBar = document.getElementById('communitySliderTimer');
     var state = { slides: [], index: 0, interval: null, paused: false };
 
+    function tr(key, fallback, params) {
+        return qh && qh.i18n && qh.i18n.t ? qh.i18n.t(key, params) : (fallback || key);
+    }
+
     function renderNosotrosTitle(value) {
         var title = document.getElementById('nosTitle');
         if (!title) return;
@@ -35,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var m = {};
             r.data.forEach(function (c) { m[c.key] = c.value; });
             if (m.nosotros_title) renderNosotrosTitle(m.nosotros_title);
-            if (m.nosotros_sub) qh.setEditableText(document.getElementById('nosSub'), m.nosotros_sub);
+            if (m.nosotros_sub) qh.setEditableText(document.getElementById('nosSub'), m.nosotros_sub, 'nosotros_sub');
             if (m.nosotros_text) qh.renderEditableRichText(document.getElementById('nosText'), m.nosotros_text);
         });
     }
@@ -123,11 +127,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 media.loop = true;
                 media.playsInline = true;
                 media.preload = 'metadata';
-                media.setAttribute('aria-label', alt || 'Video de la comunidad Queens');
+                media.setAttribute('aria-label', alt || tr('about.videoAlt', 'Video de la comunidad Queens'));
                 media.setAttribute('muted', '');
             } else {
                 media = document.createElement('img');
-                media.alt = alt || 'Comunidad Queens brindando';
+                media.alt = alt || tr('about.communityAlt', 'Comunidad Queens brindando');
                 media.loading = index === 0 ? 'eager' : 'lazy';
             }
             media.src = item.media_url;
@@ -142,9 +146,9 @@ document.addEventListener('DOMContentLoaded', function () {
             caption.className = 'community-slider__caption';
             var eyebrow = document.createElement('span');
             eyebrow.className = 'community-slider__eyebrow';
-            eyebrow.textContent = item.media_type === 'video' ? 'La tribu en movimiento' : 'La tribu Queens';
+            eyebrow.textContent = item.media_type === 'video' ? tr('about.movingTribe', 'La tribu en movimiento') : tr('about.tribe', 'La tribu Queens');
             var title = document.createElement('strong');
-            title.textContent = 'Un brindis que se antoja';
+            title.textContent = tr('about.toastTitle', 'Un brindis que se antoja');
             caption.appendChild(eyebrow);
             caption.appendChild(title);
             slide.appendChild(caption);
@@ -153,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var dot = document.createElement('button');
             dot.type = 'button';
             dot.className = 'community-slider__dot' + (index === 0 ? ' is-active' : '');
-            dot.setAttribute('aria-label', 'Ir al contenido ' + (index + 1));
+            dot.setAttribute('aria-label', tr('common.content', 'Ir al contenido {value}', { value: index + 1 }));
             dot.setAttribute('aria-current', index === 0 ? 'true' : 'false');
             dot.addEventListener('click', function () { setActive(index, true); });
             dots.appendChild(dot);
@@ -192,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function () {
             state.paused = !state.paused;
             pause.setAttribute('aria-pressed', state.paused ? 'true' : 'false');
             pause.querySelector('i').className = state.paused ? 'bi bi-play-fill' : 'bi bi-pause-fill';
-            pause.querySelector('span').textContent = state.paused ? 'Reanudar' : 'Pausar';
+            pause.querySelector('span').textContent = state.paused ? tr('about.resume', 'Reanudar') : tr('about.pause', 'Pausar');
             if (state.paused) stopAutoplay();
             else startAutoplay();
         });

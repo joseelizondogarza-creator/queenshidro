@@ -32,8 +32,8 @@
     --muted:#9c9aa2;
     --ok:#2ecc71;
     --err:#ff4d6d;
-    --font-h:'BurfordBase','Fraunces','Georgia',serif;
-    --font-b:'Inter','Segoe UI',system-ui,sans-serif;
+    --font-h:'BurfordBase','Noto Sans KR','Fraunces','Georgia',serif;
+    --font-b:'Inter','Noto Sans KR','Segoe UI',system-ui,sans-serif;
     --font-m:'IBM Plex Mono','Consolas',monospace;
     --nav-h:72px;
 }
@@ -161,6 +161,10 @@ img{display:block;max-width:100%}
 }
 .nav__cta:hover{background:var(--rasp-hi);color:#fff!important;transform:translateY(-1px)}
 .nav__right{display:flex;align-items:center;gap:16px}
+.qh-lang{display:inline-flex;align-items:center;gap:3px;padding:3px;border:1px solid var(--line-strong);border-radius:3px;background:rgba(10,10,12,.28);white-space:nowrap}
+.qh-lang__label{font-family:var(--font-m);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:0 5px}
+.qh-lang__btn{border:0;background:transparent;color:var(--muted);font-family:var(--font-m);font-size:.64rem;font-weight:600;letter-spacing:.08em;padding:5px 6px;cursor:pointer;transition:all .2s}
+.qh-lang__btn:hover,.qh-lang__btn[aria-pressed="true"]{background:var(--teal);color:#041214}
 .nav__cart{position:relative;background:none;border:none;cursor:pointer;color:var(--muted);padding:6px;transition:color .25s;display:flex;align-items:center}
 .nav__cart:hover{color:var(--teal-hi)}
 .nav__cart svg{width:22px;height:22px}
@@ -236,6 +240,8 @@ img{display:block;max-width:100%}
     .nav__links.open .nav__more-items{display:flex;flex-direction:column;gap:10px;margin-top:0;padding-left:16px;border-left:1px solid var(--line);width:100%}
     .nav__more-items a{display:block;padding:4px 0;font-family:var(--font-m);font-size:1.05rem;letter-spacing:0.14em!important;text-transform:uppercase!important}
     .nav__cta{margin-left:0;align-self:flex-start}
+    .qh-lang__label{display:none}
+    .qh-lang{margin-left:auto}
 }
 
 body[data-hero="true"] .nav{
@@ -1053,6 +1059,15 @@ body[data-hero="true"] .cover-hero{margin-top:0}
 .auth-card__submit:hover{background:var(--rasp-hi);transform:translateY(-2px)}
 .auth-card__submit:disabled{opacity:.6;cursor:not-allowed;transform:none}
 @media(max-width:600px){.auth-card{padding:34px 24px}}
+
+/* ---------- CTA Untappd ---------- */
+.untappd-cta{position:relative;overflow:hidden;padding:100px 0;text-align:center;background:var(--ink-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.untappd-cta__logo{display:flex;align-items:center;justify-content:center;margin-bottom:26px}
+.untappd-cta__logo svg{width:44px;height:44px;color:var(--teal);opacity:.9}
+.untappd-cta .kicker{justify-content:center;margin-bottom:20px}
+.untappd-cta h2{margin-bottom:17px}
+.untappd-cta__sub{max-width:520px;margin:0 auto 30px;color:var(--muted);font-size:1rem;line-height:1.75}
+@media(max-width:600px){.untappd-cta{padding:76px 0}}
 
 /* ---------- Utilidades ---------- */
 .mt-2{margin-top:16px}

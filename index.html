@@ -40,7 +40,8 @@
                 },
                 "image": "https://queenshidro.com/assets/img/og-default.jpg",
                 "sameAs": [
-                    "https://instagram.com/queenshidro"
+                    "https://instagram.com/queenshidro",
+                    "https://www.facebook.com/Queenshidro/"
                 ],
                 "areaServed": "México",
                 "foundingLocation": "Monterrey, Nuevo León, México"
@@ -76,6 +77,7 @@
     <link rel="preconnect" href="https://lqyphfiolymbjnsglonj.supabase.co" crossorigin>
     <link rel="preconnect" href="https://a.basemaps.cartocdn.com" crossorigin>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="assets/js/i18n.js" defer></script>
     <script src="assets/js/site.js" defer></script>
 </head>
 <body data-nav="full" data-active="index" data-hero="true">
@@ -230,10 +232,10 @@
              sb.from('site_content').select('*').eq('section','hero').then(function(r){
                  if(!r.data)return;
                  var m={};r.data.forEach(function(c){m[c.key]=c.value});
-                 if(m.hero_kicker)window.QH.setEditableText(document.getElementById('heroKicker'),m.hero_kicker);
+                  if(m.hero_kicker)window.QH.setEditableText(document.getElementById('heroKicker'),m.hero_kicker,'hero_kicker');
                  if(m.hero_title)window.QH.renderEditableRichText(document.getElementById('heroTitle'),m.hero_title);
-                 if(m.hero_sub)window.QH.setEditableText(document.getElementById('heroSub'),m.hero_sub);
-                 if(m.hero_cta_text)window.QH.setEditableText(document.getElementById('heroCta'),m.hero_cta_text);
+                  if(m.hero_sub)window.QH.setEditableText(document.getElementById('heroSub'),m.hero_sub,'hero_sub');
+                  if(m.hero_cta_text)window.QH.setEditableText(document.getElementById('heroCta'),m.hero_cta_text,'hero_cta_text');
                  if(m.hero_cta_link&&!/^\s*(?:javascript|data|vbscript):/i.test(m.hero_cta_link))document.getElementById('heroCta').href=window.QH.normalizeEditableText(m.hero_cta_link).trim();
              });
 
@@ -241,7 +243,7 @@
                  if(!r.data)return;
                  var m={};r.data.forEach(function(c){m[c.key]=c.value});
                  if(m.index_tribe_title)window.QH.renderEditableRichText(document.getElementById('tribeTitle'),m.index_tribe_title);
-                 if(m.index_tribe_sub)window.QH.setEditableText(document.getElementById('tribeSub'),m.index_tribe_sub);
+                  if(m.index_tribe_sub)window.QH.setEditableText(document.getElementById('tribeSub'),m.index_tribe_sub,'index_tribe_sub');
              });
 
             var tc=document.querySelectorAll('.tribe-strip__card');

@@ -63,49 +63,61 @@
         element.appendChild(fragment);
     }
 
-    function setEditableText(element,value){
-        if(element)element.textContent=normalizeEditableText(value).trim();
+    function setEditableText(element,value,key){
+        if(!element)return;
+        var text=normalizeEditableText(value).trim();
+        var i18n=window.QH&&window.QH.i18n;
+        if(i18n&&i18n.language&&i18n.language()!=='es'&&i18n.cmsText){
+            text=i18n.cmsText(key,text)||text;
+        }
+        element.textContent=text;
     }
 
-    window.QH={
-        sb:sb,
-        updateCartCount:updateCartCount,
-        normalizeEditableText:normalizeEditableText,
-        renderEditableRichText:renderEditableRichText,
-        setEditableText:setEditableText
-    };
+    var qh=window.QH||{};
+    qh.sb=sb;
+    qh.updateCartCount=updateCartCount;
+    qh.normalizeEditableText=normalizeEditableText;
+    qh.renderEditableRichText=renderEditableRichText;
+    qh.setEditableText=setEditableText;
+    window.QH=qh;
+
+    function tr(key,fallback,params){
+        return qh.i18n&&qh.i18n.t?qh.i18n.t(key,params):(fallback||key);
+    }
+
+    function languageSwitcher(){
+        return qh.i18n&&qh.i18n.switcher?qh.i18n.switcher():'';
+    }
 
     var NAV_LINKS=[
-        {label:'Tienda',href:'tienda.html'},
-        {label:'Membresía',href:'membresia.html'},
-        {label:'Distribuye Queens',href:'distribuye-queens.html'}
+        {key:'nav.shop',label:'Tienda',href:'tienda.html'},
+        {key:'nav.membership',label:'Membresía',href:'membresia.html'},
+        {key:'nav.distribute',label:'Distribuye Queens',href:'distribuye-queens.html'}
     ];
     var NAV_MORE=[
-        {label:'Eventos',href:'eventos.html'},
-        {label:'Nosotros',href:'nosotros.html'},
-        {label:'Servicios',href:'servicios.html'},
-        {label:'FAQs',href:'faqs.html'}
+        {key:'nav.events',label:'Eventos',href:'eventos.html'},
+        {key:'nav.about',label:'Nosotros',href:'nosotros.html'},
+        {key:'nav.services',label:'Servicios',href:'servicios.html'},
+        {key:'nav.faqs',label:'FAQs',href:'faqs.html'}
     ];
     var EXPLORE_LINKS=[
-        {label:'Tienda',href:'tienda.html'},
-        {label:'Membresía',href:'membresia.html'},
-        {label:'Distribuye Queens',href:'distribuye-queens.html'},
-        {label:'Eventos',href:'eventos.html'},
-        {label:'Nosotros',href:'nosotros.html'},
-        {label:'Servicios',href:'servicios.html'},
-        {label:'FAQs',href:'faqs.html'}
+        {key:'nav.shop',label:'Tienda',href:'tienda.html'},
+        {key:'nav.membership',label:'Membresía',href:'membresia.html'},
+        {key:'nav.distribute',label:'Distribuye Queens',href:'distribuye-queens.html'},
+        {key:'nav.events',label:'Eventos',href:'eventos.html'},
+        {key:'nav.about',label:'Nosotros',href:'nosotros.html'},
+        {key:'nav.services',label:'Servicios',href:'servicios.html'},
+        {key:'nav.faqs',label:'FAQs',href:'faqs.html'}
     ];
     var LEGAL_LINKS=[
-        {label:'Términos y Condiciones',href:'#'},
-        {label:'Políticas de Envío',href:'#'},
-        {label:'Aviso de Privacidad',href:'#'},
-        {label:'Devoluciones',href:'#'}
+        {key:'legal.terms',label:'Términos y Condiciones',href:'terminos.html'},
+        {key:'legal.shipping',label:'Políticas de Envío',href:'politicas-envio.html'},
+        {key:'legal.privacy',label:'Aviso de Privacidad',href:'aviso-privacidad.html'},
+        {key:'legal.returns',label:'Devoluciones',href:'devoluciones.html'}
     ];
     var SOCIALS=[
-        {label:'Instagram',path:'<rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>'},
-        {label:'TikTok',path:'<path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>'},
-        {label:'Spotify',path:'<circle cx="12" cy="12" r="10"/><path d="M8 11.5c3-1 7-1 10 0M9 14.5c2.5-.8 5.5-.8 8 0M10 17.5c2-.6 4-.6 6 0"/>'},
-        {label:'YouTube',path:'<polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/><path d="M21.54 7.1a2.52 2.52 0 0 0-1.78-1.78C18.2 4.89 12 4.89 12 4.89s-6.2 0-7.76.43A2.52 2.52 0 0 0 2.46 7.1C2 8.66 2 11.75 2 11.75s0 3.09.46 4.65a2.52 2.52 0 0 0 1.78 1.78c1.56.43 7.76.43 7.76.43s6.2 0 7.76-.43a2.52 2.52 0 0 0 1.78-1.78c.46-1.56.46-4.65.46-4.65s0-3.09-.46-4.65z"/>'}
+        {label:'Instagram',url:'https://instagram.com/queenshidro',path:'<rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>'},
+        {label:'Facebook',url:'https://www.facebook.com/Queenshidro/',path:'<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>'}
     ];
 
     var body=document.body;
@@ -119,43 +131,43 @@
 
     function buildNav(){
         var logo='<a href="index.html" class="nav__logo" aria-label="Queens Hidro"><img src="logo2.webp" alt="Queens Hidro" width="1155" height="404"></a>';
-        var burger='<button class="nav__burger" aria-label="Menú"><span></span><span></span><span></span></button>';
+        var burger='<button class="nav__burger" aria-label="'+tr('nav.menu','Menú')+'"><span></span><span></span><span></span></button>';
         if(navMode==='back'){
-            return '<nav class="nav"><div class="container"><div class="nav__left">'+logo+'</div><a href="tienda.html" class="nav__back"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Volver a la tienda</a></div></nav>';
+            return '<nav class="nav"><div class="container"><div class="nav__left">'+logo+'</div><a href="tienda.html" class="nav__back"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>'+tr('nav.backShop','Volver a la tienda')+'</a><div class="nav__right">'+languageSwitcher()+'</div></div></nav>';
         }
         var links=NAV_LINKS.map(function(l){
             var cls=l.href.replace('.html','')===active?' class="nav__active"':'';
-            return '<a href="'+l.href+'"'+cls+'>'+l.label+'</a>';
+            return '<a href="'+l.href+'"'+cls+'>'+tr(l.key,l.label)+'</a>';
         }).join('');
-        var more=NAV_MORE.map(function(l){return '<a href="'+l.href+'">'+l.label+'</a>';}).join('');
+        var more=NAV_MORE.map(function(l){return '<a href="'+l.href+'">'+tr(l.key,l.label)+'</a>';}).join('');
         var cart=hasCart
-            ? '<button class="nav__cart" id="navCartBtn" aria-label="Carrito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><span class="nav__cart-count" id="cartCount" style="display:none">0</span></button>'
+            ? '<button class="nav__cart" id="navCartBtn" aria-label="'+tr('nav.cart','Carrito')+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><span class="nav__cart-count" id="cartCount" style="display:none">0</span></button>'
             : '';
-        var user='<div class="nav__user" id="navUser"><button class="nav__avatar" id="userAvatar"></button><div class="nav__dropdown" id="userDropdown"><a href="cuenta.html">Mi cuenta</a><button class="nav__logout" id="navLogoutBtn">Cerrar sesión</button></div></div>';
+        var user='<div class="nav__user" id="navUser"><button class="nav__avatar" id="userAvatar"></button><div class="nav__dropdown" id="userDropdown"><a href="cuenta.html">'+tr('nav.account','Mi cuenta')+'</a><button class="nav__logout" id="navLogoutBtn">'+tr('nav.logout','Cerrar sesión')+'</button></div></div>';
         return '<nav class="nav"><div class="container">'+logo+burger+
             '<div class="nav__links">'+links+
-                '<div class="nav__more"><span class="nav__more-label">Más <i class="bi bi-chevron-down"></i></span><div class="nav__more-items">'+more+'</div></div>'+
-                '<a href="membresia.html" class="nav__cta">Entrar</a>'+
-            '</div>'+
-            '<div class="nav__right">'+cart+user+'</div>'+
+                '<div class="nav__more"><span class="nav__more-label">'+tr('nav.more','Más')+' <i class="bi bi-chevron-down"></i></span><div class="nav__more-items">'+more+'</div></div>'+ 
+                '<a href="membresia.html" class="nav__cta">'+tr('nav.login','Entrar')+'</a>'+ 
+            '</div>'+ 
+            '<div class="nav__right">'+languageSwitcher()+cart+user+'</div>'+ 
         '</div></nav>';
     }
 
     function buildFoot(){
         var socials=SOCIALS.map(function(s){
-            return '<a href="#" class="foot__soc" aria-label="'+s.label+'">'+svgIcon(s.path)+'</a>';
+            return '<a href="'+s.url+'" class="foot__soc" aria-label="'+s.label+'" target="_blank" rel="noopener">'+svgIcon(s.path)+'</a>';
         }).join('');
-        var legal=LEGAL_LINKS.map(function(l){return '<li><a href="'+l.href+'">'+l.label+'</a></li>';}).join('');
-        var explore=EXPLORE_LINKS.map(function(l){return '<li><a href="'+l.href+'">'+l.label+'</a></li>';}).join('');
+        var legal=LEGAL_LINKS.map(function(l){return '<li><a href="'+l.href+'">'+tr(l.key,l.label)+'</a></li>';}).join('');
+        var explore=EXPLORE_LINKS.map(function(l){return '<li><a href="'+l.href+'">'+tr(l.key,l.label)+'</a></li>';}).join('');
         return '<footer class="foot"><div class="container">'+
             '<div class="foot__grid">'+
-                '<div><p class="foot__brand">Queens Hidro</p><p class="foot__desc" id="footerDesc">Hidromiel artesanal de fruta real y miel mexicana. Cada botella apoya a los apicultores de Nuevo León.</p></div>'+
-                '<div class="foot__col"><p class="foot__col-title">Legal</p><ul>'+legal+'</ul></div>'+
-                '<div class="foot__col"><p class="foot__col-title">Explora</p><ul>'+explore+'</ul></div>'+
-                '<div class="foot__col"><p class="foot__col-title">Síguenos</p><div class="foot__socials">'+socials+'</div></div>'+
-            '</div>'+
-            '<div class="foot__bot"><span>&copy; 2026 Queens Hidro. Todos los derechos reservados.</span>'+
-            '<div class="foot__age"><span class="foot__age-badge">+18</span>Prohibida la venta a menores de 18 años. Consume con responsabilidad.</div></div>'+
+            '<div><p class="foot__brand">Queens Hidro</p><p class="foot__desc" id="footerDesc">Hidromiel artesanal de fruta real y miel mexicana. Cada botella apoya a los apicultores de Nuevo León.</p></div>'+ 
+            '<div class="foot__col"><p class="foot__col-title">'+tr('footer.legal','Legal')+'</p><ul>'+legal+'</ul></div>'+ 
+            '<div class="foot__col"><p class="foot__col-title">'+tr('footer.explore','Explora')+'</p><ul>'+explore+'</ul></div>'+ 
+            '<div class="foot__col"><p class="foot__col-title">'+tr('footer.follow','Síguenos')+'</p><div class="foot__socials">'+socials+'</div></div>'+ 
+            '</div>'+ 
+            '<div class="foot__bot"><span>&copy; 2026 Queens Hidro. '+tr('footer.rights','Todos los derechos reservados.')+'</span>'+ 
+            '<div class="foot__age"><span class="foot__age-badge">+18</span>'+tr('footer.age','Prohibida la venta a menores de 18 años. Consume con responsabilidad.')+'</div></div>'+ 
         '</div></footer>';
     }
 
@@ -270,7 +282,7 @@
                 var m={};r.data.forEach(function(c){m[c.key]=c.value;});
                 var el=document.getElementById('footerDesc');
                 if(el&&(m.footer_desc_long||m.footer_desc_short)){
-                    setEditableText(el,m.footer_desc_long||m.footer_desc_short);
+                    setEditableText(el,m.footer_desc_long||m.footer_desc_short,m.footer_desc_long?'footer_desc_long':'footer_desc_short');
                 }
             });
         }

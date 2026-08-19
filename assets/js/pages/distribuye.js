@@ -33,6 +33,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!form || !calendarGrid) return;
 
+    function tr(key, fallback, params) {
+        return window.QH && window.QH.i18n && window.QH.i18n.t
+            ? window.QH.i18n.t(key, params)
+            : (fallback || key);
+    }
+
     function pad(n) { return String(n).padStart(2, '0'); }
 
     function getMexicoDate() {
@@ -71,13 +77,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function monthLabel(year, month) {
-        return new Intl.DateTimeFormat('es-MX', { month: 'long', year: 'numeric', timeZone: 'UTC' })
+        return new Intl.DateTimeFormat(window.QH && window.QH.i18n ? window.QH.i18n.locale() : 'es-MX', { month: 'long', year: 'numeric', timeZone: 'UTC' })
             .format(new Date(Date.UTC(year, month, 1)));
     }
 
     function dateLabel(value) {
         var parts = parseYmd(value);
-        return new Intl.DateTimeFormat('es-MX', {
+        return new Intl.DateTimeFormat(window.QH && window.QH.i18n ? window.QH.i18n.locale() : 'es-MX', {
             weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC'
         }).format(new Date(Date.UTC(parts.year, parts.month, parts.day)));
     }
@@ -95,6 +101,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function renderCalendar() {
         if (!calendarMonth || !calendarGrid) return;
+        var weekdays = tr('calendar.weekdays', 'L,M,M,J,V,S,D').split(',');
+        document.querySelectorAll('.dist__calendar-week span').forEach(function (day, index) {
+            day.textContent = weekdays[index] || '';
+        });
         calendarMonth.textContent = monthLabel(cursor.year, cursor.month);
         calendarPrev.disabled = monthKey(cursor) <= monthKey(parseYmd(minDate));
 
@@ -118,7 +128,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 (disabled ? ' disabled' : '') + ' aria-label="' + dateLabel(date) + '">' + day + '</button>';
         }
         calendarGrid.innerHTML = html;
-        calendarSelected.textContent = selectedDate ? 'Fecha tentativa: ' + dateLabel(selectedDate) : 'Aún no has elegido una fecha.';
+        calendarSelected.textContent = selectedDate
+            ? tr('dist.selectedDate', 'Fecha tentativa: {date}', { date: dateLabel(selectedDate) })
+            : tr('dist.noDate', 'Aún no has elegido una fecha.');
     }
 
     function updateRoute() {
@@ -139,17 +151,17 @@ document.addEventListener('DOMContentLoaded', function () {
         state.required = !isLocal;
         city.required = !isLocal;
 
-        formTitle.textContent = isLocal ? 'Cuéntanos de tu negocio' : 'Solicita tu degustación';
+        formTitle.textContent = isLocal ? tr('dist.business', 'Cuéntanos de tu negocio') : tr('dist.nationalRequest', 'Solicita tu degustación');
         formSub.textContent = isLocal
-            ? 'Necesitamos estos datos para revisar la visita y entender qué estás buscando.'
-            : 'Primero recibimos tu solicitud. Revisaremos el caso y te contactaremos para confirmar el siguiente paso.';
-        submit.textContent = isLocal ? 'Solicitar visita' : 'Solicitar degustación';
+            ? tr('dist.businessSub', 'Necesitamos estos datos para revisar la visita y entender qué estás buscando.')
+            : tr('dist.nationalSub', 'Primero recibimos tu solicitud. Revisaremos el caso y te contactaremos para confirmar el siguiente paso.');
+        submit.textContent = isLocal ? tr('dist.requestVisit', 'Solicitar visita') : tr('dist.requestTasting', 'Solicitar degustación');
         calendarNote.textContent = isLocal
-            ? 'Elige una fecha tentativa con al menos 7 días de anticipación. Te contactaremos para confirmar.'
-            : 'Elige cuándo te gustaría recibirla. La fecha es tentativa y la solicitud queda sujeta a revisión.';
+            ? tr('dist.calendarNoteLocal', 'Elige una fecha tentativa con al menos 7 días de anticipación. Te contactaremos para confirmar.')
+            : tr('dist.calendarNoteNational', 'Elige cuándo te gustaría recibirla. La fecha es tentativa y la solicitud queda sujeta a revisión.');
         setText(document.getElementById('distTastingCopy'), isLocal
-            ? 'Elige una fecha tentativa para visitarte. Revisamos tu solicitud y te confirmamos personalmente.'
-            : 'Cuéntanos dónde estás y cuándo te gustaría recibirla. Revisamos tu solicitud antes de enviar producto.');
+            ? tr('dist.localCopy', 'Elige una fecha tentativa para visitarte. Revisamos tu solicitud y te confirmamos personalmente.')
+            : tr('dist.nationalCopy', 'Cuéntanos dónde estás y cuándo te gustaría recibirla. Revisamos tu solicitud antes de enviar producto.'));
         renderCalendar();
     }
 
@@ -197,16 +209,16 @@ document.addEventListener('DOMContentLoaded', function () {
         var email = document.getElementById('ldEmail').value.trim();
         var company = document.getElementById('ldCompany').value.trim();
         var volume = document.getElementById('ldVolume').value.trim();
-        if (document.getElementById('ldWebsite').value.trim()) return 'No se pudo enviar la solicitud.';
+        if (document.getElementById('ldWebsite').value.trim()) return tr('validation.noRequest', 'No se pudo enviar la solicitud.');
         if (!selectedDate || !isValidYmd(selectedDate) || selectedDate < addDays(getMexicoDate(), 7)) {
-            return 'Elige una fecha con al menos 7 días de anticipación.';
+            return tr('validation.chooseDate', 'Elige una fecha con al menos 7 días de anticipación.');
         }
-        if (!name) return 'Escribe tu nombre.';
-        if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return 'Escribe un correo válido.';
-        if (!company) return 'Escribe el nombre de tu negocio.';
-        if (!volume) return 'Cuéntanos qué volumen te gustaría explorar.';
-        if (route === 'local' && !municipality.value) return 'Selecciona tu municipio.';
-        if (route === 'national' && (!state.value.trim() || !city.value.trim())) return 'Escribe tu estado y ciudad.';
+        if (!name) return tr('validation.name', 'Escribe tu nombre.');
+        if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return tr('validation.email', 'Escribe un correo válido.');
+        if (!company) return tr('validation.company', 'Escribe el nombre de tu negocio.');
+        if (!volume) return tr('validation.volume', 'Cuéntanos qué volumen te gustaría explorar.');
+        if (route === 'local' && !municipality.value) return tr('validation.municipality', 'Selecciona tu municipio.');
+        if (route === 'nacional' && (!state.value.trim() || !city.value.trim())) return tr('validation.nationalLocation', 'Escribe tu estado y ciudad.');
         return '';
     }
 
@@ -215,11 +227,11 @@ document.addEventListener('DOMContentLoaded', function () {
         showError('');
         var validationError = validate();
         if (validationError) { showError(validationError); return; }
-        if (!sb) { showError('No pudimos conectar el formulario. Escríbenos a hola@queenshidro.com.'); return; }
+        if (!sb) { showError(tr('validation.noConnection', 'No pudimos conectar el formulario. Escríbenos a hola@queenshidro.com.')); return; }
 
         var originalLabel = submit.textContent;
         submit.disabled = true;
-        submit.textContent = 'Enviando...';
+        submit.textContent = tr('dist.send', 'Enviando...');
         var payload = {
             request_type: route,
             desired_date: selectedDate,
@@ -239,7 +251,7 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             var result = await sb.functions.invoke('submit-tasting-request', { body: payload });
             if (result.error || (result.data && !result.data.ok)) {
-                throw new Error((result.data && result.data.error) || 'No se pudo enviar la solicitud.');
+                throw new Error((result.data && result.data.error) || tr('validation.error', 'No se pudo enviar la solicitud.'));
             }
             form.reset();
             selectedDate = '';
@@ -250,14 +262,14 @@ document.addEventListener('DOMContentLoaded', function () {
             setText(hintEl, hints.botella);
             updateRoute();
             successEl.hidden = false;
-            submit.textContent = 'Solicitud enviada';
+            submit.textContent = tr('dist.sent', 'Solicitud enviada');
             setTimeout(function () {
                 successEl.hidden = true;
                 submit.disabled = false;
-                submit.textContent = route === 'local' ? 'Solicitar visita' : 'Solicitar degustación';
+                submit.textContent = route === 'local' ? tr('dist.requestVisit', 'Solicitar visita') : tr('dist.requestTasting', 'Solicitar degustación');
             }, 5000);
         } catch (error) {
-            showError(error.message || 'No se pudo enviar la solicitud.');
+            showError(error.message || tr('validation.error', 'No se pudo enviar la solicitud.'));
             submit.disabled = false;
             submit.textContent = originalLabel;
         }
@@ -286,12 +298,23 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (content.key === 'dist_hint_barrel' && content.value) hints.barril = content.value;
                 var id = Object.keys(textKeys).find(function (key) { return textKeys[key] === content.key; });
                 var element = id && document.getElementById(id);
-                if (element && content.value) setText(element, content.value);
+                if (element && content.value) {
+                    var localized = window.QH.i18n && window.QH.i18n.language() !== 'es' && window.QH.i18n.cmsText
+                        ? window.QH.i18n.cmsText(content.key, content.value)
+                        : content.value;
+                    setText(element, localized || content.value);
+                }
             });
             setText(hintEl, hints[leadType] || '');
             updateRoute();
         });
     }
+
+    window.addEventListener('qh:langchange', function () {
+        updateRoute();
+        renderCalendar();
+        setText(hintEl, hints[leadType] || '');
+    });
 
     updateRoute();
     renderCalendar();

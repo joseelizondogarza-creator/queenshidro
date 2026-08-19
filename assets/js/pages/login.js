@@ -10,6 +10,12 @@ document.addEventListener('DOMContentLoaded', function () {
     var tabs = document.querySelectorAll('.auth-card__tab');
     var dashboardLoading = false;
 
+    function tr(key, fallback, params) {
+        return window.QH && window.QH.i18n && window.QH.i18n.t
+            ? window.QH.i18n.t(key, params)
+            : (fallback || key);
+    }
+
     var navUser = document.getElementById('navUser');
     var userAvatar = document.getElementById('userAvatar');
 
@@ -102,16 +108,16 @@ document.addEventListener('DOMContentLoaded', function () {
         var password = document.getElementById('loginPassword').value;
         var btn = document.getElementById('loginSubmit');
         btn.disabled = true;
-        btn.textContent = 'Ingresando...';
+        btn.textContent = tr('auth.loading', 'Ingresando...');
 
         var { data, error } = await supabase.auth.signInWithPassword({ email: email, password: password });
 
         btn.disabled = false;
-        btn.textContent = 'Entrar';
+        btn.textContent = tr('auth.enter', 'Entrar');
 
         if (error) {
             showError(error.message === 'Invalid login credentials'
-                ? 'Correo o contraseña incorrectos.'
+                ? tr('auth.invalid', 'Correo o contraseña incorrectos.')
                 : error.message);
         } else if (data.user) {
             showDashboard(data.user);
@@ -126,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var password = document.getElementById('registerPassword').value;
         var btn = document.getElementById('registerSubmit');
         btn.disabled = true;
-        btn.textContent = 'Creando cuenta...';
+        btn.textContent = tr('auth.creating', 'Creando cuenta...');
 
         var { data, error } = await supabase.auth.signUp({
             email: email,
@@ -135,14 +141,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         btn.disabled = false;
-        btn.textContent = 'Crear cuenta';
+        btn.textContent = tr('auth.create', 'Crear cuenta');
 
         if (error) {
             showError(error.message);
         } else if (data.user && data.user.identities && data.user.identities.length === 0) {
-            showError('Ya existe una cuenta con este correo. Inicia sesión.');
+            showError(tr('auth.exists', 'Ya existe una cuenta con este correo. Inicia sesión.'));
         } else {
-            showSuccess('Cuenta creada. Revisa tu correo para confirmar tu email.');
+            showSuccess(tr('auth.created', 'Cuenta creada. Revisa tu correo para confirmar tu email.'));
         }
     });
 

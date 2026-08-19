@@ -10,6 +10,12 @@ document.addEventListener('DOMContentLoaded', function () {
     var cartModule = window.QH.cart;
     if (!cartModule) return;
 
+    function tr(key, fallback, params) {
+        return window.QH && window.QH.i18n && window.QH.i18n.t
+            ? window.QH.i18n.t(key, params)
+            : (fallback || key);
+    }
+
     var backUrl = window.location.origin + window.location.pathname;
 
     var bankInfo = null;
@@ -32,14 +38,14 @@ document.addEventListener('DOMContentLoaded', function () {
         var el = document.getElementById('transferInfo');
         if (!el || !bankInfo) return;
         if (!bankInfo.clabe) {
-            el.innerHTML = '<div class="transfer-info__note">La información de transferencia aún no está configurada. Contáctanos por Instagram.</div>';
+            el.innerHTML = '<div class="transfer-info__note">'+tr('cart.transferNotConfigured', 'La información de transferencia aún no está configurada. Contáctanos por Instagram.')+'</div>';
             return;
         }
         el.innerHTML =
-            '<div class="transfer-info__row"><span>Banco</span><span>' + bankInfo.bank + '</span></div>' +
-            '<div class="transfer-info__row"><span>Titular</span><span>' + bankInfo.holder + '</span></div>' +
+            '<div class="transfer-info__row"><span>'+tr('cart.bankLabel', 'Banco')+'</span><span>' + bankInfo.bank + '</span></div>' +
+            '<div class="transfer-info__row"><span>'+tr('cart.holderLabel', 'Titular')+'</span><span>' + bankInfo.holder + '</span></div>' +
             '<div class="transfer-info__row"><span>CLABE</span><span class="transfer-info__clabe">' + bankInfo.clabe + '</span></div>' +
-            (bankInfo.account ? '<div class="transfer-info__row"><span>Cuenta</span><span>' + bankInfo.account + '</span></div>' : '') +
+            (bankInfo.account ? '<div class="transfer-info__row"><span>'+tr('cart.accountLabel', 'Cuenta')+'</span><span>' + bankInfo.account + '</span></div>' : '') +
             '<div class="transfer-info__note">' + bankInfo.instructions + '</div>';
     }
     window._qhSetPay = function (method) {
@@ -54,11 +60,11 @@ document.addEventListener('DOMContentLoaded', function () {
         var note = document.getElementById('checkoutNote');
         var btn = document.getElementById('btnPlaceOrder');
         if (method === 'transferencia') {
-            if (note) note.innerHTML = '<i class="bi bi-bank"></i> Transferencia directa: confirma tu pedido y envíanos tu comprobante.';
-            if (btn) btn.textContent = 'Confirmar pedido por transferencia';
+            if (note) note.innerHTML = '<i class="bi bi-bank"></i> '+tr('cart.transferNote', 'Transferencia directa: confirma tu pedido y envíanos tu comprobante.');
+            if (btn) btn.textContent = tr('cart.confirmTransfer', 'Confirmar pedido por transferencia');
         } else {
-            if (note) note.innerHTML = '<i class="bi bi-shield-lock"></i> Pago seguro vía Mercado Pago. Puedes pagar con tarjeta.';
-            if (btn) btn.textContent = 'Realizar pedido y pagar';
+            if (note) note.innerHTML = '<i class="bi bi-shield-lock"></i> '+tr('cart.cardNote', 'Pago seguro vía Mercado Pago. Puedes pagar con tarjeta.');
+            if (btn) btn.textContent = tr('cart.placeOrder', 'Realizar pedido y pagar');
         }
     };
 
@@ -206,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var txt = document.createElement('span');
         txt.textContent = msg;
         var btn = document.createElement('button');
-        btn.textContent = 'Deshacer';
+        btn.textContent = tr('cart.undo', 'Deshacer');
         btn.addEventListener('click', function () { onUndo(); t.remove(); });
         t.appendChild(txt);
         t.appendChild(btn);
@@ -353,7 +359,7 @@ document.addEventListener('DOMContentLoaded', function () {
             autofillShipping(true);
         });
         document.getElementById('btnClearCart').addEventListener('click', function () {
-            if (!confirm('¿Vaciar todo tu carrito?')) return;
+            if (!confirm(tr('cart.clearConfirm', '¿Vaciar todo tu carrito?'))) return;
             cartModule.clear();
             renderCart();
         });
@@ -435,14 +441,14 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!item) return;
         var nq = item.quantity + delta;
         if (nq < 1) { cartModule.remove(id); renderCart(); return; }
-        if (nq > maxFor(item)) { showToast('Solo puedes pedir ' + maxFor(item) + ' de este producto', 'err'); return; }
+        if (nq > maxFor(item)) { showToast(tr('common.onlyProduct', 'Solo puedes pedir {value} de este producto', { value: maxFor(item) }), 'err'); return; }
         cartModule.setQty(id, nq);
         renderCart();
     };
     window._cremove = function (id) {
         if (cartModule.remove(id)) {
             renderCart();
-            showUndoToast('Producto eliminado', function () {
+            showUndoToast(tr('cart.removed', 'Producto eliminado'), function () {
                 cartModule.restoreLastRemoved();
                 renderCart();
             });
@@ -482,7 +488,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function placeOrder() {
         if (!validateForm()) {
-            showToast('Revisa los campos marcados', 'err');
+            showToast(tr('cart.reviewFields', 'Revisa los campos marcados'), 'err');
             var first = document.querySelector('.form-group.invalid .form-input');
             if (first) first.focus();
             return;
@@ -503,7 +509,7 @@ document.addEventListener('DOMContentLoaded', function () {
         saveShippingData({ name: shipName, email: shipEmail, phone: shipPhone, street: shipStreet, colony: shipColony, city: shipCity, state: shipState, zip: shipZip });
 
         btn.disabled = true;
-        btn.textContent = 'Creando tu pedido...';
+        btn.textContent = tr('cart.creatingOrder', 'Creando tu pedido...');
 
         var payMethod = (document.querySelector('input[name="payMethod"]:checked') || {}).value || 'mercadopago';
 
@@ -525,10 +531,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     removed.forEach(function (m) { showToast(m, 'err'); });
                     renderCart();
                     btn.disabled = false;
-                    btn.textContent = 'Realizar pedido y pagar';
+                    btn.textContent = tr('cart.placeOrder', 'Realizar pedido y pagar');
                     return;
                 }
-                throw new Error(data.error || 'No se pudo crear el pedido');
+                throw new Error(data.error || tr('cart.orderCreateError', 'No se pudo crear el pedido'));
             }
 
             if (data.payment_method === 'transferencia') {
@@ -542,9 +548,9 @@ document.addEventListener('DOMContentLoaded', function () {
             localStorage.setItem('qh_cart_backup', localStorage.getItem('qh_cart') || '{"items":[]}');
             window.location.href = data.init_point;
         } catch (e) {
-            showToast('Error: ' + e.message, 'err');
+            showToast(tr('common.errorMessage', 'Error: {message}', { message: e.message }), 'err');
             btn.disabled = false;
-            btn.textContent = 'Realizar pedido y pagar';
+            btn.textContent = tr('cart.placeOrder', 'Realizar pedido y pagar');
         }
     }
 
@@ -558,6 +564,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     window.addEventListener('qh:cart:change', function () {
         if (new URLSearchParams(window.location.search).get('payment')) return;
+        renderCart();
+    });
+    window.addEventListener('qh:langchange', function () {
+        if (new URLSearchParams(window.location.search).get('payment')) return;
+        renderTransferInfo();
         renderCart();
     });
 });

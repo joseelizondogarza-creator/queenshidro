@@ -6,6 +6,6 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!r.data) return;
         var m = {};
         r.data.forEach(function (c) { m[c.key] = c.value; });
-        if (m.eventos_sub) window.QH.setEditableText(document.getElementById('eventosSub'), m.eventos_sub);
+        if (m.eventos_sub) window.QH.setEditableText(document.getElementById('eventosSub'), m.eventos_sub, 'eventos_sub');
     });
 });

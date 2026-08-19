@@ -52,6 +52,7 @@
     <link rel="preload" href="https://fonts.gstatic.com/s/fraunces/v38/6NU58FyLNQOQZAnv9ZwNjucMHVn85Ni7emAe9lKqZTnbB-gzTK0K1ChjeveQ.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="assets/css/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="assets/js/i18n.js" defer></script>
     <script src="assets/js/site.js" defer></script>
     <script src="assets/js/cart.js" defer></script>
 </head>
@@ -78,6 +79,18 @@
             <div class="store__grid" id="storeGrid">
                 <div class="store__loading">Cargando hidromieles...</div>
             </div>
+        </div>
+    </section>
+
+    <section class="untappd-cta">
+        <div class="container">
+            <div class="untappd-cta__logo" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M0,15.24V0.55c0-0.13,0.11-0.24,0.24-0.24h4.34c0.13,0,0.24,0.11,0.24,0.24v14.41c0,3.41,1.48,4.71,4.68,4.71c3.16,0,4.61-1.31,4.61-4.71V0.55c0-0.13,0.11-0.24,0.24-0.24h4.34c0.13,0,0.24,0.11,0.24,0.24v14.68c0,5.91-4.09,8.77-9.42,8.77C4.09,24,0,21.15,0,15.24z"/></svg>
+            </div>
+            <p class="kicker kicker--center"><span class="sec-num">03</span> Experiencia Queens</p>
+            <h2 class="display display--lg">¿Ya lo probaste? <em class="accent--teal">Califícanos en Untappd</em></h2>
+            <p class="untappd-cta__sub">Comparte qué te pareció nuestro hidromiel y ayuda a que más gente viva la Experiencia Queens.</p>
+            <a href="https://untappd.com/QueensHidro" class="btn btn--primary" target="_blank" rel="noopener">Califícanos en Untappd <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
         </div>
     </section>
 
@@ -215,7 +228,7 @@
             var nq = item.quantity + delta;
             if (nq < 1) { cartModule.remove(id); return; }
             var max = maxFor(item);
-            if (nq > max) { showToast('Solo puedes pedir ' + max + ' de este producto', 'err'); return; }
+            if (nq > max) { showToast(window.QH.t('common.onlyProduct', 'Solo puedes pedir {value} de este producto').replace('{value}', max), 'err'); return; }
             cartModule.setQty(id, nq);
         };
         window._qhCartRemove = function(id) {
@@ -422,7 +435,7 @@
         function addToCart(product, qty) {
             var result = cartModule.add(product, qty || 1);
             if (result.notice) showToast(result.notice, 'err');
-            else showToast('Agregado al carrito');
+            else showToast(window.QH.t('shop.added', 'Agregado al carrito'));
             openCart();
         }
 

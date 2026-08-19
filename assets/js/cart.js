@@ -43,7 +43,16 @@
         }
         return null;
     }
-    function fmt(n){ return '$'+money(n).toLocaleString('es-MX',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+    function fmt(n){
+        var locale=window.QH&&window.QH.i18n?window.QH.i18n.locale():'es-MX';
+        return '$'+money(n).toLocaleString(locale,{minimumFractionDigits:2,maximumFractionDigits:2});
+    }
+
+    function tr(key,fallback,params){
+        return window.QH&&window.QH.i18n&&window.QH.i18n.t
+            ? window.QH.i18n.t(key,params)
+            : (fallback||key);
+    }
 
     /* ---------- persistencia local ---------- */
     function loadLocal(){
@@ -84,17 +93,17 @@
     function isSubscriber(){ return !!state.subscriber; }
 
     function add(product, qty){
-        if(!product||!product.id) return {ok:false,notice:'Producto inválido'};
+        if(!product||!product.id) return {ok:false,notice:tr('common.productInvalid','Producto inválido')};
         var n=Math.max(1,Math.floor(qty)||1);
         var max=getSettings().maxQty;
         var cur=findItem(product.id);
         var notice=null;
         if(cur){
             if(cur.quantity+n>max){
-                notice='Máximo '+max+' por producto';
+                notice=tr('common.maxProduct','Máximo {value} por producto',{value:max});
                 n=max-cur.quantity;
             }
-            if(n<=0){ emit(); return {ok:false,notice:notice||'Cantidad máxima alcanzada'}; }
+            if(n<=0){ emit(); return {ok:false,notice:notice||tr('common.maxReached','Cantidad máxima alcanzada')}; }
             cur.quantity+=n;
         }else{
             n=Math.min(n,max);
@@ -120,7 +129,7 @@
         var max=getSettings().maxQty;
         if(n<1) return remove(id);
         item.quantity=Math.min(n,max);
-        if(max>0&&n>max){ state.notices.push('Máximo '+max+' por producto'); }
+        if(max>0&&n>max){ state.notices.push(tr('common.maxProduct','Máximo {value} por producto',{value:max})); }
         persist();
         return true;
     }
@@ -221,32 +230,33 @@
                 state.items=state.items.filter(function(item){
                     var p=map[String(item.id)];
                     if(!p||p.active===false){
-                        pushNotice(item.name+' ya no está disponible y se quitó de tu carrito');
+                        pushNotice(tr('common.unavailableRemoved','{name} ya no está disponible y se quitó de tu carrito',{name:item.name}));
                         changed=true;
                         return false;
                     }
+                    if(item.name!==p.name){ item.name=p.name||item.name||'Producto'; changed=true; }
                     item.stock=(p.stock!==null&&p.stock!==undefined)?Number(p.stock):null;
                     var newPrice=money(Number(p.price)||0);
                     if(item.price!==undefined&&item.price!==newPrice){
-                        pushNotice('El precio de '+p.name+' se actualizó ('+fmt(newPrice)+')');
+                        pushNotice(tr('common.priceUpdated','El precio de {name} se actualizó ({price})',{name:p.name,price:fmt(newPrice)}));
                         changed=true;
-                        item.price=newPrice;
                     }
+                    if(item.price===undefined||item.price!==newPrice) item.price=newPrice;
                     var max=getSettings().maxQty;
                     if(item.quantity>max){
                         item.quantity=max;
-                        pushNotice('Máximo '+max+' de '+p.name+' por pedido');
+                        pushNotice(tr('common.maxNamed','Máximo {value} de {name} por pedido',{value:max,name:p.name}));
                         changed=true;
                     }
                     if(item.stock!==null){
                         if(item.quantity>item.stock){
                             item.quantity=Math.max(1,item.stock);
                             if(item.stock<=0){
-                                pushNotice(p.name+' se agotó y se quitó de tu carrito');
+                                pushNotice(tr('common.soldOutRemoved','{name} se agotó y se quitó de tu carrito',{name:p.name}));
                                 changed=true;
                                 return false;
                             }
-                            pushNotice('Solo quedan '+item.stock+' de '+p.name+', ajustamos la cantidad');
+                            pushNotice(tr('common.availableOnly','Solo quedan {value} de {name}, ajustamos la cantidad',{value:item.stock,name:p.name}));
                             changed=true;
                         }
                     }

@@ -46,6 +46,7 @@
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/services.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="assets/js/i18n.js" defer></script>
     <script src="assets/js/site.js" defer></script>
 </head>
 <body data-nav="full" data-active="servicios">
@@ -65,7 +66,7 @@
     </header>
 
     <main>
-        <section class="services-showcase-section">
+        <section class="services-slider-section">
             <div class="container">
                 <div class="services-section-intro">
                     <p class="kicker kicker--center"><span class="sec-num">01</span> El trabajo habla</p>
@@ -73,11 +74,6 @@
                     <p>Una buena idea no se queda en una carpeta. La convertimos en una identidad que se reconoce, una experiencia que se disfruta y contenido que da ganas de compartir.</p>
                 </div>
 
-            </div>
-        </section>
-
-        <section class="services-slider-section">
-            <div class="container">
                 <div class="services-slider" id="servicesSlider" tabindex="0" role="region" aria-roledescription="carrusel" aria-label="Showcase de servicios" aria-live="polite">
                     <div class="services-slider__chrome">
                         <span><i class="bi bi-stars" aria-hidden="true"></i> Portafolio en movimiento</span>
@@ -95,6 +91,7 @@
                                     <h3>Que te ubiquen <em>antes de probarte.</em></h3>
                                     <p>Packaging, sistema visual y detalles que hacen que tu producto pida su propio espacio en la barra.</p>
                                     <div class="services-slide__tags"><span>Branding</span><span>Packaging</span><span>Dirección de arte</span></div>
+                                    <a class="services-slide__action" href="mailto:hola@queenshidro.com?subject=Quiero%20identidad%20y%20packaging">Quiero este servicio <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
                                 </div>
                             </div>
                         </article>
@@ -109,6 +106,7 @@
                                     <h3>Diseño que se mete <em>en la conversación.</em></h3>
                                     <p>Del menú al flyer, construimos piezas con una sola voz para que tu marca se vea igual de bien en pantalla y en la calle.</p>
                                     <div class="services-slide__tags"><span>Campañas</span><span>Flyers</span><span>Materiales</span></div>
+                                    <a class="services-slide__action" href="mailto:hola@queenshidro.com?subject=Quiero%20una%20campa%C3%B1a">Quiero este servicio <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
                                 </div>
                             </div>
                         </article>
@@ -137,6 +135,7 @@
                                     <h3>Tu sitio también <em>brinda contigo.</em></h3>
                                     <p>Webs rápidas, claras y con carácter. Una experiencia que convierte visitas en ganas de quedarse.</p>
                                     <div class="services-slide__tags"><span>Landing pages</span><span>E-commerce</span><span>Responsive</span></div>
+                                    <a class="services-slide__action" href="mailto:hola@queenshidro.com?subject=Quiero%20una%20web">Quiero este servicio <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
                                 </div>
                             </div>
                         </article>
@@ -151,6 +150,7 @@
                                     <h3>Que la gente vea lo que <em>estás construyendo.</em></h3>
                                     <p>Contenido con dirección, campañas con intención y una narrativa que hace que tu comunidad quiera volver.</p>
                                     <div class="services-slide__tags"><span>Social media</span><span>Contenido</span><span>Analítica</span></div>
+                                    <a class="services-slide__action" href="mailto:hola@queenshidro.com?subject=Quiero%20contenido%20y%20campa%C3%B1as">Quiero este servicio <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
                                 </div>
                             </div>
                         </article>
@@ -188,19 +188,31 @@
                         <h3>Marca &amp; packaging</h3>
                         <p>La primera impresión también se puede volver ritual.</p>
                         <ul><li>Identidad visual</li><li>Logotipo y sistema gráfico</li><li>Etiquetas y empaque</li><li>Guía de uso</li></ul>
+                        <a class="service-offer-card__link" href="mailto:hola@queenshidro.com?subject=Quiero%20marca%20y%20packaging">Quiero este servicio <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
                     </article>
                     <article class="service-offer-card service-offer-card--teal">
                         <div class="service-offer-card__top"><span>02</span><i class="bi bi-window-stack" aria-hidden="true"></i></div>
                         <h3>Web &amp; e-commerce</h3>
                         <p>Tu casa digital, con buen diseño y sin laberintos.</p>
                         <ul><li>Landing pages</li><li>Tiendas en línea</li><li>Experiencia responsive</li><li>SEO esencial</li></ul>
+                        <a class="service-offer-card__link" href="mailto:hola@queenshidro.com?subject=Quiero%20web%20y%20e-commerce">Quiero este servicio <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
                     </article>
                     <article class="service-offer-card">
                         <div class="service-offer-card__top"><span>03</span><i class="bi bi-megaphone" aria-hidden="true"></i></div>
                         <h3>Contenido &amp; campañas</h3>
                         <p>Ideas que no solo llenan el feed: mueven algo.</p>
                         <ul><li>Dirección de arte</li><li>Social media</li><li>Campañas de lanzamiento</li><li>Medición y ajustes</li></ul>
+                        <a class="service-offer-card__link" href="mailto:hola@queenshidro.com?subject=Quiero%20contenido%20y%20campa%C3%B1as">Quiero este servicio <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
                     </article>
+                </div>
+
+                <div class="services-bundle">
+                    <div class="services-bundle__copy">
+                        <span class="services-bundle__eyebrow"><i class="bi bi-layers" aria-hidden="true"></i> La opción completa</span>
+                        <h3>Tu marca no tiene que elegir una sola pieza.</h3>
+                        <p>Combina identidad, web y contenido para salir con una dirección clara desde el primer día.</p>
+                    </div>
+                    <a class="btn btn--teal" href="mailto:hola@queenshidro.com?subject=Quiero%20el%20paquete%20completo">Armar mi ecosistema <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
                 </div>
 
                 <div class="services-process" aria-label="Nuestro proceso">

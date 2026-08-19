@@ -6,12 +6,12 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!r.data) return;
         var m = {};
         r.data.forEach(function (c) { m[c.key] = c.value; });
-        if (m.faqs_sub) window.QH.setEditableText(document.getElementById('faqsSub'), m.faqs_sub);
-        if (m.faqs_sabor) window.QH.setEditableText(document.getElementById('faqsSabor'), m.faqs_sabor);
-        if (m.faqs_miel) window.QH.setEditableText(document.getElementById('faqsMiel'), m.faqs_miel);
-        if (m.faqs_membresia) window.QH.setEditableText(document.getElementById('faqsMembresia'), m.faqs_membresia);
-        if (m.faqs_vegano) window.QH.setEditableText(document.getElementById('faqsVegano'), m.faqs_vegano);
-        if (m.faqs_cta) window.QH.setEditableText(document.getElementById('faqsCta'), m.faqs_cta);
+        if (m.faqs_sub) window.QH.setEditableText(document.getElementById('faqsSub'), m.faqs_sub, 'faqs_sub');
+        if (m.faqs_sabor) window.QH.setEditableText(document.getElementById('faqsSabor'), m.faqs_sabor, 'faqs_sabor');
+        if (m.faqs_miel) window.QH.setEditableText(document.getElementById('faqsMiel'), m.faqs_miel, 'faqs_miel');
+        if (m.faqs_membresia) window.QH.setEditableText(document.getElementById('faqsMembresia'), m.faqs_membresia, 'faqs_membresia');
+        if (m.faqs_vegano) window.QH.setEditableText(document.getElementById('faqsVegano'), m.faqs_vegano, 'faqs_vegano');
+        if (m.faqs_cta) window.QH.setEditableText(document.getElementById('faqsCta'), m.faqs_cta, 'faqs_cta');
     });
 
     document.querySelectorAll('.faq-item__q').forEach(function (q) {

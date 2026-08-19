@@ -1,0 +1,161 @@
+diff --git a/admin.html b/admin.html
+--- a/admin.html
++++ b/admin.html
+@@ -242,4 +242,5 @@
+       <a data-tab="crm-dashboard"><span class="ico"><i class="bi bi-speedometer2"></i></span> Dashboard</a>
+       <a data-tab="crm-customers"><span class="ico"><i class="bi bi-people"></i></span> Clientes</a>
+       <a data-tab="crm-leads"><span class="ico"><i class="bi bi-person-plus"></i></span> Leads</a>
++      <a data-tab="crm-tastings"><span class="ico"><i class="bi bi-calendar-heart"></i></span> Degustaciones</a>
+       <a data-tab="crm-pipeline"><span class="ico"><i class="bi bi-graph-up-arrow"></i></span> Pipeline</a>
+@@ -373,5 +373,27 @@
+         <div class="table-wrap" id="leadsTable"><p style="color:var(--muted);padding:20px">Cargando...</p></div>
+       </div>
+     </div>
+ 
++    <!-- TAB: CRM Tastings -->
++    <div class="tab-panel" id="tab-crm-tastings">
++      <div class="admin-hdr"><h1>Degustaciones</h1><p>Solicitudes locales y nacionales pendientes de revisión.</p></div>
++      <div class="card">
++        <div class="card__hdr">
++          <p class="card__title">Solicitudes de degustación</p>
++          <button class="btn btn--gold btn--sm" id="btnRefreshTastings">Actualizar</button>
++        </div>
++        <div class="search-bar">
++          <select class="form-select" id="tastingFilterStatus" style="max-width:180px;padding:8px 12px;font-size:0.78rem">
++            <option value="">Todos los estados</option>
++            <option value="nuevo">Nuevo</option>
++            <option value="en_revision">En revisión</option>
++            <option value="confirmado">Confirmado</option>
++            <option value="atendido">Atendido</option>
++            <option value="descartado">Descartado</option>
++          </select>
++        </div>
++        <div class="table-wrap" id="tastingsTable"><p style="color:var(--muted);padding:20px">Cargando...</p></div>
++      </div>
++    </div>
++
+     <!-- TAB: CRM Pipeline -->
+@@ -480,4 +480,5 @@
+   if(tab==='crm-dashboard')loadDashboard();
+   if(tab==='crm-customers')loadCustomers();
+   if(tab==='crm-leads')loadLeads();
++  if(tab==='crm-tastings')loadTastingRequests();
+   if(tab==='crm-pipeline')loadPipeline();
+@@ -540,7 +540,8 @@
+   if(btn.id==='btnSaveDistribuye'){
+     saveDistribuye();
+   }
+   /* CRM */
+   if(btn.classList.contains('lead-btn-edit')){openLeadModal(btn.dataset.id)}
+   if(btn.classList.contains('lead-btn-del')){deleteLead(btn.dataset.id)}
+   if(btn.classList.contains('modal-btn-save-lead')){saveLead(btn.dataset.id)}
++  if(btn.id==='btnRefreshTastings'){loadTastingRequests()}
+@@ -576,1 +576,4 @@
++  if(e.target.classList&&e.target.classList.contains('tasting-status-select')){
++    updateTastingStatus(e.target.dataset.id,e.target.value);
++  }
+  });
+@@ -594,1 +594,2 @@
+ document.getElementById('leadFilterStatus').addEventListener('change',function(){loadLeads()});
++document.getElementById('tastingFilterStatus').addEventListener('change',function(){loadTastingRequests()});
+@@ -1372,2 +1372,1 @@
+-    {key:'dist_btn',label:'Texto del botón del formulario',l:false},
+     {key:'dist_hint_bottle',label:'Hint Botella',l:false},
+@@ -1758,0 +1759,39 @@
++/* ─── CRM TASTINGS ─── */
++var tastingStatusLabels={nuevo:'Nuevo',en_revision:'En revisión',confirmado:'Confirmado',atendido:'Atendido',descartado:'Descartado'};
++var tastingTypeLabels={local:'Visita local',nacional:'Solicitud nacional'};
++var tastingLeadLabels={botella:'Botella',barril:'Barril'};
++
++async function loadTastingRequests(){
++  var filter=document.getElementById('tastingFilterStatus').value;
++  var query=sb.from('tasting_requests').select('*').order('created_at',{ascending:false});
++  if(filter)query=query.eq('status',filter);
++  var {data,error}=await query;
++  if(error){document.getElementById('tastingsTable').innerHTML='<p style="color:var(--red);padding:20px">Error al cargar las degustaciones.</p>';return}
++  var rows=data||[];
++  if(!rows.length){document.getElementById('tastingsTable').innerHTML='<p style="color:var(--muted);padding:20px">No hay solicitudes de degustación.</p>';return}
++  var html=rows.map(function(r){
++    var date=r.desired_date?new Date(r.desired_date+'T12:00:00').toLocaleDateString('es-MX',{day:'numeric',month:'short',year:'numeric'}):'—';
++    var created=r.created_at?new Date(r.created_at).toLocaleDateString('es-MX',{day:'numeric',month:'short'}):'—';
++    var place=r.request_type==='local'?(r.municipality||'Monterrey'):[r.city,r.state].filter(Boolean).join(', ');
++    var status=r.status||'nuevo';
++    var options=Object.keys(tastingStatusLabels).map(function(key){return '<option value="'+key+'"'+(key===status?' selected':'')+'>'+tastingStatusLabels[key]+'</option>'}).join('');
++    return '<tr>'+
++      '<td><strong>'+escapeHtml(r.company||'Sin negocio')+'</strong><br><span style="font-size:0.7rem;color:var(--muted)">'+escapeHtml(r.full_name||'')+'</span></td>'+
++      '<td style="font-size:0.74rem;color:var(--muted)">'+escapeHtml(r.email||'—')+'<br>'+escapeHtml(r.phone||'')+'</td>'+
++      '<td style="font-size:0.75rem">'+(tastingTypeLabels[r.request_type]||escapeHtml(r.request_type||'—'))+'<br><span style="color:var(--muted)">'+escapeHtml(place||'—')+'</span></td>'+
++      '<td style="font-size:0.75rem">'+escapeHtml(date)+'<br><span style="color:var(--teal-hi)">'+escapeHtml(tastingLeadLabels[r.lead_type]||r.lead_type||'—')+'</span></td>'+
++      '<td style="font-size:0.74rem;color:var(--muted);max-width:180px">'+escapeHtml(r.desired_volume||'—')+'</td>'+
++      '<td><select class="form-select tasting-status-select" data-id="'+r.id+'" style="min-width:130px;padding:7px 9px;font-size:0.72rem">'+options+'</select></td>'+
++      '<td style="font-size:0.7rem;color:var(--muted)">'+escapeHtml(created)+'</td>'+
++    '</tr>';
++  }).join('');
++  document.getElementById('tastingsTable').innerHTML='<table><thead><tr><th>Negocio</th><th>Contacto</th><th>Tipo / Ubicación</th><th>Fecha / Formato</th><th>Volumen</th><th>Estado</th><th>Recibido</th></tr></thead><tbody>'+html+'</tbody></table>';
++}
++
++async function updateTastingStatus(id,status){
++  var payload={status:status,updated_at:new Date().toISOString(),reviewed_at:status==='nuevo'?null:new Date().toISOString()};
++  var {error}=await sb.from('tasting_requests').update(payload).eq('id',id);
++  if(error){toast('No se pudo actualizar la degustación','err');loadTastingRequests();return}
++  toast('Estado actualizado');
++}
++
+@@ -1772,1 +1811,1 @@
+-  var sources={distribuye:'Distribuye',contacto:'Contacto',evento:'Evento',otro:'Otro',manual:'Manual'};
++  var sources={distribuye:'Distribuye',degustacion:'Degustación',contacto:'Contacto',evento:'Evento',otro:'Otro',manual:'Manual'};
+
+diff --git a/supabase/functions/send-email/index.ts b/supabase/functions/send-email/index.ts
+--- a/supabase/functions/send-email/index.ts
++++ b/supabase/functions/send-email/index.ts
+@@ -215,3 +215,50 @@
+   },
+ 
++  tasting_internal(data: any) {
++    const local = data.request_type === "local";
++    return {
++      subject: `${local ? "Nueva visita" : "Nueva solicitud nacional"} — ${esc(data.company || data.full_name)}`,
++      html: layout({
++        preheader: `${local ? "Solicitud de visita" : "Solicitud de degustación nacional"}: ${data.company || data.full_name}`,
++        kicker: local ? "Degustación · Visita local" : "Degustación · Solicitud nacional",
++        title: esc(data.company || data.full_name || "Nueva solicitud"),
++        body: `<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
++          ${label("Fecha tentativa", esc(data.desired_date || "—"))}
++          ${hr()}
++          ${label("Ubicación", esc(data.location || "—"))}
++          ${label("Formato", esc(data.lead_type || "—"))}
++          ${label("Volumen", esc(data.desired_volume || "—"))}
++          ${hr()}
++          ${label("Contacto", esc(data.full_name || "—"))}
++          ${label("Email", `<a href="mailto:${esc(data.email)}" style="color:#d4a845;text-decoration:none">${esc(data.email || "—")}</a>`)}
++          ${label("Teléfono", esc(data.phone || "—"))}
++        </table>
++        ${data.notes ? `<p style="margin:18px 0 0;font-size:13px;line-height:1.7;color:#e9e7e2"><span style="color:#9c9aa2;font-family:${MONO};font-size:10px;letter-spacing:0.18em;text-transform:uppercase">Notas</span><br>${esc(data.notes)}</p>` : ""}`,
++      }),
++    };
++  },
++
++  tasting_confirmation(data: any) {
++    const local = data.request_type === "local";
++    const title = local ? "Recibimos tu solicitud de visita." : "Recibimos tu solicitud de degustación.";
++    const copy = local
++      ? `Recibimos tu solicitud para una visita de degustación en <strong style="color:#d4a845">${esc(data.company || "tu negocio")}</strong>. La fecha que elegiste es tentativa; te contactaremos para confirmar el siguiente paso.`
++      : `Recibimos tu solicitud para una degustación en <strong style="color:#d4a845">${esc(data.company || "tu negocio")}</strong>. Revisaremos los datos y te contactaremos para confirmar si podemos avanzar con el kit.`;
++    return {
++      subject: local ? "Recibimos tu solicitud de visita — Queens Hidro" : "Recibimos tu solicitud de degustación — Queens Hidro",
++      html: layout({
++        preheader: local ? "Recibimos tu solicitud de visita." : "Recibimos tu solicitud de degustación.",
++        kicker: local ? "Degustación · Visita local" : "Degustación · Solicitud nacional",
++        title,
++        body: `<p style="margin:0;font-size:15px;line-height:1.75;color:#e9e7e2">${greeting(data.name)} ${copy}</p>
++          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:18px">
++            ${label("Fecha tentativa", esc(data.desired_date || "—"))}
++            ${hr()}
++            ${label("Ubicación", esc(data.location || "—"))}
++            ${label("Formato", esc(data.lead_type || "—"))}
++          </table>
++          <p style="margin:16px 0 0;padding:14px 16px;background:#0e0e12;border-left:2px solid #02b4b7;font-size:12px;line-height:1.7;color:#9c9aa2">Esta solicitud no es una confirmación automática. Si tienes alguna duda, escríbenos a <a href="mailto:hola@queenshidro.com" style="color:#d4a845;text-decoration:none">hola@queenshidro.com</a>.</p>`,
++      }),
++    };
++  },
+   lead_internal(data: any) {

@@ -1,0 +1,12 @@
+diff --git a/admin.html b/admin.html
+--- a/admin.html
++++ b/admin.html
+@@ -540,7 +540,8 @@
+   if(btn.id==='btnSaveDistribuye'){
+     saveDistribuye();
+   }
+   /* CRM */
+   if(btn.classList.contains('lead-btn-edit')){openLeadModal(btn.dataset.id)}
+   if(btn.classList.contains('lead-btn-del')){deleteLead(btn.dataset.id)}
+   if(btn.classList.contains('modal-btn-save-lead')){saveLead(btn.dataset.id)}
++ if(btn.id==='btnRefreshTastings'){loadTastingRequests()}

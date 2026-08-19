@@ -12,6 +12,9 @@
         var total = document.getElementById('servicesTotal');
         var progress = document.getElementById('servicesProgress');
         var state = { index: 0, timer: null, paused: false, touchX: 0 };
+        function tr(key, fallback) {
+            return window.QH && window.QH.i18n && window.QH.i18n.t ? window.QH.i18n.t(key) : (fallback || key);
+        }
         var duration = 6800;
         var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -21,7 +24,7 @@
             var icon = pause.querySelector('i');
             var label = pause.querySelector('span');
             if (icon) icon.className = state.paused ? 'bi bi-play-fill' : 'bi bi-pause-fill';
-            if (label) label.textContent = state.paused ? 'Reanudar' : 'Pausar';
+            if (label) label.textContent = state.paused ? tr('services.resume', 'Reanudar') : tr('services.pause', 'Pausar');
         }
 
         function resetProgress() {
@@ -54,6 +57,8 @@
                 var active = slideIndex === state.index;
                 slide.classList.toggle('is-active', active);
                 slide.setAttribute('aria-hidden', active ? 'false' : 'true');
+                var action = slide.querySelector('.services-slide__action');
+                if (action) action.setAttribute('tabindex', active ? '0' : '-1');
             });
 
             tabs.forEach(function (tab, tabIndex) {
