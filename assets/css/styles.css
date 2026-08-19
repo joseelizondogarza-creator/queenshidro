@@ -511,7 +511,6 @@ body[data-hero="true"] .cover-hero{margin-top:0}
 .tribe-strip__card:nth-child(2){grid-column:span 3}
 .tribe-strip__card:nth-child(3){grid-column:span 3}
 .tribe-strip__card:nth-child(4){grid-column:span 4}
-.tribe-strip__card:nth-child(5){grid-column:span 8;aspect-ratio:3/1.6}
 .tribe-strip__card img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.25,.46,.45,.94)}
 .tribe-strip__card:hover img{transform:scale(1.05)}
 .tribe-strip__card::after{
@@ -533,19 +532,21 @@ body[data-hero="true"] .cover-hero{margin-top:0}
 }
 .tribe-strip__card-label::before{content:"";width:22px;height:1px;background:var(--rasp-hi)}
 @media(max-width:980px){
-    .tribe-strip__card,.tribe-strip__card:first-child,.tribe-strip__card:nth-child(2),.tribe-strip__card:nth-child(3),.tribe-strip__card:nth-child(4),.tribe-strip__card:nth-child(5){
+    .tribe-strip__card,.tribe-strip__card:first-child,.tribe-strip__card:nth-child(2),.tribe-strip__card:nth-child(3),.tribe-strip__card:nth-child(4){
         grid-column:span 6;aspect-ratio:3/4;
     }
 }
 @media(max-width:560px){
-    .tribe-strip__card,.tribe-strip__card:first-child,.tribe-strip__card:nth-child(2),.tribe-strip__card:nth-child(3),.tribe-strip__card:nth-child(4),.tribe-strip__card:nth-child(5){
+    .tribe-strip__card,.tribe-strip__card:first-child,.tribe-strip__card:nth-child(2),.tribe-strip__card:nth-child(3),.tribe-strip__card:nth-child(4){
         grid-column:span 12;aspect-ratio:4/5;
     }
 }
 @media(min-width:981px){
-    /* Let the collage rows define the height so portrait cards do not leave dead space. */
+    /* Keep the first row compact and turn the remaining photo into a full-width banner. */
     .tribe-strip__card:first-child{aspect-ratio:3/2.2}
-    .tribe-strip__card:nth-child(2),.tribe-strip__card:nth-child(3),.tribe-strip__card:nth-child(5){aspect-ratio:auto}
+    .tribe-strip__card:nth-child(2),.tribe-strip__card:nth-child(3){aspect-ratio:auto}
+    .tribe-strip__card:nth-child(4){grid-column:span 12;aspect-ratio:3/1}
+    .tribe-strip__card:nth-child(4) img{object-position:center 52%}
 }
 
 /* ---------- Mapa (index) ---------- */
