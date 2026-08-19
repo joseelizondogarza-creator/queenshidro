@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var calendarNote = document.getElementById('distCalendarNote');
     var calendarPrev = document.getElementById('distCalendarPrev');
     var calendarNext = document.getElementById('distCalendarNext');
+    var calendarEl = document.querySelector('.dist__calendar');
 
     if (!form || !calendarGrid) return;
 
@@ -142,6 +143,15 @@ document.addEventListener('DOMContentLoaded', function () {
             button.setAttribute('aria-selected', active ? 'true' : 'false');
         });
 
+        if (calendarEl) {
+            calendarEl.hidden = !isLocal;
+            calendarEl.setAttribute('aria-hidden', isLocal ? 'false' : 'true');
+        }
+        if (!isLocal) {
+            selectedDate = '';
+            dateInput.value = '';
+        }
+
         municipalityField.hidden = !isLocal;
         municipality.disabled = !isLocal;
         municipality.required = isLocal;
@@ -210,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var company = document.getElementById('ldCompany').value.trim();
         var volume = document.getElementById('ldVolume').value.trim();
         if (document.getElementById('ldWebsite').value.trim()) return tr('validation.noRequest', 'No se pudo enviar la solicitud.');
-        if (!selectedDate || !isValidYmd(selectedDate) || selectedDate < addDays(getMexicoDate(), 7)) {
+        if (route === 'local' && (!selectedDate || !isValidYmd(selectedDate) || selectedDate < addDays(getMexicoDate(), 7))) {
             return tr('validation.chooseDate', 'Elige una fecha con al menos 7 días de anticipación.');
         }
         if (!name) return tr('validation.name', 'Escribe tu nombre.');
@@ -234,7 +244,7 @@ document.addEventListener('DOMContentLoaded', function () {
         submit.textContent = tr('dist.send', 'Enviando...');
         var payload = {
             request_type: route,
-            desired_date: selectedDate,
+            desired_date: route === 'local' ? selectedDate : '',
             municipality: route === 'local' ? municipality.value : '',
             state: route === 'local' ? 'Nuevo León' : state.value.trim(),
             city: route === 'local' ? municipality.value : city.value.trim(),

@@ -2,7 +2,7 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 // ============================================================
 // Queens Hidro — Solicitudes de degustación
-// La fecha es tentativa: el equipo confirma cada solicitud.
+// La fecha es tentativa y sólo aplica a visitas locales.
 // ============================================================
 
 const CORS = {
@@ -125,7 +125,7 @@ Deno.serve(async (req) => {
   if (requestType !== "local" && requestType !== "nacional") {
     return json({ ok: false, error: "Tipo de solicitud inválido" }, 400);
   }
-  if (!validDate(desiredDate) || desiredDate < addDays(dateInMexico(), 7)) {
+  if (requestType === "local" && (!validDate(desiredDate) || desiredDate < addDays(dateInMexico(), 7))) {
     return json({ ok: false, error: "La fecha debe tener al menos 7 días de anticipación" }, 400);
   }
   if (!fullName || !company || !desiredVolume) {
@@ -146,7 +146,7 @@ Deno.serve(async (req) => {
 
   const request = {
     request_type: requestType,
-    desired_date: desiredDate,
+    desired_date: desiredDate || null,
     municipality: requestType === "local" ? municipality : "",
     state: requestType === "local" ? "Nuevo León" : state,
     city: requestType === "local" ? municipality : city,
@@ -177,7 +177,7 @@ Deno.serve(async (req) => {
     : `Kit nacional · ${city}, ${state}`;
   const leadNotes = [
     `Solicitud de degustación ${requestType === "local" ? "local" : "nacional"}.`,
-    `Fecha tentativa: ${desiredDate}.`,
+    desiredDate ? `Fecha tentativa: ${desiredDate}.` : "",
     location + ".",
     `Volumen que le gustaría explorar: ${desiredVolume}.`,
     notes ? `Notas: ${notes}` : "",
