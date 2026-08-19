@@ -239,10 +239,11 @@ tr:hover td{background:rgba(255,255,255,0.02)}
       <a data-tab="content"><span class="ico"><i class="bi bi-journal-text"></i></span> Contenido</a>
       <a data-tab="distribuye"><span class="ico"><i class="bi bi-truck"></i></span> Distribuye</a>
       <div style="padding:8px 16px 4px;margin-top:10px"><span style="font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold-lo);font-weight:600">CRM</span></div>
-      <a data-tab="crm-dashboard"><span class="ico"><i class="bi bi-speedometer2"></i></span> Dashboard</a>
-      <a data-tab="crm-customers"><span class="ico"><i class="bi bi-people"></i></span> Clientes</a>
-      <a data-tab="crm-leads"><span class="ico"><i class="bi bi-person-plus"></i></span> Leads</a>
-      <a data-tab="crm-pipeline"><span class="ico"><i class="bi bi-graph-up-arrow"></i></span> Pipeline</a>
+       <a data-tab="crm-dashboard"><span class="ico"><i class="bi bi-speedometer2"></i></span> Dashboard</a>
+       <a data-tab="crm-customers"><span class="ico"><i class="bi bi-people"></i></span> Clientes</a>
+       <a data-tab="crm-leads"><span class="ico"><i class="bi bi-person-plus"></i></span> Leads</a>
+       <a data-tab="crm-tastings"><span class="ico"><i class="bi bi-calendar-heart"></i></span> Degustaciones</a>
+       <a data-tab="crm-pipeline"><span class="ico"><i class="bi bi-graph-up-arrow"></i></span> Pipeline</a>
       <a data-tab="crm-tasks"><span class="ico"><i class="bi bi-check2-square"></i></span> Tareas</a>
       <a data-tab="crm-interactions"><span class="ico"><i class="bi bi-chat-dots"></i></span> Interacciones</a>
     </nav>
@@ -374,6 +375,28 @@ tr:hover td{background:rgba(255,255,255,0.02)}
       </div>
     </div>
 
+    <!-- TAB: CRM Tastings -->
+    <div class="tab-panel" id="tab-crm-tastings">
+      <div class="admin-hdr"><h1>Degustaciones</h1><p>Solicitudes locales y nacionales pendientes de revisión.</p></div>
+      <div class="card">
+        <div class="card__hdr">
+          <p class="card__title">Solicitudes de degustación</p>
+          <button class="btn btn--gold btn--sm" id="btnRefreshTastings">Actualizar</button>
+        </div>
+        <div class="search-bar">
+          <select class="form-select" id="tastingFilterStatus" style="max-width:180px;padding:8px 12px;font-size:0.78rem">
+            <option value="">Todos los estados</option>
+            <option value="nuevo">Nuevo</option>
+            <option value="en_revision">En revisión</option>
+            <option value="confirmado">Confirmado</option>
+            <option value="atendido">Atendido</option>
+            <option value="descartado">Descartado</option>
+          </select>
+        </div>
+        <div class="table-wrap" id="tastingsTable"><p style="color:var(--muted);padding:20px">Cargando...</p></div>
+      </div>
+    </div>
+
     <!-- TAB: CRM Pipeline -->
     <div class="tab-panel" id="tab-crm-pipeline">
       <div class="admin-hdr">
@@ -477,10 +500,11 @@ function switchTab(tab){
   if(tab==='subscriptions'){loadPlans();loadSubscribers();}
   if(tab==='content')loadContent();
   if(tab==='distribuye')loadDistribuye();
-  if(tab==='crm-dashboard')loadDashboard();
-  if(tab==='crm-customers')loadCustomers();
-  if(tab==='crm-leads')loadLeads();
-  if(tab==='crm-pipeline')loadPipeline();
+   if(tab==='crm-dashboard')loadDashboard();
+   if(tab==='crm-customers')loadCustomers();
+   if(tab==='crm-leads')loadLeads();
+   if(tab==='crm-tastings')loadTastingRequests();
+   if(tab==='crm-pipeline')loadPipeline();
   if(tab==='crm-tasks')loadTasks();
   if(tab==='crm-interactions')loadInteractions();
 }
@@ -541,9 +565,10 @@ document.addEventListener('click',function(e){
     saveDistribuye();
   }
   /* CRM */
-  if(btn.classList.contains('lead-btn-edit')){openLeadModal(btn.dataset.id)}
-  if(btn.classList.contains('lead-btn-del')){deleteLead(btn.dataset.id)}
-  if(btn.classList.contains('modal-btn-save-lead')){saveLead(btn.dataset.id)}
+   if(btn.classList.contains('lead-btn-edit')){openLeadModal(btn.dataset.id)}
+   if(btn.classList.contains('lead-btn-del')){deleteLead(btn.dataset.id)}
+   if(btn.classList.contains('modal-btn-save-lead')){saveLead(btn.dataset.id)}
+   if(btn.id==='btnRefreshTastings'){loadTastingRequests()}
   if(btn.classList.contains('opp-btn-edit')){openOppModal(btn.dataset.id)}
   if(btn.classList.contains('opp-btn-del')){deleteOpp(btn.dataset.id)}
   if(btn.classList.contains('modal-btn-save-opp')){saveOpp(btn.dataset.id)}
@@ -570,9 +595,12 @@ document.addEventListener('change',function(e){
   if(e.target.classList&&e.target.classList.contains('order-status-select')){
     updateOrderStatus(e.target.dataset.id,e.target.value);
   }
-  if(e.target.classList&&e.target.classList.contains('customer-media-toggle')){
-    toggleCustomerMedia(e.target.dataset.id,e.target.checked);
-  }
+   if(e.target.classList&&e.target.classList.contains('customer-media-toggle')){
+     toggleCustomerMedia(e.target.dataset.id,e.target.checked);
+   }
+   if(e.target.classList&&e.target.classList.contains('tasting-status-select')){
+     updateTastingStatus(e.target.dataset.id,e.target.value);
+   }
 });
 document.addEventListener('blur',function(e){
   var el=e.target;
@@ -591,7 +619,8 @@ document.getElementById('btnAddInteraction').addEventListener('click',function()
 document.getElementById('btnRefreshCustomers').addEventListener('click',loadCustomers);
 document.getElementById('customerSearch').addEventListener('keydown',function(e){if(e.key==='Enter')loadCustomers()});
 document.getElementById('leadSearch').addEventListener('input',function(){loadLeads()});
-document.getElementById('leadFilterStatus').addEventListener('change',function(){loadLeads()});
+ document.getElementById('leadFilterStatus').addEventListener('change',function(){loadLeads()});
+ document.getElementById('tastingFilterStatus').addEventListener('change',function(){loadTastingRequests()});
 document.getElementById('taskFilterStatus').addEventListener('change',function(){loadTasks()});
 document.getElementById('interactionFilterType').addEventListener('change',function(){loadInteractions()});
 document.getElementById('interactionFilterEntity').addEventListener('change',function(){loadInteractions()});
@@ -1369,7 +1398,6 @@ async function loadDistribuye(){
     {key:'dist_title',label:'Título principal (H1)',l:false},
     {key:'dist_sub',label:'Subtítulo (junto al título)',l:true},
     {key:'dist_text',label:'Texto del pitch',l:true},
-    {key:'dist_btn',label:'Texto del botón del formulario',l:false},
     {key:'dist_hint_bottle',label:'Hint Botella',l:false},
     {key:'dist_hint_barrel',label:'Hint Barril',l:false},
     {key:'dist_feat1_title',label:'Feature 1 — Título',l:false},
@@ -1756,6 +1784,45 @@ function backToCustomerList(){
   document.getElementById('customerDetail').style.display='none';
 }
 
+/* ─── CRM TASTINGS ─── */
+var tastingStatusLabels={nuevo:'Nuevo',en_revision:'En revisión',confirmado:'Confirmado',atendido:'Atendido',descartado:'Descartado'};
+var tastingTypeLabels={local:'Visita local',nacional:'Solicitud nacional'};
+var tastingLeadLabels={botella:'Botella',barril:'Barril'};
+
+async function loadTastingRequests(){
+  var filter=document.getElementById('tastingFilterStatus').value;
+  var query=sb.from('tasting_requests').select('*').order('created_at',{ascending:false});
+  if(filter)query=query.eq('status',filter);
+  var {data,error}=await query;
+  if(error){document.getElementById('tastingsTable').innerHTML='<p style="color:var(--red);padding:20px">Error al cargar las degustaciones.</p>';return}
+  var rows=data||[];
+  if(!rows.length){document.getElementById('tastingsTable').innerHTML='<p style="color:var(--muted);padding:20px">No hay solicitudes de degustación.</p>';return}
+  var html=rows.map(function(r){
+    var date=r.desired_date?new Date(r.desired_date+'T12:00:00').toLocaleDateString('es-MX',{day:'numeric',month:'short',year:'numeric'}):'—';
+    var created=r.created_at?new Date(r.created_at).toLocaleDateString('es-MX',{day:'numeric',month:'short'}):'—';
+    var place=r.request_type==='local'?(r.municipality||'Monterrey'):[r.city,r.state].filter(Boolean).join(', ');
+    var status=r.status||'nuevo';
+    var options=Object.keys(tastingStatusLabels).map(function(key){return '<option value="'+key+'"'+(key===status?' selected':'')+'>'+tastingStatusLabels[key]+'</option>'}).join('');
+    return '<tr>'+
+      '<td><strong>'+escapeHtml(r.company||'Sin negocio')+'</strong><br><span style="font-size:0.7rem;color:var(--muted)">'+escapeHtml(r.full_name||'')+'</span></td>'+
+      '<td style="font-size:0.74rem;color:var(--muted)">'+escapeHtml(r.email||'—')+'<br>'+escapeHtml(r.phone||'')+'</td>'+
+      '<td style="font-size:0.75rem">'+(tastingTypeLabels[r.request_type]||escapeHtml(r.request_type||'—'))+'<br><span style="color:var(--muted)">'+escapeHtml(place||'—')+'</span></td>'+
+      '<td style="font-size:0.75rem">'+escapeHtml(date)+'<br><span style="color:var(--teal-hi)">'+escapeHtml(tastingLeadLabels[r.lead_type]||r.lead_type||'—')+'</span></td>'+
+      '<td style="font-size:0.74rem;color:var(--muted);max-width:180px">'+escapeHtml(r.desired_volume||'—')+'</td>'+
+      '<td><select class="form-select tasting-status-select" data-id="'+r.id+'" style="min-width:130px;padding:7px 9px;font-size:0.72rem">'+options+'</select></td>'+
+      '<td style="font-size:0.7rem;color:var(--muted)">'+escapeHtml(created)+'</td>'+
+    '</tr>';
+  }).join('');
+  document.getElementById('tastingsTable').innerHTML='<table><thead><tr><th>Negocio</th><th>Contacto</th><th>Tipo / Ubicación</th><th>Fecha / Formato</th><th>Volumen</th><th>Estado</th><th>Recibido</th></tr></thead><tbody>'+html+'</tbody></table>';
+}
+
+async function updateTastingStatus(id,status){
+  var payload={status:status,updated_at:new Date().toISOString(),reviewed_at:status==='nuevo'?null:new Date().toISOString()};
+  var {error}=await sb.from('tasting_requests').update(payload).eq('id',id);
+  if(error){toast('No se pudo actualizar la degustación','err');loadTastingRequests();return}
+  toast('Estado actualizado');
+}
+
 /* ─── CRM LEADS ─── */
 async function loadLeads(){
   var search=document.getElementById('leadSearch').value.trim().toLowerCase();
@@ -1769,7 +1836,7 @@ async function loadLeads(){
     return (l.full_name||'').toLowerCase().indexOf(search)>=0||(l.email||'').toLowerCase().indexOf(search)>=0||(l.company||'').toLowerCase().indexOf(search)>=0||(l.phone||'').indexOf(search)>=0;
   });
   if(!d.length){document.getElementById('leadsTable').innerHTML='<p style="color:var(--muted);padding:20px">No hay leads.</p>';return}
-  var sources={distribuye:'Distribuye',contacto:'Contacto',evento:'Evento',otro:'Otro',manual:'Manual'};
+  var sources={distribuye:'Distribuye',degustacion:'Degustación',contacto:'Contacto',evento:'Evento',otro:'Otro',manual:'Manual'};
   var leadTypes={botella:'Botella',barril:'Barril'};
   var rows=d.map(function(l){
     return '<tr>'+

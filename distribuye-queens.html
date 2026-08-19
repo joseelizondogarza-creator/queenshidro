@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Distribuye Queens Hidro. Envíos a todo México y precio por volumen. ¿Tienes bar, restaurante o tienda? Trabajemos juntos.">
-    <title>Distribuye Queens | Queens Hidro</title>
+    <meta name="description" content="Solicita una degustación de Queens Hidro para tu negocio. Visitas en Monterrey y área metropolitana; solicitudes de degustación para todo México.">
+    <title>Degustación Queens | Queens Hidro</title>
     <link rel="canonical" href="https://queenshidro.com/distribuye-queens.html">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Queens Hidro">
-    <meta property="og:title" content="Distribuye Queens | Queens Hidro — Precio por volumen">
-    <meta property="og:description" content="Distribuye Queens Hidro en tu bar, restaurante, tienda o festival. Envíos a todo México y precio por volumen.">
+    <meta property="og:title" content="Degustación Queens | Queens Hidro">
+    <meta property="og:description" content="Conoce Queens Hidro para tu negocio. Solicita una visita en Monterrey y área metropolitana o una degustación nacional.">
     <meta property="og:url" content="https://queenshidro.com/distribuye-queens.html">
     <meta property="og:image" content="https://queenshidro.com/assets/img/og-default.jpg">
     <meta property="og:image:width" content="1200">
@@ -18,7 +18,7 @@
     <meta property="og:locale" content="es_MX">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Distribuye Queens | Queens Hidro">
-    <meta name="twitter:description" content="Precio por volumen y envíos a todo México. Trabajemos juntos.">
+    <meta name="twitter:description" content="Solicita una degustación para tu negocio. Visitas locales y solicitudes nacionales.">
     <meta name="twitter:image" content="https://queenshidro.com/assets/img/og-default.jpg">
     <meta name="theme-color" content="#0a0a0c">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
@@ -32,7 +32,7 @@
         "name": "Distribución Queens Hidro",
         "serviceType": "Distribución de hidromiel artesanal",
         "url": "https://queenshidro.com/distribuye-queens.html",
-        "description": "Distribución de hidromiel artesanal para bares, restaurantes, tiendas y festivales. Envíos a todo México con precio por volumen.",
+        "description": "Degustaciones de hidromiel artesanal para bares, restaurantes, tiendas y festivales.",
         "provider": { "@id": "https://queenshidro.com/#organization" },
         "areaServed": "México",
         "inLanguage": "es-MX"
@@ -46,19 +46,63 @@
         .dist__title{margin-bottom:20px}
         .dist__sub{color:var(--muted);font-size:1rem;line-height:1.7;margin-bottom:8px}
         .dist__pitch{color:var(--text);font-size:1.08rem;line-height:1.8;opacity:.85}
+        .dist__tasting{margin-top:42px;padding:30px;background:linear-gradient(135deg,rgba(225,3,87,.09),rgba(2,180,183,.06));border:1px solid var(--line-strong);position:relative;overflow:hidden}
+        .dist__tasting::after{content:"";position:absolute;right:-55px;top:-55px;width:160px;height:160px;border:1px solid rgba(62,224,227,.35);border-radius:50%}
+        .dist__tasting-head{position:relative;z-index:1;margin-bottom:24px}
+        .dist__tasting-kicker{font-family:var(--font-m);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--teal-hi);margin-bottom:10px}
+        .dist__tasting-title{font-family:var(--font-h);font-size:clamp(1.8rem,3vw,2.5rem);line-height:1.05;color:var(--text);margin-bottom:9px}
+        .dist__tasting-copy{color:var(--muted);font-size:.95rem;line-height:1.65;max-width:560px}
+        .dist__routes{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:relative;z-index:1;margin-bottom:24px}
+        .dist__route{display:flex;flex-direction:column;align-items:flex-start;text-align:left;min-height:116px;padding:17px 18px;background:rgba(10,10,12,.52);border:1px solid var(--line);color:var(--muted);cursor:pointer;transition:border-color .25s,background .25s,transform .25s}
+        .dist__route:hover{border-color:var(--teal-hi);transform:translateY(-2px)}
+        .dist__route.on{background:var(--rasp);border-color:var(--rasp-hi);color:#fff;box-shadow:0 14px 30px rgba(225,3,87,.2)}
+        .dist__route-label{font-family:var(--font-m);font-size:.69rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px;opacity:.85}
+        .dist__route-title{font-family:var(--font-h);font-size:1.22rem;line-height:1.1;color:var(--text);margin-bottom:5px}
+        .dist__route.on .dist__route-title{color:#fff}
+        .dist__route-copy{font-size:.8rem;line-height:1.45;color:inherit;opacity:.78}
+        .dist__calendar{position:relative;z-index:1;background:rgba(10,10,12,.68);border:1px solid var(--line);padding:20px}
+        .dist__calendar-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+        .dist__calendar-month{font-family:var(--font-h);font-size:1.28rem;color:var(--text);text-transform:capitalize}
+        .dist__calendar-nav{display:flex;gap:6px}
+        .dist__calendar-nav button{width:32px;height:32px;border:1px solid var(--line-strong);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s}
+        .dist__calendar-nav button:hover:not(:disabled){border-color:var(--teal-hi);color:var(--teal-hi)}
+        .dist__calendar-nav button:disabled{opacity:.3;cursor:not-allowed}
+        .dist__calendar-week,.dist__calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+        .dist__calendar-week{margin-bottom:6px}
+        .dist__calendar-week span{font-family:var(--font-m);font-size:.62rem;letter-spacing:.08em;text-align:center;color:var(--muted);text-transform:uppercase}
+        .dist__calendar-day{aspect-ratio:1;border:1px solid transparent;background:transparent;color:var(--text);font-family:var(--font-m);font-size:.78rem;cursor:pointer;transition:all .2s}
+        .dist__calendar-day:hover:not(:disabled){border-color:var(--teal-hi);color:var(--teal-hi)}
+        .dist__calendar-day.is-muted{color:rgba(255,255,255,.2);cursor:default}
+        .dist__calendar-day:disabled{color:rgba(255,255,255,.22);cursor:not-allowed}
+        .dist__calendar-day.is-selected{background:var(--teal);border-color:var(--teal-hi);color:#041214;font-weight:600}
+        .dist__calendar-day.is-today{box-shadow:inset 0 -2px 0 var(--rasp-hi)}
+        .dist__calendar-note{font-size:.78rem;color:var(--muted);line-height:1.55;margin-top:14px}
+        .dist__calendar-selected{font-family:var(--font-m);font-size:.78rem;color:var(--teal-hi);margin-top:8px;min-height:1.2em}
+        .dist__form-title{font-family:var(--font-h);font-size:1.55rem;color:var(--text);margin:34px 0 2px}
+        .dist__form-sub{font-size:.87rem;color:var(--muted);line-height:1.55;margin-bottom:16px}
+        .dist__field{display:flex;flex-direction:column;gap:6px}
+        .dist__field[hidden]{display:none}
+        .dist__row[hidden]{display:none}
+        .dist__label{font-family:var(--font-m);font-size:.67rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+        .dist__input,.dist__select{width:100%}
+        .dist__select{appearance:none;background-color:var(--card);background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 18px) 52%,calc(100% - 13px) 52%;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+        .dist__format{margin:10px 0 2px}
+        .dist__format-label{font-family:var(--font-m);font-size:.67rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
+        .dist__hint{font-size:.82rem;color:var(--teal-hi);font-family:var(--font-m);min-height:1.5em;margin:7px 0 7px}
+        .dist__error{color:var(--err);font-size:.85rem;line-height:1.5;margin-top:4px}
+        .dist__success{color:var(--ok);font-size:1.02rem;text-align:center;font-family:var(--font-m);margin-top:4px;line-height:1.5}
+        .dist__optional{font-family:var(--font-b);font-size:.75rem;letter-spacing:0;text-transform:none;color:var(--muted);opacity:.8}
         .dist__toggle{display:inline-flex;border:1px solid var(--line-strong);border-radius:3px;overflow:hidden;margin:26px 0 10px}
         .dist__toggle-btn{background:transparent;border:none;border-right:1px solid var(--line);color:var(--muted);font-family:var(--font-m);font-size:0.85rem;letter-spacing:0.16em;text-transform:uppercase;padding:13px 28px;cursor:pointer;transition:all .25s}
         .dist__toggle-btn:last-child{border-right:none}
         .dist__toggle-btn:hover{color:var(--text)}
         .dist__toggle-btn.on{background:var(--rasp);color:#fff}
-        .dist__hint{font-size:0.9rem;color:var(--teal-hi);font-family:var(--font-m);min-height:1.5em;margin-bottom:28px}
         .dist__form{display:flex;flex-direction:column;gap:12px}
         .dist__row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
         .dist__input{background:var(--card);border:1px solid var(--line-strong);border-radius:3px;padding:14px 16px;color:var(--text);font-family:var(--font-b);font-size:1rem;outline:none;transition:border-color .25s}
         .dist__input:focus{border-color:var(--rasp)}
         .dist__input::placeholder{color:rgba(255,255,255,0.35)}
         .dist__textarea{resize:vertical;min-height:96px}
-        .dist__success{color:var(--ok);font-size:1.02rem;text-align:center;font-family:var(--font-m);margin-top:4px}
         .dist__links{display:flex;gap:22px;margin-top:24px;flex-wrap:wrap}
         .dist__links a{font-family:var(--font-m);font-size:0.86rem;letter-spacing:0.06em;color:var(--muted);display:inline-flex;align-items:center;gap:8px;transition:color .25s}
         .dist__links a:hover{color:var(--teal-hi)}
@@ -72,7 +116,7 @@
         .dist-feat__title{font-family:var(--font-h);font-size:1.3rem;color:var(--text);margin-bottom:8px}
         .dist-feat__desc{font-size:0.98rem;color:var(--muted);line-height:1.7}
         @media(max-width:960px){.dist{padding-top:60px}.dist-feats__grid{grid-template-columns:1fr 1fr}}
-        @media(max-width:640px){.dist-feats__grid{grid-template-columns:1fr}.dist__row{grid-template-columns:1fr}.dist{padding-top:40px}.dist-feats{padding:70px 0}}
+        @media(max-width:640px){.dist-feats__grid{grid-template-columns:1fr}.dist__row{grid-template-columns:1fr}.dist{padding-top:40px}.dist-feats{padding:70px 0}.dist__tasting{padding:22px 16px;margin-top:30px}.dist__routes{grid-template-columns:1fr}.dist__calendar{padding:14px 10px}.dist__calendar-grid,.dist__calendar-week{gap:3px}.dist__calendar-day{font-size:.7rem}}
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -89,9 +133,9 @@
         <img class="cover-hero__bg" id="coverImg" src="HERO/HERO1.webp" alt="Distribuye Queens Hidro" fetchpriority="high">
         <header class="page-hdr">
             <div class="container">
-                <p class="kicker dist__kicker"><span class="sec-num">01</span> <span id="distTag">Distribuye Queens</span></p>
-                <h1 class="display display--lg dist__title" id="distTitle">Crece con Queens Hidro</h1>
-                <p class="dist__sub" id="distSub">Envíos a todo México y precio por volumen. ¿Tienes bar, restaurante o tienda? Trabajemos juntos.</p>
+                <p class="kicker dist__kicker"><span class="sec-num">01</span> <span id="distTag">Degustación Queens</span></p>
+                <h1 class="display display--lg dist__title" id="distTitle">Prueba Queens en tu negocio</h1>
+                <p class="dist__sub" id="distSub">Primero probamos. Después platicamos sobre la mejor forma de trabajar juntos.</p>
             </div>
         </header>
     </section>
@@ -99,24 +143,109 @@
     <section class="dist"><div class="container">
         <div class="dist__grid">
             <div class="dist__content">
-                <p class="dist__pitch" id="distText">Tú pones el espacio, nosotros ponemos el hidromiel y la comunidad. Precios especiales por volumen y envíos a todo México.</p>
+                <p class="dist__pitch" id="distText">Cuéntanos sobre tu negocio y lo que quieres construir. Nosotros te escuchamos, probamos juntos y vemos el siguiente paso.</p>
 
-                <div class="dist__toggle" role="group" aria-label="Formato de distribución">
-                    <button type="button" class="dist__toggle-btn on" data-type="botella" id="distBtnBottle">Botella</button>
-                    <button type="button" class="dist__toggle-btn" data-type="barril" id="distBtnBarrel">Barril</button>
+                <div class="dist__tasting" id="distTasting">
+                    <div class="dist__tasting-head">
+                        <p class="dist__tasting-kicker"><span class="sec-num">02</span> Degustación Queens</p>
+                        <h2 class="dist__tasting-title" id="distTastingTitle">Primero probamos.</h2>
+                        <p class="dist__tasting-copy" id="distTastingCopy">Elige cómo quieres conocer Queens. La fecha es tentativa: revisamos tu solicitud y te confirmamos personalmente.</p>
+                    </div>
+
+                    <div class="dist__routes" role="tablist" aria-label="Tipo de degustación">
+                        <button type="button" class="dist__route on" data-route="local" id="distRouteLocal" role="tab" aria-selected="true">
+                            <span class="dist__route-label">01 · En persona</span>
+                            <span class="dist__route-title">Visita en tu negocio</span>
+                            <span class="dist__route-copy">Monterrey y área metropolitana.</span>
+                        </button>
+                        <button type="button" class="dist__route" data-route="national" id="distRouteNational" role="tab" aria-selected="false">
+                            <span class="dist__route-label">02 · A distancia</span>
+                            <span class="dist__route-title">Kit sin costo</span>
+                            <span class="dist__route-copy">Solicita una degustación desde cualquier parte de México.</span>
+                        </button>
+                    </div>
+
+                    <div class="dist__calendar" aria-label="Calendario de degustación">
+                        <div class="dist__calendar-head">
+                            <p class="dist__calendar-month" id="distCalendarMonth"></p>
+                            <div class="dist__calendar-nav">
+                                <button type="button" id="distCalendarPrev" aria-label="Mes anterior"><i class="bi bi-arrow-left"></i></button>
+                                <button type="button" id="distCalendarNext" aria-label="Mes siguiente"><i class="bi bi-arrow-right"></i></button>
+                            </div>
+                        </div>
+                        <div class="dist__calendar-week" aria-hidden="true"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div>
+                        <div class="dist__calendar-grid" id="distCalendarGrid"></div>
+                        <p class="dist__calendar-note" id="distCalendarNote">Elige una fecha tentativa con al menos 7 días de anticipación. Te contactaremos para confirmar.</p>
+                        <p class="dist__calendar-selected" id="distCalendarSelected" aria-live="polite"></p>
+                    </div>
                 </div>
-                <p class="dist__hint" id="distHint">Botellas — desde 12 unidades, precio por volumen y envío a todo México.</p>
+
+                <h2 class="dist__form-title" id="distFormTitle">Cuéntanos de tu negocio</h2>
+                <p class="dist__form-sub" id="distFormSub">Necesitamos estos datos para revisar la visita y entender qué estás buscando.</p>
 
                 <form class="dist__form" id="distForm" novalidate>
-                    <input class="dist__input" type="text" placeholder="Tu nombre" id="ldName" required>
-                    <div class="dist__row">
-                        <input class="dist__input" type="email" placeholder="Tu correo" id="ldEmail">
-                        <input class="dist__input" type="tel" placeholder="Tu teléfono" id="ldPhone">
+                    <div class="dist__field" id="distMunicipalityField">
+                        <label class="dist__label" for="ldMunicipality">Municipio</label>
+                        <select class="dist__input dist__select" id="ldMunicipality" required>
+                            <option value="">Selecciona tu municipio</option>
+                            <option value="Apodaca">Apodaca</option>
+                            <option value="Escobedo">Escobedo</option>
+                            <option value="Guadalupe">Guadalupe</option>
+                            <option value="Monterrey">Monterrey</option>
+                            <option value="San Nicolás">San Nicolás</option>
+                            <option value="San Pedro">San Pedro</option>
+                            <option value="Santa Catarina">Santa Catarina</option>
+                        </select>
                     </div>
-                    <input class="dist__input" type="text" placeholder="Nombre de tu negocio" id="ldCompany">
-                    <textarea class="dist__input dist__textarea" placeholder="Cuéntanos qué necesitas..." id="ldMessage"></textarea>
-                    <button class="btn btn--primary btn--full" type="submit" id="ldSubmit">Quiero distribuir</button>
-                    <p class="dist__success" id="ldSuccess" hidden>Mensaje enviado. Nos pondremos en contacto pronto.</p>
+                    <div class="dist__row" id="distNationalLocation" hidden>
+                        <div class="dist__field">
+                            <label class="dist__label" for="ldState">Estado</label>
+                            <input class="dist__input" type="text" placeholder="Tu estado" id="ldState" disabled>
+                        </div>
+                        <div class="dist__field">
+                            <label class="dist__label" for="ldCity">Ciudad / municipio</label>
+                            <input class="dist__input" type="text" placeholder="Tu ciudad" id="ldCity" disabled>
+                        </div>
+                    </div>
+                    <div class="dist__field">
+                        <label class="dist__label" for="ldName">Tu nombre</label>
+                        <input class="dist__input" type="text" placeholder="Nombre completo" id="ldName" required autocomplete="name">
+                    </div>
+                    <div class="dist__row">
+                        <div class="dist__field">
+                            <label class="dist__label" for="ldEmail">Correo</label>
+                            <input class="dist__input" type="email" placeholder="tu@correo.com" id="ldEmail" required autocomplete="email">
+                        </div>
+                        <div class="dist__field">
+                            <label class="dist__label" for="ldPhone">Teléfono / WhatsApp</label>
+                            <input class="dist__input" type="tel" placeholder="81..." id="ldPhone" autocomplete="tel">
+                        </div>
+                    </div>
+                    <div class="dist__field">
+                        <label class="dist__label" for="ldCompany">Nombre de tu negocio</label>
+                        <input class="dist__input" type="text" placeholder="Nombre del negocio" id="ldCompany" required autocomplete="organization">
+                    </div>
+                    <div class="dist__field">
+                        <label class="dist__label" for="ldVolume">Volumen que te gustaría explorar</label>
+                        <input class="dist__input" type="text" placeholder="Ej. compra semanal, mensual o cantidad aproximada" id="ldVolume" required>
+                    </div>
+                    <div class="dist__format">
+                        <span class="dist__format-label">¿Qué formato te interesa?</span>
+                        <div class="dist__toggle" role="group" aria-label="Formato de distribución">
+                            <button type="button" class="dist__toggle-btn on" data-type="botella" id="distBtnBottle">Botella</button>
+                            <button type="button" class="dist__toggle-btn" data-type="barril" id="distBtnBarrel">Barril</button>
+                        </div>
+                        <p class="dist__hint" id="distHint">Botella — cuéntanos qué formato imaginas para tu negocio.</p>
+                    </div>
+                    <div class="dist__field">
+                        <label class="dist__label" for="ldMessage">Notas <span class="dist__optional">opcional</span></label>
+                        <textarea class="dist__input dist__textarea" placeholder="Cuéntanos qué te gustaría probar..." id="ldMessage"></textarea>
+                    </div>
+                    <input type="hidden" id="ldDate" name="desired_date">
+                    <input type="text" id="ldWebsite" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+                    <p class="dist__error" id="distError" role="alert" hidden></p>
+                    <button class="btn btn--primary btn--full" type="submit" id="ldSubmit">Solicitar visita</button>
+                    <p class="dist__success" id="ldSuccess" hidden>Recibimos tu solicitud. Te contactaremos para confirmar el siguiente paso.</p>
                 </form>
 
                 <div class="dist__links">
@@ -130,15 +259,15 @@
     <section class="dist-feats section--alt"><div class="container">
         <div class="section__head">
             <div>
-                <p class="kicker"><span class="sec-num">02</span> Para tu negocio</p>
-                <h2 class="display display--lg" id="distContactTitle">Envíos, inventario e impacto real</h2>
+                <p class="kicker"><span class="sec-num">03</span> Para tu negocio</p>
+                <h2 class="display display--lg" id="distContactTitle">Una conversación que empieza con una prueba</h2>
             </div>
-            <p class="section__head-sub" id="distContactSub">Precios por volumen, logística a toda la República y una comunidad que apoya a los apicultores de Nuevo León.</p>
+            <p class="section__head-sub" id="distContactSub">Una conversación directa para entender tu negocio y encontrar la forma correcta de llevar Queens a tu comunidad.</p>
         </div>
         <div class="dist-feats__grid">
-            <div class="dist-feat"><span class="dist-feat__num">01</span><div class="dist-feat__icon"><i class="bi bi-truck"></i></div><p class="dist-feat__title" id="distFeat1Title">Envíos a Todo México</p><p class="dist-feat__desc" id="distFeat1Desc">Llegamos a toda la República, hasta tu puerta.</p></div>
-            <div class="dist-feat"><span class="dist-feat__num">02</span><div class="dist-feat__icon"><i class="bi bi-box-seam"></i></div><p class="dist-feat__title" id="distFeat2Title">Inventario Flexible</p><p class="dist-feat__desc" id="distFeat2Desc">Tú decides el volumen y la frecuencia.</p></div>
-            <div class="dist-feat"><span class="dist-feat__num">03</span><div class="dist-feat__icon"><i class="bi bi-hand-index-thumb"></i></div><p class="dist-feat__title" id="distFeat3Title">Impacto Real</p><p class="dist-feat__desc" id="distFeat3Desc">Cada botella que mueves apoya a los apicultores de Nuevo León.</p></div>
+            <div class="dist-feat"><span class="dist-feat__num">01</span><div class="dist-feat__icon"><i class="bi bi-chat-heart"></i></div><p class="dist-feat__title" id="distFeat1Title">Platicamos primero</p><p class="dist-feat__desc" id="distFeat1Desc">Entendemos tu negocio antes de proponerte una forma de trabajar.</p></div>
+            <div class="dist-feat"><span class="dist-feat__num">02</span><div class="dist-feat__icon"><i class="bi bi-stars"></i></div><p class="dist-feat__title" id="distFeat2Title">Prueba sin presión</p><p class="dist-feat__desc" id="distFeat2Desc">Conoce Queens y descubre qué experiencia hace sentido para tu comunidad.</p></div>
+            <div class="dist-feat"><span class="dist-feat__num">03</span><div class="dist-feat__icon"><i class="bi bi-bee"></i></div><p class="dist-feat__title" id="distFeat3Title">Impacto real</p><p class="dist-feat__desc" id="distFeat3Desc">Cada conversación puede abrir una nueva forma de apoyar a los apicultores de Nuevo León.</p></div>
         </div>
     </div></section>
 

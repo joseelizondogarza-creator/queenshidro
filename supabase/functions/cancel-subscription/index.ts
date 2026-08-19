@@ -56,6 +56,20 @@ async function getUserEmail(supabaseUrl: string, serviceKey: string, userId: str
   }
 }
 
+async function getProfileName(supabaseUrl: string, serviceKey: string, userId: string): Promise<string> {
+  if (!userId) return "";
+  try {
+    const res = await fetch(`${supabaseUrl}/rest/v1/profiles?select=full_name&id=eq.${userId}`, {
+      headers: { apikey: serviceKey, Authorization: `Bearer ${serviceKey}` },
+    });
+    if (!res.ok) return "";
+    const rows: any = await res.json();
+    return (Array.isArray(rows) && rows[0]?.full_name) || "";
+  } catch {
+    return "";
+  }
+}
+
 async function sendEmail(supabaseUrl: string, serviceKey: string, payload: { to: string; template: string; data: any }) {
   try {
     await fetch(`${supabaseUrl}/functions/v1/send-email`, {
@@ -124,10 +138,11 @@ Deno.serve(async (req) => {
 
     const email = await getUserEmail(supabaseUrl, serviceKey, sub.user_id);
     if (email) {
+      const name = await getProfileName(supabaseUrl, serviceKey, sub.user_id);
       await sendEmail(supabaseUrl, serviceKey, {
         to: email,
         template: "subscription_cancelled",
-        data: { name: "", plan_name: sub.subscription_plans?.name || "Queens Hidro" },
+        data: { name, plan_name: sub.subscription_plans?.name || "Queens Hidro" },
       });
     }
 

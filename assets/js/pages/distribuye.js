@@ -1,81 +1,298 @@
 document.addEventListener('DOMContentLoaded', function () {
-    if (!window.QH || !window.QH.sb) return;
-    var sb = window.QH.sb;
-
+    var sb = window.QH && window.QH.sb;
     var leadType = 'botella';
+    var route = 'local';
+    var selectedDate = '';
+    var minDate = addDays(getMexicoDate(), 7);
+    var cursor = parseYmd(minDate);
+
     var hints = {
-        botella: 'Botellas — desde 12 unidades, precio por volumen y envío a todo México.',
-        barril: 'Barril — kegs para bar y restaurante, plan de reposición según tu consumo.'
+        botella: 'Botella — cuéntanos qué formato imaginas para tu negocio.',
+        barril: 'Barril — cuéntanos cómo te gustaría servir Queens.'
     };
+
+    var municipality = document.getElementById('ldMunicipality');
+    var municipalityField = document.getElementById('distMunicipalityField');
+    var nationalLocation = document.getElementById('distNationalLocation');
+    var state = document.getElementById('ldState');
+    var city = document.getElementById('ldCity');
+    var form = document.getElementById('distForm');
+    var formTitle = document.getElementById('distFormTitle');
+    var formSub = document.getElementById('distFormSub');
+    var submit = document.getElementById('ldSubmit');
     var hintEl = document.getElementById('distHint');
-    var toggleBtns = document.querySelectorAll('.dist__toggle-btn');
-    toggleBtns.forEach(function (b) {
-        b.addEventListener('click', function () {
-            toggleBtns.forEach(function (x) { x.classList.remove('on'); });
-            b.classList.add('on');
-            leadType = b.getAttribute('data-type') || 'botella';
-            if (hintEl) window.QH.setEditableText(hintEl, hints[leadType] || '');
+    var errorEl = document.getElementById('distError');
+    var successEl = document.getElementById('ldSuccess');
+    var dateInput = document.getElementById('ldDate');
+    var calendarGrid = document.getElementById('distCalendarGrid');
+    var calendarMonth = document.getElementById('distCalendarMonth');
+    var calendarSelected = document.getElementById('distCalendarSelected');
+    var calendarNote = document.getElementById('distCalendarNote');
+    var calendarPrev = document.getElementById('distCalendarPrev');
+    var calendarNext = document.getElementById('distCalendarNext');
+
+    if (!form || !calendarGrid) return;
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    function getMexicoDate() {
+        var parts = new Intl.DateTimeFormat('en-US', {
+            timeZone: 'America/Monterrey',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        }).formatToParts(new Date());
+        var values = {};
+        parts.forEach(function (part) { if (part.type !== 'literal') values[part.type] = part.value; });
+        return values.year + '-' + values.month + '-' + values.day;
+    }
+
+    function parseYmd(value) {
+        var parts = String(value).split('-').map(Number);
+        return { year: parts[0], month: parts[1] - 1, day: parts[2] };
+    }
+
+    function addDays(value, days) {
+        var parts = parseYmd(value);
+        var date = new Date(Date.UTC(parts.year, parts.month, parts.day));
+        date.setUTCDate(date.getUTCDate() + days);
+        return date.getUTCFullYear() + '-' + pad(date.getUTCMonth() + 1) + '-' + pad(date.getUTCDate());
+    }
+
+    function isValidYmd(value) {
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+        var parts = parseYmd(value);
+        var date = new Date(Date.UTC(parts.year, parts.month, parts.day));
+        return date.getUTCFullYear() === parts.year && date.getUTCMonth() === parts.month && date.getUTCDate() === parts.day;
+    }
+
+    function monthKey(value) {
+        return value.year * 12 + value.month;
+    }
+
+    function monthLabel(year, month) {
+        return new Intl.DateTimeFormat('es-MX', { month: 'long', year: 'numeric', timeZone: 'UTC' })
+            .format(new Date(Date.UTC(year, month, 1)));
+    }
+
+    function dateLabel(value) {
+        var parts = parseYmd(value);
+        return new Intl.DateTimeFormat('es-MX', {
+            weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC'
+        }).format(new Date(Date.UTC(parts.year, parts.month, parts.day)));
+    }
+
+    function setText(element, value) {
+        if (element && window.QH && window.QH.setEditableText) window.QH.setEditableText(element, value);
+        else if (element) element.textContent = value;
+    }
+
+    function showError(message) {
+        if (!errorEl) return;
+        errorEl.textContent = message || '';
+        errorEl.hidden = !message;
+    }
+
+    function renderCalendar() {
+        if (!calendarMonth || !calendarGrid) return;
+        calendarMonth.textContent = monthLabel(cursor.year, cursor.month);
+        calendarPrev.disabled = monthKey(cursor) <= monthKey(parseYmd(minDate));
+
+        var firstDay = new Date(Date.UTC(cursor.year, cursor.month, 1)).getUTCDay();
+        var mondayOffset = (firstDay + 6) % 7;
+        var daysInMonth = new Date(Date.UTC(cursor.year, cursor.month + 1, 0)).getUTCDate();
+        var html = '';
+
+        for (var i = 0; i < 42; i++) {
+            var day = i - mondayOffset + 1;
+            if (day < 1 || day > daysInMonth) {
+                html += '<span class="dist__calendar-day is-muted" aria-hidden="true"></span>';
+                continue;
+            }
+            var date = cursor.year + '-' + pad(cursor.month + 1) + '-' + pad(day);
+            var disabled = date < minDate;
+            var classes = 'dist__calendar-day';
+            if (date === getMexicoDate()) classes += ' is-today';
+            if (date === selectedDate) classes += ' is-selected';
+            html += '<button type="button" class="' + classes + '" data-date="' + date + '"' +
+                (disabled ? ' disabled' : '') + ' aria-label="' + dateLabel(date) + '">' + day + '</button>';
+        }
+        calendarGrid.innerHTML = html;
+        calendarSelected.textContent = selectedDate ? 'Fecha tentativa: ' + dateLabel(selectedDate) : 'Aún no has elegido una fecha.';
+    }
+
+    function updateRoute() {
+        var isLocal = route === 'local';
+        var routeButtons = document.querySelectorAll('.dist__route');
+        routeButtons.forEach(function (button) {
+            var active = button.getAttribute('data-route') === route;
+            button.classList.toggle('on', active);
+            button.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+
+        municipalityField.hidden = !isLocal;
+        municipality.disabled = !isLocal;
+        municipality.required = isLocal;
+        nationalLocation.hidden = isLocal;
+        state.disabled = isLocal;
+        city.disabled = isLocal;
+        state.required = !isLocal;
+        city.required = !isLocal;
+
+        formTitle.textContent = isLocal ? 'Cuéntanos de tu negocio' : 'Solicita tu degustación';
+        formSub.textContent = isLocal
+            ? 'Necesitamos estos datos para revisar la visita y entender qué estás buscando.'
+            : 'Primero recibimos tu solicitud. Revisaremos el caso y te contactaremos para confirmar el siguiente paso.';
+        submit.textContent = isLocal ? 'Solicitar visita' : 'Solicitar degustación';
+        calendarNote.textContent = isLocal
+            ? 'Elige una fecha tentativa con al menos 7 días de anticipación. Te contactaremos para confirmar.'
+            : 'Elige cuándo te gustaría recibirla. La fecha es tentativa y la solicitud queda sujeta a revisión.';
+        setText(document.getElementById('distTastingCopy'), isLocal
+            ? 'Elige una fecha tentativa para visitarte. Revisamos tu solicitud y te confirmamos personalmente.'
+            : 'Cuéntanos dónde estás y cuándo te gustaría recibirla. Revisamos tu solicitud antes de enviar producto.');
+        renderCalendar();
+    }
+
+    document.querySelectorAll('.dist__route').forEach(function (button) {
+        button.addEventListener('click', function () {
+            route = button.getAttribute('data-route') || 'local';
+            showError('');
+            updateRoute();
         });
     });
 
-    var textKeys = {
-        distTag: 'distTag', distTitle: 'distTitle', distSub: 'distSub',
-        distText: 'distText', distBtn: 'ldSubmit',
-        distHintBottle: 'distHintBottle', distHintBarrel: 'distHintBarrel',
-        distFeat1Title: 'distFeat1Title', distFeat1Desc: 'distFeat1Desc',
-        distFeat2Title: 'distFeat2Title', distFeat2Desc: 'distFeat2Desc',
-        distFeat3Title: 'distFeat3Title', distFeat3Desc: 'distFeat3Desc',
-        distContactTitle: 'distContactTitle', distContactSub: 'distContactSub'
-    };
-    var textIds = Object.keys(textKeys);
-    sb.from('site_content').select('key,value').in('key', textIds).then(function (r) {
-        if (!r.data) return;
-        r.data.forEach(function (c) {
-            if (c.key === 'distHintBottle' && c.value) hints.botella = c.value;
-            if (c.key === 'distHintBarrel' && c.value) hints.barril = c.value;
-            var elId = textKeys[c.key];
-            if (!elId) return;
-            var el = document.getElementById(elId);
-            if (el && c.value) window.QH.setEditableText(el, c.value);
+    document.querySelectorAll('.dist__toggle-btn').forEach(function (button) {
+        button.addEventListener('click', function () {
+            document.querySelectorAll('.dist__toggle-btn').forEach(function (item) { item.classList.remove('on'); });
+            button.classList.add('on');
+            leadType = button.getAttribute('data-type') || 'botella';
+            setText(hintEl, hints[leadType] || '');
         });
-        if (hintEl) window.QH.setEditableText(hintEl, hints[leadType] || '');
     });
 
-    document.getElementById('distForm').addEventListener('submit', async function (e) {
-        e.preventDefault();
-        var btn = document.getElementById('ldSubmit');
-        var btnLabel = btn.textContent;
-        btn.disabled = true;
-        btn.textContent = 'Enviando...';
-        var data = {
+    calendarGrid.addEventListener('click', function (event) {
+        var button = event.target.closest('button[data-date]');
+        if (!button || button.disabled) return;
+        selectedDate = button.getAttribute('data-date');
+        dateInput.value = selectedDate;
+        showError('');
+        renderCalendar();
+    });
+
+    calendarPrev.addEventListener('click', function () {
+        if (calendarPrev.disabled) return;
+        cursor.month -= 1;
+        if (cursor.month < 0) { cursor.month = 11; cursor.year -= 1; }
+        renderCalendar();
+    });
+
+    calendarNext.addEventListener('click', function () {
+        cursor.month += 1;
+        if (cursor.month > 11) { cursor.month = 0; cursor.year += 1; }
+        renderCalendar();
+    });
+
+    function validate() {
+        var name = document.getElementById('ldName').value.trim();
+        var email = document.getElementById('ldEmail').value.trim();
+        var company = document.getElementById('ldCompany').value.trim();
+        var volume = document.getElementById('ldVolume').value.trim();
+        if (document.getElementById('ldWebsite').value.trim()) return 'No se pudo enviar la solicitud.';
+        if (!selectedDate || !isValidYmd(selectedDate) || selectedDate < addDays(getMexicoDate(), 7)) {
+            return 'Elige una fecha con al menos 7 días de anticipación.';
+        }
+        if (!name) return 'Escribe tu nombre.';
+        if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return 'Escribe un correo válido.';
+        if (!company) return 'Escribe el nombre de tu negocio.';
+        if (!volume) return 'Cuéntanos qué volumen te gustaría explorar.';
+        if (route === 'local' && !municipality.value) return 'Selecciona tu municipio.';
+        if (route === 'national' && (!state.value.trim() || !city.value.trim())) return 'Escribe tu estado y ciudad.';
+        return '';
+    }
+
+    form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+        showError('');
+        var validationError = validate();
+        if (validationError) { showError(validationError); return; }
+        if (!sb) { showError('No pudimos conectar el formulario. Escríbenos a hola@queenshidro.com.'); return; }
+
+        var originalLabel = submit.textContent;
+        submit.disabled = true;
+        submit.textContent = 'Enviando...';
+        var payload = {
+            request_type: route,
+            desired_date: selectedDate,
+            municipality: route === 'local' ? municipality.value : '',
+            state: route === 'local' ? 'Nuevo León' : state.value.trim(),
+            city: route === 'local' ? municipality.value : city.value.trim(),
             full_name: document.getElementById('ldName').value.trim(),
             email: document.getElementById('ldEmail').value.trim(),
             phone: document.getElementById('ldPhone').value.trim(),
             company: document.getElementById('ldCompany').value.trim(),
-            source: 'distribuye',
-            status: 'nuevo',
+            desired_volume: document.getElementById('ldVolume').value.trim(),
             lead_type: leadType,
-            notes: document.getElementById('ldMessage').value.trim()
+            notes: document.getElementById('ldMessage').value.trim(),
+            website: document.getElementById('ldWebsite').value.trim()
         };
-        if (!data.full_name) {
-            btn.disabled = false;
-            btn.textContent = btnLabel;
-            return;
+
+        try {
+            var result = await sb.functions.invoke('submit-tasting-request', { body: payload });
+            if (result.error || (result.data && !result.data.ok)) {
+                throw new Error((result.data && result.data.error) || 'No se pudo enviar la solicitud.');
+            }
+            form.reset();
+            selectedDate = '';
+            dateInput.value = '';
+            leadType = 'botella';
+            document.querySelectorAll('.dist__toggle-btn').forEach(function (item) { item.classList.remove('on'); });
+            document.getElementById('distBtnBottle').classList.add('on');
+            setText(hintEl, hints.botella);
+            updateRoute();
+            successEl.hidden = false;
+            submit.textContent = 'Solicitud enviada';
+            setTimeout(function () {
+                successEl.hidden = true;
+                submit.disabled = false;
+                submit.textContent = route === 'local' ? 'Solicitar visita' : 'Solicitar degustación';
+            }, 5000);
+        } catch (error) {
+            showError(error.message || 'No se pudo enviar la solicitud.');
+            submit.disabled = false;
+            submit.textContent = originalLabel;
         }
-        var { data: res, error } = await sb.functions.invoke('submit-lead', { body: data });
-        if (error || (res && !res.ok)) {
-            btn.disabled = false;
-            btn.textContent = btnLabel;
-            return;
-        }
-        document.getElementById('distForm').reset();
-        var ok = document.getElementById('ldSuccess');
-        ok.hidden = false;
-        btn.textContent = 'Enviado';
-        setTimeout(function () {
-            ok.hidden = true;
-            btn.disabled = false;
-            btn.textContent = btnLabel;
-        }, 4000);
     });
+
+    var textKeys = {
+        distTag: 'dist_tag',
+        distTitle: 'dist_title',
+        distSub: 'dist_sub',
+        distText: 'dist_text',
+        distFeat1Title: 'dist_feat1_title',
+        distFeat1Desc: 'dist_feat1_desc',
+        distFeat2Title: 'dist_feat2_title',
+        distFeat2Desc: 'dist_feat2_desc',
+        distFeat3Title: 'dist_feat3_title',
+        distFeat3Desc: 'dist_feat3_desc',
+        distContactTitle: 'dist_contact_title',
+        distContactSub: 'dist_contact_sub'
+    };
+    var textIds = Object.keys(textKeys).map(function (key) { return textKeys[key]; });
+    if (sb) {
+        sb.from('site_content').select('key,value').in('key', textIds.concat(['dist_hint_bottle', 'dist_hint_barrel'])).then(function (result) {
+            if (!result.data) return;
+            result.data.forEach(function (content) {
+                if (content.key === 'dist_hint_bottle' && content.value) hints.botella = content.value;
+                if (content.key === 'dist_hint_barrel' && content.value) hints.barril = content.value;
+                var id = Object.keys(textKeys).find(function (key) { return textKeys[key] === content.key; });
+                var element = id && document.getElementById(id);
+                if (element && content.value) setText(element, content.value);
+            });
+            setText(hintEl, hints[leadType] || '');
+            updateRoute();
+        });
+    }
+
+    updateRoute();
+    renderCalendar();
 });
