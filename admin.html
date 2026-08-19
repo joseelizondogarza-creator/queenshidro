@@ -175,6 +175,26 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .detail-tab{padding:8px 18px;font-size:0.78rem;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;font-family:var(--font-b);transition:all 0.2s}
 .detail-tab.active{color:var(--gold-hi);border-bottom-color:var(--gold)}
 
+/* Customer media */
+.customer-media{margin:0 0 28px;padding:20px;background:rgba(212,168,69,0.035);border:1px solid rgba(212,168,69,0.14);border-radius:10px}
+.customer-media__head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}
+.customer-media__title{font-family:var(--font-h);font-size:1.05rem;color:var(--white);margin-bottom:3px}
+.customer-media__sub{font-size:0.76rem;color:var(--muted)}
+.customer-media__upload{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:12px;align-items:start;margin-bottom:16px}
+.customer-media__queue{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.customer-media__queue-item{position:relative;width:72px;height:72px;border-radius:7px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);background:#0a0a0a}
+.customer-media__queue-item img,.customer-media__queue-item video{width:100%;height:100%;object-fit:cover}
+.customer-media__queue-item button{position:absolute;top:3px;right:3px;width:20px;height:20px;border:0;border-radius:50%;background:rgba(0,0,0,.78);color:var(--red);cursor:pointer;line-height:1}
+.customer-media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.customer-media-card{overflow:hidden;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.07);border-radius:9px}
+.customer-media-card__thumb{aspect-ratio:4/3;background:#0a0a0a;position:relative}
+.customer-media-card__thumb img,.customer-media-card__thumb video{width:100%;height:100%;object-fit:cover}
+.customer-media-card__type{position:absolute;left:8px;top:8px;padding:4px 7px;border-radius:4px;background:rgba(0,0,0,.72);color:var(--gold-hi);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase}
+.customer-media-card__body{padding:10px}
+.customer-media-card__actions{display:flex;gap:6px;align-items:center;margin-top:8px;flex-wrap:wrap}
+.customer-media-card__actions .btn{flex:1;min-width:70px}
+@media(max-width:700px){.customer-media__upload{grid-template-columns:1fr}.customer-media__head{display:block}.customer-media__head .btn{margin-top:12px}}
+
 /* Accordion (Contenido) */
 .accordion{background:var(--card);border:1px solid rgba(255,255,255,0.05);border-radius:12px;margin-bottom:12px;overflow:hidden}
 .accordion__header{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;list-style:none;transition:background 0.2s}
@@ -535,6 +555,9 @@ document.addEventListener('click',function(e){
   if(btn.classList.contains('inter-btn-del')){deleteInteraction(btn.dataset.id)}
   if(btn.classList.contains('modal-btn-save-inter')){saveInteraction(btn.dataset.id)}
   if(btn.classList.contains('customer-detail-back')){backToCustomerList()}
+  if(btn.id==='btnUploadCustomerMedia'){uploadCustomerMedia(btn.dataset.customer)}
+  if(btn.classList.contains('customer-media-save')){saveCustomerMedia(btn.dataset.id)}
+  if(btn.classList.contains('customer-media-delete')){deleteCustomerMedia(btn.dataset.id)}
   if(btn.classList.contains('order-paid-btn')){markOrderPaid(btn.dataset.id)}
 });
 
@@ -546,6 +569,9 @@ document.addEventListener('change',function(e){
   }
   if(e.target.classList&&e.target.classList.contains('order-status-select')){
     updateOrderStatus(e.target.dataset.id,e.target.value);
+  }
+  if(e.target.classList&&e.target.classList.contains('customer-media-toggle')){
+    toggleCustomerMedia(e.target.dataset.id,e.target.checked);
   }
 });
 document.addEventListener('blur',function(e){
@@ -571,9 +597,9 @@ document.getElementById('interactionFilterType').addEventListener('change',funct
 document.getElementById('interactionFilterEntity').addEventListener('change',function(){loadInteractions()});
 
 async function uploadFile(file,bucket){
-  var ext=file.name.split('.').pop();
+  var ext=(file.name.split('.').pop()||'bin').toLowerCase().replace(/[^a-z0-9]/g,'')||'bin';
   var name=Date.now()+'-'+Math.random().toString(36).slice(2)+'.'+ext;
-  var {data,error}=await sb.storage.from(bucket).upload(name,file,{upsert:true});
+  var {data,error}=await sb.storage.from(bucket).upload(name,file,{upsert:true,contentType:file.type||undefined,cacheControl:'31536000'});
   if(error)throw error;
   return STORAGE_URL+'/'+bucket+'/'+name;
 }
@@ -1164,7 +1190,7 @@ var KEY_LABELS={
   nosotros_title:'Título',nosotros_sub:'Subtítulo',nosotros_text:'Texto',
   footer_desc_short:'Descripción corta',footer_desc_long:'Descripción larga'
 };
-var RICH_TEXT_KEYS={hero_title:true,index_tribe_title:true,nosotros_text:true};
+var RICH_TEXT_KEYS={hero_title:true,index_tribe_title:true,nosotros_title:true,nosotros_text:true};
 function sectionTitle(sec){return (SECTION_META[sec]&&SECTION_META[sec].title)||sec}
 function sectionIco(sec){return (SECTION_META[sec]&&SECTION_META[sec].ico)||'bi-journal-text'}
 function keyLabel(key){return KEY_LABELS[key]||key.replace(/_/g,' ')}
@@ -1522,6 +1548,15 @@ window._showCustomerDetail=async function(cid){
     html+='<p style="font-size:0.82rem;color:var(--muted);margin-bottom:6px">'+(c.email?c.email+' | ':'')+(c.phone||'')+'</p>';
     html+='</div>';
 
+    html+='<section class="customer-media">'+
+      '<div class="customer-media__head"><div><p class="customer-media__title">Fotos y videos de la comunidad</p><p class="customer-media__sub">Sube directamente imágenes o videos de este cliente al slider de Nosotros.</p></div></div>'+
+      '<div class="customer-media__upload">'+
+        '<div><div class="upload-zone" id="customerMediaUploadZone" style="padding:18px;margin-bottom:8px"><p>Click o arrastra imágenes o videos aquí</p><input type="file" accept="image/*,video/*" id="customerMediaInput" multiple></div><div id="customerMediaQueue" class="customer-media__queue"></div></div>'+
+        '<div><div class="form-group"><label class="form-label" for="customerMediaAlt">Texto alternativo</label><input class="form-input" id="customerMediaAlt" placeholder="Ej: Amigos brindando con Queens"></div><button class="btn btn--gold btn--sm" id="btnUploadCustomerMedia" data-customer="'+escapeHtml(cid)+'" type="button"><i class="bi bi-cloud-arrow-up"></i> Subir al slider</button></div>'+
+      '</div>'+
+      '<div id="customerMediaGrid" class="customer-media-grid"><p style="color:var(--muted);padding:10px">Cargando fotos y videos...</p></div>'+
+    '</section>';
+
     html+='<div class="detail-tabs"><button class="detail-tab active" onclick="this.parentElement.querySelectorAll(\'.detail-tab\').forEach(function(t){t.classList.remove(\'active\')});this.classList.add(\'active\');document.getElementById(\'custPanelOrders\').style.display=\'block\';document.getElementById(\'custPanelInteractions\').style.display=\'none\'">Órdenes</button><button class="detail-tab" onclick="this.parentElement.querySelectorAll(\'.detail-tab\').forEach(function(t){t.classList.remove(\'active\')});this.classList.add(\'active\');document.getElementById(\'custPanelOrders\').style.display=\'none\';document.getElementById(\'custPanelInteractions\').style.display=\'block\';window._loadCustInteractions(\''+cid+'\')">Interacciones</button></div>';
 
     html+='<div id="custPanelOrders">';
@@ -1546,8 +1581,159 @@ window._showCustomerDetail=async function(cid){
     document.querySelector('#customersCard .search-bar').style.display='none';
     document.getElementById('customerDetail').style.display='block';
     document.getElementById('customerDetail').innerHTML=html;
+    setupCustomerMediaUpload(cid);
+    loadCustomerMedia(cid);
   }catch(e){toast('Error: '+e.message,'err')}
 };
+
+var customerMediaState={customerRef:'',files:[]};
+
+function clearCustomerMediaFiles(){
+  customerMediaState.files.forEach(function(item){if(item.previewUrl)URL.revokeObjectURL(item.previewUrl)});
+  customerMediaState.files=[];
+}
+
+function renderCustomerMediaQueue(){
+  var queue=document.getElementById('customerMediaQueue');
+  if(!queue)return;
+  queue.innerHTML='';
+  customerMediaState.files.forEach(function(item,index){
+    var wrapper=document.createElement('div');
+    wrapper.className='customer-media__queue-item';
+    var preview=document.createElement(item.file.type.indexOf('video/')===0?'video':'img');
+    preview.src=item.previewUrl;
+    if(preview.tagName==='VIDEO'){preview.muted=true;preview.playsInline=true;preview.setAttribute('muted','');}
+    wrapper.appendChild(preview);
+    var remove=document.createElement('button');
+    remove.type='button';
+    remove.setAttribute('aria-label','Quitar archivo');
+    remove.innerHTML='<i class="bi bi-x"></i>';
+    remove.addEventListener('click',function(){
+      URL.revokeObjectURL(item.previewUrl);
+      customerMediaState.files.splice(index,1);
+      renderCustomerMediaQueue();
+    });
+    wrapper.appendChild(remove);
+    queue.appendChild(wrapper);
+  });
+}
+
+function addCustomerMediaFiles(files){
+  Array.prototype.forEach.call(files||[],function(file){
+    var isImage=file&&file.type&&file.type.indexOf('image/')===0;
+    var isVideo=file&&file.type&&file.type.indexOf('video/')===0;
+    if(!isImage&&!isVideo){toast('Solo se permiten imágenes y videos','err');return}
+    if(file.size>60*1024*1024){toast('Cada archivo debe pesar menos de 60 MB','err');return}
+    customerMediaState.files.push({file:file,previewUrl:URL.createObjectURL(file)});
+  });
+  renderCustomerMediaQueue();
+}
+
+function setupCustomerMediaUpload(cid){
+  clearCustomerMediaFiles();
+  customerMediaState.customerRef=cid;
+  var zone=document.getElementById('customerMediaUploadZone');
+  var input=document.getElementById('customerMediaInput');
+  if(!zone||!input)return;
+  zone.addEventListener('click',function(e){if(e.target!==input)input.click()});
+  zone.addEventListener('dragover',function(e){e.preventDefault();zone.style.borderColor='var(--gold)'});
+  zone.addEventListener('dragleave',function(){zone.style.borderColor=''});
+  zone.addEventListener('drop',function(e){e.preventDefault();zone.style.borderColor='';addCustomerMediaFiles(e.dataTransfer.files)});
+  input.addEventListener('change',function(){addCustomerMediaFiles(input.files);input.value=''});
+}
+
+async function uploadCustomerMedia(cid){
+  if(customerMediaState.customerRef!==cid||!customerMediaState.files.length){toast('Selecciona al menos un archivo','err');return}
+  var button=document.getElementById('btnUploadCustomerMedia');
+  var alt=normalizeEditableText((document.getElementById('customerMediaAlt')||{}).value||'').trim();
+  var defaultAlt=alt||'Comunidad Queens brindando con hidromiel';
+  var uploadedPaths=[];
+  if(button){button.disabled=true;button.innerHTML='<i class="bi bi-arrow-repeat"></i> Subiendo...'}
+  try{
+    var {data:existing,error:existingError}=await sb.from('nosotros_gallery').select('sort_order').order('sort_order',{ascending:false}).limit(1);
+    if(existingError)throw existingError;
+    var nextOrder=existing&&existing.length?parseInt(existing[0].sort_order,10)+1:0;
+    var rows=[];
+    for(var i=0;i<customerMediaState.files.length;i++){
+      var entry=customerMediaState.files[i];
+      var url=await uploadFile(entry.file,'hero');
+      var path=heroStoragePath(url);
+      if(path)uploadedPaths.push(path);
+      rows.push({customer_ref:cid,media_url:url,media_type:entry.file.type.indexOf('video/')===0?'video':'image',alt:defaultAlt,sort_order:nextOrder+i,active:true});
+    }
+    var {error}=await sb.from('nosotros_gallery').insert(rows);
+    if(error)throw error;
+    toast(rows.length===1?'Contenido agregado al slider':rows.length+' archivos agregados al slider');
+    clearCustomerMediaFiles();
+    renderCustomerMediaQueue();
+    var altInput=document.getElementById('customerMediaAlt');
+    if(altInput)altInput.value='';
+    loadCustomerMedia(cid);
+  }catch(e){
+    if(uploadedPaths.length)await sb.storage.from('hero').remove(uploadedPaths);
+    toast('Error al subir: '+e.message,'err');
+  }
+  if(button){button.disabled=false;button.innerHTML='<i class="bi bi-cloud-arrow-up"></i> Subir al slider'}
+}
+
+async function loadCustomerMedia(cid){
+  var grid=document.getElementById('customerMediaGrid');
+  if(!grid)return;
+  var {data,error}=await sb.from('nosotros_gallery').select('*').eq('customer_ref',cid).order('sort_order',{ascending:true}).order('created_at',{ascending:true});
+  if(error){grid.innerHTML='<p style="color:var(--red);padding:10px">Error al cargar el contenido: '+escapeHtml(error.message)+'</p>';return}
+  if(!data||!data.length){grid.innerHTML='<p style="color:var(--muted);padding:10px">Este cliente todavía no tiene fotos o videos en el slider.</p>';return}
+  grid.innerHTML=data.map(function(media){
+    var url=escapeHtml(media.media_url||'');
+    var alt=escapeHtml(normalizeEditableText(media.alt||''));
+    var thumb=media.media_type==='video'
+      ? '<video src="'+url+'" muted playsinline controls preload="metadata"></video>'
+      : '<img src="'+url+'" alt="'+alt+'">';
+    return '<article class="customer-media-card">'+
+      '<div class="customer-media-card__thumb">'+thumb+'<span class="customer-media-card__type">'+(media.media_type==='video'?'Video':'Imagen')+'</span></div>'+
+      '<div class="customer-media-card__body">'+
+        '<input class="form-input customer-media-alt" data-id="'+media.id+'" value="'+alt+'" aria-label="Texto alternativo">'+
+        '<div class="customer-media-card__actions">'+
+          '<label style="display:flex;align-items:center;gap:6px;font-size:.68rem;color:var(--muted);white-space:nowrap"><input type="checkbox" class="customer-media-toggle" data-id="'+media.id+'"'+(media.active?' checked':'')+' style="accent-color:var(--gold)"> Mostrar</label>'+
+          '<button class="btn btn--outline btn--sm customer-media-save" data-id="'+media.id+'" type="button">Guardar</button>'+
+          '<button class="btn btn--red btn--sm customer-media-delete" data-id="'+media.id+'" type="button">Eliminar</button>'+ 
+        '</div>'+
+      '</div>'+
+    '</article>';
+  }).join('');
+}
+
+async function saveCustomerMedia(id){
+  var input=document.querySelector('.customer-media-alt[data-id="'+id+'"]');
+  if(!input)return;
+  var {error}=await sb.from('nosotros_gallery').update({alt:normalizeEditableText(input.value).trim(),updated_at:new Date().toISOString()}).eq('id',id);
+  if(error){toast('Error: '+error.message,'err');return}
+  toast('Texto alternativo actualizado');
+}
+
+async function toggleCustomerMedia(id,active){
+  var {error}=await sb.from('nosotros_gallery').update({active:active}).eq('id',id);
+  if(error){toast('Error: '+error.message,'err');loadCustomerMedia(customerMediaState.customerRef);return}
+  toast(active?'Contenido visible en Nosotros':'Contenido oculto del slider');
+}
+
+function heroStoragePath(url){
+  var prefix=STORAGE_URL+'/hero/';
+  if(!url||url.indexOf(prefix)!==0)return '';
+  try{return decodeURIComponent(url.slice(prefix.length))}catch(e){return url.slice(prefix.length)}
+}
+
+async function deleteCustomerMedia(id){
+  if(!confirm('¿Eliminar este contenido del slider?'))return;
+  var {data:media}=await sb.from('nosotros_gallery').select('media_url').eq('id',id).maybeSingle();
+  var {error}=await sb.from('nosotros_gallery').delete().eq('id',id);
+  if(error){toast('Error: '+error.message,'err');return}
+  if(media&&media.media_url){
+    var path=heroStoragePath(media.media_url);
+    if(path)await sb.storage.from('hero').remove([path]);
+  }
+  toast('Contenido eliminado');
+  loadCustomerMedia(customerMediaState.customerRef);
+}
 
 window._loadCustInteractions=async function(uid){
   var {data,error}=await sb.from('crm_interactions').select('*').eq('entity_type','customer').eq('entity_id',uid).order('created_at',{ascending:false}).limit(30);
