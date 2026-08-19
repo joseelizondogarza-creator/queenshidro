@@ -58,10 +58,6 @@
     }
     </script>
     <style>
-        body[data-active="nosotros"] .page-hdr{text-align:center;padding-bottom:64px}
-        body[data-active="nosotros"] .page-hdr__tag{justify-content:center}
-        body[data-active="nosotros"] .page-hdr__tag::after{content:"";width:36px;height:1px;background:var(--teal)}
-        body[data-active="nosotros"] .page-hdr__title,body[data-active="nosotros"] .page-hdr__sub{margin-left:auto;margin-right:auto}
         .about-story{padding:84px 0 70px;text-align:center}
         .about-story .kicker{margin-bottom:18px}
         .about-story__title{margin:0 auto 22px;max-width:700px}
@@ -143,17 +139,11 @@
 <body data-nav="full" data-active="nosotros">
     
 
-    <div class="page-hdr">
+    <div class="page-hdr page-hdr--center">
         <p class="page-hdr__tag">Nosotros</p>
         <h1 class="page-hdr__title display display--xl" id="nosTitle">De la colmena <em class="accent--rasp">a tu fiesta</em></h1>
         <p class="page-hdr__sub" id="nosSub">Trabajamos con los mejores apicultores de la región.</p>
     </div>
-
-    <section class="about-story container">
-        <p class="kicker kicker--center">Nuestra historia</p>
-        <h2 class="about-story__title display display--md">Miel de aquí, brindis de todos.</h2>
-        <p class="about-story__text" id="nosText">Queens Hidro es hidromiel artesanal con frutas reales —fresa, zarzamora, mango y manzana— y <strong>miel 100% mexicana</strong>. Trabajamos con los mejores apicultores de la región y cuidamos cada fermentación como ellos cuidan sus colmenas. <strong>Cada compra apoya a quienes mantienen vivas las abejas de nuestra tierra.</strong></p>
-    </section>
 
     <section class="community" aria-labelledby="communityTitle">
         <div class="container">
@@ -177,6 +167,12 @@
             <div class="community-slider__empty" id="communitySliderEmpty" hidden><strong>La próxima ronda es tuya.</strong>Muy pronto verás aquí fotos y videos de la comunidad Queens.</div>
             <a href="tienda.html" class="btn btn--primary community__cta">Pide la tuya <i class="bi bi-arrow-up-right"></i></a>
         </div>
+    </section>
+
+    <section class="about-story container">
+        <p class="kicker kicker--center">Nuestra historia</p>
+        <h2 class="about-story__title display display--md">Miel de aquí, brindis de todos.</h2>
+        <p class="about-story__text" id="nosText">Queens Hidro es hidromiel artesanal con frutas reales —fresa, zarzamora, mango y manzana— y <strong>miel 100% mexicana</strong>. Trabajamos con los mejores apicultores de la región y cuidamos cada fermentación como ellos cuidan sus colmenas. <strong>Cada compra apoya a quienes mantienen vivas las abejas de nuestra tierra.</strong></p>
     </section>
 
     <section class="faq">
@@ -209,6 +205,6 @@
 
     
 
-    <script src="assets/js/pages/nosotros.js"></script>
+    <script src="assets/js/pages/nosotros.js?v=20260819-2"></script>
 </body>
 </html>

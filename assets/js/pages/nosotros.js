@@ -8,13 +8,33 @@ document.addEventListener('DOMContentLoaded', function () {
     var timerBar = document.getElementById('communitySliderTimer');
     var state = { slides: [], index: 0, interval: null, paused: false };
 
+    function renderNosotrosTitle(value) {
+        var title = document.getElementById('nosTitle');
+        if (!title) return;
+        var source = document.createElement('template');
+        source.innerHTML = qh.normalizeEditableText(value || '');
+        var text = source.content.textContent.replace(/<[^>]*>/g, '').trim();
+        var accent = 'a tu fiesta';
+        var accentIndex = text.toLowerCase().lastIndexOf(accent);
+        title.textContent = '';
+        if (accentIndex < 1) {
+            title.textContent = text;
+            return;
+        }
+        title.appendChild(document.createTextNode(text.slice(0, accentIndex)));
+        var accentNode = document.createElement('em');
+        accentNode.className = 'accent--rasp';
+        accentNode.textContent = text.slice(accentIndex);
+        title.appendChild(accentNode);
+    }
+
     function loadContent() {
         if (!sb) return;
         sb.from('site_content').select('*').eq('section', 'nosotros').then(function (r) {
             if (!r.data) return;
             var m = {};
             r.data.forEach(function (c) { m[c.key] = c.value; });
-            if (m.nosotros_title) qh.renderEditableRichText(document.getElementById('nosTitle'), m.nosotros_title);
+            if (m.nosotros_title) renderNosotrosTitle(m.nosotros_title);
             if (m.nosotros_sub) qh.setEditableText(document.getElementById('nosSub'), m.nosotros_sub);
             if (m.nosotros_text) qh.renderEditableRichText(document.getElementById('nosText'), m.nosotros_text);
         });
