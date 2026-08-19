@@ -317,6 +317,13 @@ body[data-hero="true"] .cover-hero{margin-top:0}
 }
 .page-hdr__meta span{display:inline-flex;align-items:center;gap:8px}
 .page-hdr__meta span::before{content:"";width:6px;height:6px;background:var(--teal);transform:rotate(45deg)}
+.page-hdr--center{text-align:center;padding-bottom:64px}
+.page-hdr--center::after{left:50%;right:auto;width:108px;transform:translateX(-50%);background:var(--rasp)}
+.page-hdr--center .page-hdr__tag{justify-content:center}
+.page-hdr--center .page-hdr__tag::after{content:"";width:36px;height:1px;background:var(--teal)}
+.page-hdr--center .page-hdr__title,.page-hdr--center .page-hdr__sub,.page-hdr--center .page-hdr__count{margin-left:auto;margin-right:auto}
+.page-hdr--center .page-hdr__title{text-wrap:balance}
+.page-hdr--center .page-hdr__meta{justify-content:center;flex-wrap:wrap}
 
 /* ---------- Cover hero (páginas internas) ---------- */
 .cover-hero{

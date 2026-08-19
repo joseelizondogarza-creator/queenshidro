@@ -25,17 +25,16 @@
     <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192.png">
     <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
     <style>
-        :root{--bg:#0a0a0c;--bg-alt:#0e0e12;--card:#141419;--card-hover:#1b1b22;--gold:#d4a845;--gold-hi:#e8c166;--gold-lo:#9c7a2e;--white:#fff;--muted:#9c9aa2;--green:#2ecc71;--red:#ff4d6d;--danger:#ff4d6d;--font-h:'BurfordBase','Fraunces','Georgia',serif;--font-b:'Inter','Segoe UI',system-ui,sans-serif;--font-m:'IBM Plex Mono',monospace;--nav-h:72px}
-         .events{padding:60px 0 20px}
-         .events__empty{max-width:760px;margin:0 auto;padding:64px 28px;text-align:center;background:var(--card);border:1px solid rgba(255,255,255,0.08)}
-         .events__empty-icon{display:block;margin-bottom:20px;font-size:2.2rem;color:var(--gold-hi)}
-         .events__empty-message{font-family:var(--font-h);font-size:2rem;color:var(--white);line-height:1.2}
-         .events__empty-note{max-width:500px;margin:12px auto 0;color:var(--muted);font-size:1rem;line-height:1.7}
-         .find-us{text-align:center;padding:40px 0 100px}
-         .find-us__icon{width:50px;height:50px;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;color:var(--gold-hi);font-size:2.4rem}
-         .find-us__q{font-family:var(--font-h);font-size:1.7rem;color:var(--white);margin-bottom:6px}
-         .find-us__a{color:var(--muted);font-size:1.02rem;margin-bottom:0}
-         @media(max-width:600px){.events__empty{padding:48px 20px}.events__empty-message{font-size:1.65rem}}
+        .events{padding:60px 0 20px}
+        .events__empty{max-width:760px;margin:0 auto;padding:64px 28px;text-align:center;background:var(--card);border:1px solid var(--line);box-shadow:0 18px 60px rgba(0,0,0,.22)}
+        .events__empty-icon{display:block;margin-bottom:20px;font-size:2.2rem;color:var(--teal-hi)}
+        .events__empty-message{font-family:var(--font-h);font-size:2rem;font-weight:500;color:var(--text);line-height:1.2;text-wrap:balance}
+        .events__empty-note{max-width:500px;margin:12px auto 0;color:var(--muted);font-size:1rem;line-height:1.7}
+        .find-us{text-align:center;padding:40px 0 100px}
+        .find-us__icon{width:50px;height:50px;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;color:var(--rasp-hi);font-size:2.4rem}
+        .find-us__q{font-family:var(--font-h);font-size:1.7rem;font-weight:500;color:var(--text);margin-bottom:6px}
+        .find-us__a{color:var(--muted);font-size:1.02rem;margin-bottom:0}
+        @media(max-width:600px){.events__empty{padding:48px 20px}.events__empty-message{font-size:1.65rem}}
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,9 +48,9 @@
 <body data-nav="full" data-active="eventos">
     
 
-    <div class="page-hdr">
+    <div class="page-hdr page-hdr--center">
         <p class="page-hdr__tag">Próximos eventos</p>
-        <h1 class="page-hdr__title">¿Dónde nos vemos?</h1>
+        <h1 class="page-hdr__title display display--xl">¿Dónde nos vemos?</h1>
         <p class="page-hdr__sub" id="eventosSub">Estamos preparando nuevas fechas. Muy pronto te contaremos dónde nos vemos.</p>
     </div>
 
