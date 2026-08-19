@@ -78,7 +78,7 @@
     <link rel="preconnect" href="https://a.basemaps.cartocdn.com" crossorigin>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <script src="assets/js/i18n.js" defer></script>
-    <script src="assets/js/site.js" defer></script>
+    <script src="assets/js/site.js?v=20260819-fixes" defer></script>
 </head>
 <body data-nav="full" data-active="index" data-hero="true">
 
@@ -104,22 +104,22 @@
         </div>
     </div>
 
-    <section class="tribe-strip section">
+    <section class="experience-strip section">
         <div class="container">
             <div class="section__head">
                 <div>
                     <p class="kicker"><span class="sec-num">01</span> Fuera de lo común</p>
-                    <h2 class="display display--lg" id="tribeTitle">Una hidromiel única, <em class="accent--rasp">hecha para vivirla.</em></h2>
+                    <h2 class="display display--lg" id="experienceTitle">Una hidromiel única, <em class="accent--rasp">hecha para vivirla.</em></h2>
                 </div>
-                <p class="section__head-sub" id="tribeSub">Fruta real, miel mexicana y fermentación artesanal: un sabor distinto que convierte cada brindis en una experiencia.</p>
+                <p class="section__head-sub" id="experienceSub">Fruta real, miel mexicana y fermentación artesanal: un sabor distinto que convierte cada brindis en una experiencia.</p>
             </div>
         </div>
         <div class="container">
-            <div class="tribe-strip__grid">
-                <div class="tribe-strip__card"><span class="tribe-strip__card-num">01</span><img src="TRIBU/IMG_5282.webp" alt="Brindis masivo" loading="lazy" width="600" height="760"><span class="tribe-strip__card-label">La banda reunida · Monterrey</span></div>
-                <div class="tribe-strip__card"><span class="tribe-strip__card-num">02</span><img src="TRIBU/IMG_5335.webp" alt="Experiencia Queens" loading="lazy" width="600" height="760"><span class="tribe-strip__card-label">Brindis que se recuerdan · Monterrey</span></div>
-                <div class="tribe-strip__card"><span class="tribe-strip__card-num">03</span><img src="TRIBU/IMG_5355.webp" alt="Brindis nocturno" loading="lazy" width="600" height="760"><span class="tribe-strip__card-label">Noche de fruta real · Monterrey</span></div>
-                <div class="tribe-strip__card"><span class="tribe-strip__card-num">04</span><img src="TRIBU/IMG_5398.webp" alt="Festival al aire libre" loading="lazy" width="600" height="760"><span class="tribe-strip__card-label">Queens en modo festival · Monterrey</span></div>
+            <div class="experience-strip__grid">
+                <div class="experience-strip__card"><span class="experience-strip__card-num">01</span><img src="EXPERIENCIA/IMG_5282.webp" alt="Brindis masivo" loading="lazy" width="600" height="760"><span class="experience-strip__card-label">La banda reunida · Monterrey</span></div>
+                <div class="experience-strip__card"><span class="experience-strip__card-num">02</span><img src="EXPERIENCIA/IMG_5335.webp" alt="Experiencia Queens" loading="lazy" width="600" height="760"><span class="experience-strip__card-label">Brindis que se recuerdan · Monterrey</span></div>
+                <div class="experience-strip__card"><span class="experience-strip__card-num">03</span><img src="EXPERIENCIA/IMG_5355.webp" alt="Brindis nocturno" loading="lazy" width="600" height="760"><span class="experience-strip__card-label">Noche de fruta real · Monterrey</span></div>
+                <div class="experience-strip__card"><span class="experience-strip__card-num">04</span><img src="EXPERIENCIA/IMG_5398.webp" alt="Festival al aire libre" loading="lazy" width="600" height="760"><span class="experience-strip__card-label">Queens en modo festival · Monterrey</span></div>
             </div>
         </div>
     </section>
@@ -241,13 +241,13 @@
              sb.from('site_content').select('*').eq('section','index').then(function(r){
                  if(!r.data)return;
                  var m={};r.data.forEach(function(c){m[c.key]=c.value});
-                 if(m.index_tribe_title)window.QH.renderEditableRichText(document.getElementById('tribeTitle'),m.index_tribe_title);
-                  if(m.index_tribe_sub)window.QH.setEditableText(document.getElementById('tribeSub'),m.index_tribe_sub,'index_tribe_sub');
+                 if(m.index_tribe_title)window.QH.renderEditableRichText(document.getElementById('experienceTitle'),m.index_tribe_title);
+                  if(m.index_tribe_sub)window.QH.setEditableText(document.getElementById('experienceSub'),m.index_tribe_sub,'index_tribe_sub');
              });
 
-            var tc=document.querySelectorAll('.tribe-strip__card');
+            var tc=document.querySelectorAll('.experience-strip__card');
             tc.forEach(function(e,i){e.style.transitionDelay=(i*0.08)+'s'});
-            function rt(){var wh=window.innerHeight;tc.forEach(function(e){var t=e.getBoundingClientRect().top;if(t<wh-80)e.classList.add('tribe-strip__card--visible')})}
+            function rt(){var wh=window.innerHeight;tc.forEach(function(e){var t=e.getBoundingClientRect().top;if(t<wh-80)e.classList.add('experience-strip__card--visible')})}
             window.addEventListener('scroll',rt,{passive:true});rt();
 
             var mc=document.getElementById('mapContainer');

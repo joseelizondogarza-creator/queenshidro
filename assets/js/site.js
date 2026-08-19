@@ -147,7 +147,7 @@
         return '<nav class="nav"><div class="container">'+logo+burger+
             '<div class="nav__links">'+links+
                 '<div class="nav__more"><span class="nav__more-label">'+tr('nav.more','Más')+' <i class="bi bi-chevron-down"></i></span><div class="nav__more-items">'+more+'</div></div>'+ 
-                '<a href="membresia.html" class="nav__cta">'+tr('nav.login','Entrar')+'</a>'+ 
+                '<a href="login.html" class="nav__cta">'+tr('nav.login','Entrar')+'</a>'+ 
             '</div>'+ 
             '<div class="nav__right">'+languageSwitcher()+cart+user+'</div>'+ 
         '</div></nav>';

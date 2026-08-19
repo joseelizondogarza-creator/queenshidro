@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
             caption.className = 'community-slider__caption';
             var eyebrow = document.createElement('span');
             eyebrow.className = 'community-slider__eyebrow';
-            eyebrow.textContent = item.media_type === 'video' ? tr('about.movingTribe', 'La tribu en movimiento') : tr('about.tribe', 'La tribu Queens');
+            eyebrow.textContent = item.media_type === 'video' ? tr('about.movingTribe', 'La experiencia en movimiento') : tr('about.tribe', 'La experiencia Queens');
             var title = document.createElement('strong');
             title.textContent = tr('about.toastTitle', 'Un brindis que se antoja');
             caption.appendChild(eyebrow);
