@@ -144,12 +144,13 @@
             ? '<button class="nav__cart" id="navCartBtn" aria-label="'+tr('nav.cart','Carrito')+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><span class="nav__cart-count" id="cartCount" style="display:none">0</span></button>'
             : '';
         var user='<div class="nav__user" id="navUser"><button class="nav__avatar" id="userAvatar"></button><div class="nav__dropdown" id="userDropdown"><a href="cuenta.html">'+tr('nav.account','Mi cuenta')+'</a><button class="nav__logout" id="navLogoutBtn">'+tr('nav.logout','Cerrar sesión')+'</button></div></div>';
-        return '<nav class="nav"><div class="container">'+logo+burger+
+        return '<nav class="nav"><div class="container">'+logo+
             '<div class="nav__links">'+links+
                 '<div class="nav__more"><span class="nav__more-label">'+tr('nav.more','Más')+' <i class="bi bi-chevron-down"></i></span><div class="nav__more-items">'+more+'</div></div>'+ 
                 '<a href="login.html" class="nav__cta">'+tr('nav.login','Entrar')+'</a>'+ 
             '</div>'+ 
             '<div class="nav__right">'+languageSwitcher()+cart+user+'</div>'+ 
+            burger+
         '</div></nav>';
     }
 
@@ -226,6 +227,24 @@
             window.addEventListener('storage',updateCartCount);
             window.addEventListener('qh:cart:change',updateCartCount);
         }
+
+        function arrangeMobile(){
+            var mq=window.matchMedia('(max-width:980px)');
+            var nr=document.querySelector('.nav__right');
+            var nl=document.querySelector('.nav__links');
+            var cart=document.getElementById('navCartBtn');
+            var user=document.getElementById('navUser');
+            if(!nr||!nl)return;
+            if(mq.matches){
+                if(cart&&cart.parentNode!==nl)nl.appendChild(cart);
+                if(user&&user.parentNode!==nl)nl.appendChild(user);
+            }else{
+                if(cart&&cart.parentNode!==nr)nr.appendChild(cart);
+                if(user&&user.parentNode!==nr)nr.appendChild(user);
+            }
+        }
+        arrangeMobile();
+        window.addEventListener('resize',arrangeMobile);
 
         if(body.hasAttribute('data-hero')){
             var navEl=document.querySelector('.nav');

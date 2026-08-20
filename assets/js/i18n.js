@@ -1054,12 +1054,17 @@
 
     function renderSwitcher() {
         var label = t('nav.language');
-        return '<div class="qh-lang" role="group" aria-label="' + label + '">' +
+        var options = ['es', 'en', 'ko'].map(function (loc) {
+            return '<option value="' + loc + '"' + (current === loc ? ' selected' : '') + '>' + loc.toUpperCase() + '</option>';
+        }).join('');
+        var select = '<select class="qh-lang-select" aria-label="' + label + '">' + options + '</select>';
+        var buttons = '<div class="qh-lang" role="group" aria-label="' + label + '">' +
             '<span class="qh-lang__label">' + label + '</span>' +
             '<button type="button" class="qh-lang__btn qh-lang-btn" data-locale="es" aria-pressed="' + (current === 'es' ? 'true' : 'false') + '">ES</button>' +
             '<button type="button" class="qh-lang__btn qh-lang-btn" data-locale="en" aria-pressed="' + (current === 'en' ? 'true' : 'false') + '">EN</button>' +
             '<button type="button" class="qh-lang__btn qh-lang-btn" data-locale="ko" aria-pressed="' + (current === 'ko' ? 'true' : 'false') + '">KO</button>' +
             '</div>';
+        return select + buttons;
     }
 
     function applyDocument() {
@@ -1072,6 +1077,8 @@
                 button.setAttribute('aria-pressed', button.getAttribute('data-locale') === current ? 'true' : 'false');
             });
         });
+        var langSelect = document.querySelector('.qh-lang-select');
+        if (langSelect) langSelect.value = current;
     }
 
     function setLocale(next) {
@@ -1122,6 +1129,11 @@
     document.addEventListener('click', function (event) {
         var button = event.target.closest && event.target.closest('.qh-lang-btn');
         if (button) setLocale(button.getAttribute('data-locale'));
+    });
+
+    document.addEventListener('change', function (event) {
+        var select = event.target.closest && event.target.closest('.qh-lang-select');
+        if (select) setLocale(select.value);
     });
 
     var api = {
