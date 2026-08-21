@@ -36,6 +36,7 @@
 .services-page-hdr .page-hdr__title{max-width:940px;margin:0 auto 14px;text-wrap:balance}
 .services-page-hdr .page-hdr__sub{max-width:650px;margin:0 auto}
 .services-page-hdr .page-hdr__meta{justify-content:center;flex-wrap:wrap;margin-top:22px}
+.cover-hero .services-page-hdr{padding-top:calc(var(--nav-h) + 64px);padding-bottom:34px}
 
 .services-slider-section{padding:54px 0 104px}
 .services-slider-section .services-section-intro{margin-bottom:32px}

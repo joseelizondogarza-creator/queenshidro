@@ -211,7 +211,11 @@
     var COVER_DEFAULTS={
         'tienda':{key:'img_tienda_cover',def:'HERO/HERO4.webp'},
         'membresia':{key:'img_membresia_cover',def:'HERO/HERO2.webp'},
-        'distribuye-queens':{key:'img_distribuye_hero_image',def:'HERO/HERO1.webp'}
+        'distribuye-queens':{key:'img_distribuye_hero_image',def:'HERO/HERO1.webp'},
+        'eventos':{key:'img_eventos_cover',def:'HERO/HERO1.webp'},
+        'nosotros':{key:'img_nosotros_cover',def:'HERO/HERO2.webp'},
+        'servicios':{key:'img_servicios_cover',def:'HERO/HERO4.webp'},
+        'faqs':{key:'img_faqs_cover',def:'HERO/HERO1.webp'}
     };
 
     var SERVICE_SLIDE_IMAGES=[
@@ -244,6 +248,11 @@
             if(v&&v!=='undefined'&&/^(https?:\/\/|data:image\/|\.?\.?\/)/.test(v))img.src=v;
             else fallback();
         }).catch(fallback);
+        sb.from('site_content').select('value').eq('key',cfg.key+'_focus').maybeSingle().then(function(r){
+            var val=parseInt(r.data&&r.data.value,10);
+            if(isNaN(val))val=50;
+            img.style.objectPosition='50% '+val+'%';
+        }).catch(function(){});
     }
 
     function initChrome(){

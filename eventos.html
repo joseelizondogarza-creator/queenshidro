@@ -46,14 +46,19 @@
     <script src="assets/js/i18n.js" defer></script>
     <script src="assets/js/site.js?v=20260819-fixes" defer></script>
 </head>
-<body data-nav="full" data-active="eventos">
+<body data-nav="full" data-active="eventos" data-hero="true">
     
 
-    <div class="page-hdr page-hdr--center">
-        <p class="page-hdr__tag">Próximos eventos</p>
-        <h1 class="page-hdr__title display display--xl">¿Dónde nos vemos?</h1>
-        <p class="page-hdr__sub" id="eventosSub">Estamos preparando nuevas fechas. Muy pronto te contaremos dónde nos vemos.</p>
-    </div>
+    <section class="cover-hero">
+        <img class="cover-hero__bg" id="coverImg" src="HERO/HERO1.webp" alt="Eventos Queens Hidro" fetchpriority="high">
+        <header class="page-hdr">
+            <div class="container">
+                <p class="page-hdr__tag">Próximos eventos</p>
+                <h1 class="page-hdr__title display display--xl">¿Dónde nos vemos?</h1>
+                <p class="page-hdr__sub" id="eventosSub">Estamos preparando nuevas fechas. Muy pronto te contaremos dónde nos vemos.</p>
+            </div>
+        </header>
+    </section>
 
     <div class="events container">
         <div class="events__empty">

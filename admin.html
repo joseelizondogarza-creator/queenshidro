@@ -65,6 +65,11 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%}
 .form-select option{background:var(--card);color:#e0ddd8}
 .form-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 
+.cover-focus{display:flex;align-items:center;gap:8px;margin-bottom:14px;font-size:0.8rem;color:var(--muted)}
+.cover-focus__label{margin-right:2px}
+.cover-focus__val{min-width:40px;text-align:center;color:var(--white);font-family:var(--font-m);font-size:0.82rem}
+.cover-focus__btn{padding:5px 10px;font-size:0.72rem;line-height:1}
+
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse}
 th{text-align:left;padding:12px 14px;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid rgba(255,255,255,0.06);font-weight:600}
@@ -778,12 +783,16 @@ async function moveSlide(id,newPos){
 var PAGE_COVERS=[
   {key:'img_tienda_cover',label:'Tienda',def:'HERO/HERO4.webp'},
   {key:'img_membresia_cover',label:'Membresía',def:'HERO/HERO2.webp'},
-  {key:'img_distribuye_hero_image',label:'Distribuye Queens',def:'HERO/HERO1.webp'}
+  {key:'img_distribuye_hero_image',label:'Distribuye Queens',def:'HERO/HERO1.webp'},
+  {key:'img_eventos_cover',label:'Eventos',def:'HERO/HERO1.webp'},
+  {key:'img_nosotros_cover',label:'Nosotros',def:'HERO/HERO2.webp'},
+  {key:'img_servicios_cover',label:'Servicios',def:'HERO/HERO4.webp'},
+  {key:'img_faqs_cover',label:'FAQs',def:'HERO/HERO1.webp'}
 ];
 window._pageCoverFiles={};
 
 async function loadPageCovers(){
-  var keys=PAGE_COVERS.map(function(c){return c.key});
+  var keys=PAGE_COVERS.map(function(c){return c.key}).concat(PAGE_COVERS.map(function(c){return c.key+'_focus';}));
   var {data,error}=await sb.from('site_content').select('key,value').in('key',keys);
   if(error){document.getElementById('pageCoversGrid').innerHTML='<p style="color:var(--red);padding:20px;grid-column:1/-1">Error al cargar: '+error.message+'</p>';return}
   var m={};
@@ -794,11 +803,19 @@ async function loadPageCovers(){
   grid.innerHTML=PAGE_COVERS.map(function(c){
     var cur=m[c.key];
     var src=cur&&cur!=='undefined'?cur:c.def;
+    var focus=parseInt(m[c.key+'_focus'],10);
+    if(isNaN(focus))focus=50;
     return '<div class="hero-card">'+
-      '<div class="hero-card__img" style="aspect-ratio:21/9"><img id="pcImg_'+c.key+'" src="'+src+'" alt="Portada '+c.label+'"></div>'+
+      '<div class="hero-card__img" style="aspect-ratio:21/9"><img id="pcImg_'+c.key+'" src="'+src+'" alt="Portada '+c.label+'" style="object-fit:cover;object-position:50% '+focus+'%"></div>'+
       '<div class="hero-card__body">'+
         '<div class="hero-card__info"><span class="hero-card__order">'+c.label+'</span></div>'+
         '<div class="upload-zone page-cover-zone" data-key="'+c.key+'" style="padding:12px;margin-bottom:10px"><p style="font-size:0.72rem">Click o arrastra imagen</p><input type="file" accept="image/*" class="page-cover-input" data-key="'+c.key+'"></div>'+
+        '<div class="cover-focus">'+
+          '<span class="cover-focus__label">Enfoque vertical</span>'+
+          '<button type="button" class="btn btn--sm cover-focus__btn focus-up" data-key="'+c.key+'">▲ Subir</button>'+
+          '<span class="cover-focus__val" id="pcFocus_'+c.key+'">'+focus+'%</span>'+
+          '<button type="button" class="btn btn--sm cover-focus__btn focus-down" data-key="'+c.key+'">▼ Bajar</button>'+
+        '</div>'+
         '<div class="hero-card__actions"><button class="btn btn--gold btn--sm page-cover-save" data-key="'+c.key+'">Guardar portada</button></div>'+
       '</div>'+
     '</div>';
@@ -813,6 +830,29 @@ async function loadPageCovers(){
     zone.addEventListener('drop',function(e){e.preventDefault();zone.style.borderColor='';if(e.dataTransfer.files[0])handleCoverFile(key,e.dataTransfer.files[0])});
     input.addEventListener('change',function(){if(input.files[0])handleCoverFile(key,input.files[0])});
   });
+
+  grid.querySelectorAll('.cover-focus__btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var key=btn.dataset.key;
+      var valEl=document.getElementById('pcFocus_'+key);
+      var img=document.getElementById('pcImg_'+key);
+      var cur=parseInt(valEl.textContent,10);
+      if(isNaN(cur))cur=50;
+      cur += btn.classList.contains('focus-up') ? -5 : 5;
+      cur=Math.max(0,Math.min(100,cur));
+      valEl.textContent=cur+'%';
+      if(img)img.style.objectPosition='50% '+cur+'%';
+      savePageCoverFocus(key,cur);
+    });
+  });
+}
+
+async function savePageCoverFocus(key,val){
+  try{
+    var {error}=await sb.from('site_content').update({value:String(val),updated_at:new Date().toISOString()}).eq('key',key+'_focus');
+    if(error)throw error;
+    toast('Enfoque actualizado');
+  }catch(e){ toast('Error: '+e.message,'err'); }
 }
 
 function handleCoverFile(key,file){
