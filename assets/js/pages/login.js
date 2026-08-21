@@ -8,7 +8,14 @@ document.addEventListener('DOMContentLoaded', function () {
     var errorEl = document.getElementById('error');
     var successEl = document.getElementById('success');
     var tabs = document.querySelectorAll('.auth-card__tab');
+    var rememberEl = document.getElementById('rememberMe');
     var dashboardLoading = false;
+
+    if (rememberEl) {
+        rememberEl.checked = !!(window.QH && window.QH.remember);
+        var savedEmail = window.QH && window.QH.getRememberEmail && window.QH.getRememberEmail();
+        if (savedEmail) document.getElementById('loginEmail').value = savedEmail;
+    }
 
     function tr(key, fallback, params) {
         return window.QH && window.QH.i18n && window.QH.i18n.t
@@ -109,6 +116,9 @@ document.addEventListener('DOMContentLoaded', function () {
         var btn = document.getElementById('loginSubmit');
         btn.disabled = true;
         btn.textContent = tr('auth.loading', 'Ingresando...');
+
+        if (window.QH.setRemember) window.QH.setRemember(rememberEl.checked);
+        if (window.QH.saveRememberEmail) window.QH.saveRememberEmail(rememberEl.checked ? email : null);
 
         var { data, error } = await supabase.auth.signInWithPassword({ email: email, password: password });
 

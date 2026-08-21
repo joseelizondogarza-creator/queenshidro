@@ -238,6 +238,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
       <a data-tab="subscriptions"><span class="ico"><i class="bi bi-arrow-repeat"></i></span> Suscripciones</a>
       <a data-tab="content"><span class="ico"><i class="bi bi-journal-text"></i></span> Contenido</a>
       <a data-tab="distribuye"><span class="ico"><i class="bi bi-truck"></i></span> Distribuye</a>
+      <a data-tab="services"><span class="ico"><i class="bi bi-grid-1x2"></i></span> Servicios</a>
       <div style="padding:8px 16px 4px;margin-top:10px"><span style="font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold-lo);font-weight:600">CRM</span></div>
        <a data-tab="crm-dashboard"><span class="ico"><i class="bi bi-speedometer2"></i></span> Dashboard</a>
        <a data-tab="crm-customers"><span class="ico"><i class="bi bi-people"></i></span> Clientes</a>
@@ -327,6 +328,16 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     <div class="tab-panel" id="tab-distribuye">
       <div class="admin-hdr"><h1>Página Distribuye</h1><p>Gestiona la imagen principal y los textos de la página de distribución.</p></div>
       <div class="card" id="distribuyeList"><p style="color:var(--muted);padding:20px">Cargando...</p></div>
+    </div>
+
+    <!-- TAB: Services slider -->
+    <div class="tab-panel" id="tab-services">
+      <div class="admin-hdr"><h1>Slider de Servicios</h1><p>Gestiona las imágenes del carrusel de la página de Servicios.</p></div>
+      <div class="card">
+        <div class="card__hdr"><p class="card__title">Imágenes del slider</p></div>
+        <p class="card__sub">Cambia las fotos de cada slide (Etiquetas, Campañas y Contenido). El slide de Web usa una maqueta y no lleva imagen.</p>
+        <div class="hero-grid" id="servicesImgGrid"><p style="color:var(--muted);padding:20px">Cargando...</p></div>
+      </div>
     </div>
 
     <!-- TAB: CRM Dashboard -->
@@ -471,7 +482,15 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 <script>
 (function(){
 var SUPABASE_URL='https://lqyphfiolymbjnsglonj.supabase.co',SUPABASE_KEY='sb_publishable_wEhcM5S2Y-8In-kDUfLeEA_AsiIcK0u';
-var sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+var QH_REMEMBER_KEY='qh_remember';
+var qhRemember=(function(){ try{ return localStorage.getItem(QH_REMEMBER_KEY)!=='false'; }catch(e){ return true; } })();
+function qhSessionStore(){ try{ return qhRemember?window.localStorage:window.sessionStorage; }catch(e){ return window.localStorage; } }
+var qhAuthStorage={
+  getItem:function(k){ try{ return qhSessionStore().getItem(k); }catch(e){ return null; } },
+  setItem:function(k,v){ try{ qhSessionStore().setItem(k,v); }catch(e){} },
+  removeItem:function(k){ try{ localStorage.removeItem(k); }catch(e){} try{ sessionStorage.removeItem(k); }catch(e){} }
+};
+var sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{storage:qhAuthStorage,persistSession:true});
 var STORAGE_URL=SUPABASE_URL+'/storage/v1/object/public';
 var currentUser=null;
 var currentTab='hero';
@@ -500,6 +519,7 @@ function switchTab(tab){
   if(tab==='subscriptions'){loadPlans();loadSubscribers();}
   if(tab==='content')loadContent();
   if(tab==='distribuye')loadDistribuye();
+   if(tab==='services')loadServicesImages();
    if(tab==='crm-dashboard')loadDashboard();
    if(tab==='crm-customers')loadCustomers();
    if(tab==='crm-leads')loadLeads();
@@ -539,6 +559,9 @@ document.addEventListener('click',function(e){
   }
   if(btn.classList.contains('page-cover-save')){
     savePageCover(btn.dataset.key);
+  }
+  if(btn.classList.contains('service-img-save')){
+    saveServiceImage(btn.dataset.key);
   }
   if(btn.classList.contains('modal-btn-save-prod')){
     saveProduct(btn.dataset.id);
@@ -641,14 +664,14 @@ sb.auth.onAuthStateChange(function(event,session){
 
 sb.auth.getSession().then(function(r){
   if(r.data.session&&r.data.session.user)initApp(r.data.session.user);
-  else document.getElementById('authCheck').innerHTML='<h2>Acceso denegado</h2><p>Debes <a href="login.html" style="color:var(--gold)">iniciar sesión</a> como administrador.</p>';
+  else document.getElementById('authCheck').innerHTML='<h2>Acceso denegado</h2><p>Debes <a href="admin-login.html" style="color:var(--gold)">iniciar sesión</a> como administrador.</p>';
 });
 
 async function initApp(user){
   currentUser=user;
   var {data:profile}=await sb.from('profiles').select('role,full_name').eq('id',user.id).single();
   if(!profile||profile.role!=='admin'){
-    document.getElementById('authCheck').innerHTML='<h2>No autorizado</h2><p>Tu cuenta no tiene permisos de administrador.</p><a href="index.html" style="color:var(--gold)">Volver al inicio</a>';
+    document.getElementById('authCheck').innerHTML='<h2>No autorizado</h2><p>Tu cuenta no tiene permisos de administrador.</p><a href="admin-login.html" style="color:var(--gold)">Volver al acceso de administrador</a>';
     return;
   }
   document.getElementById('authCheck').style.display='none';
@@ -817,6 +840,69 @@ async function savePageCover(key){
     delete window._pageCoverFiles[key];
     toast('Portada actualizada');
     loadPageCovers();
+  }catch(e){toast('Error: '+e.message,'err')}
+}
+
+/* ─── SERVICES SLIDER IMAGES ─── */
+var SERVICE_SLIDE_COVERS=[
+  {key:'img_servicios_slide0',label:'Slide 01 · Etiquetas',def:'HERO/HERO4.webp'},
+  {key:'img_servicios_slide1',label:'Slide 02 · Campañas',def:'EXPERIENCIA/IMG_5355.webp'},
+  {key:'img_servicios_slide3',label:'Slide 04 · Contenido',def:'HERO/HERO1.webp'}
+];
+window._serviceImgFiles={};
+
+async function loadServicesImages(){
+  var keys=SERVICE_SLIDE_COVERS.map(function(c){return c.key});
+  var {data,error}=await sb.from('site_content').select('key,value').in('key',keys);
+  if(error){document.getElementById('servicesImgGrid').innerHTML='<p style="color:var(--red);padding:20px;grid-column:1/-1">Error al cargar: '+error.message+'</p>';return}
+  var m={};(data||[]).forEach(function(c){m[c.key]=c.value});
+  window._serviceImgFiles={};
+  var grid=document.getElementById('servicesImgGrid');
+  grid.innerHTML=SERVICE_SLIDE_COVERS.map(function(c){
+    var cur=m[c.key];
+    var src=cur&&cur!=='undefined'?cur:c.def;
+    return '<div class="hero-card">'+
+      '<div class="hero-card__img"><img id="sImg_'+c.key+'" src="'+src+'" alt="'+c.label+'"></div>'+
+      '<div class="hero-card__body">'+
+        '<div class="hero-card__info"><span class="hero-card__order">'+c.label+'</span></div>'+
+        '<div class="upload-zone service-img-zone" data-key="'+c.key+'" style="padding:12px;margin-bottom:10px"><p style="font-size:0.72rem">Click o arrastra imagen</p><input type="file" accept="image/*" class="service-img-input" data-key="'+c.key+'"></div>'+
+        '<div class="hero-card__actions"><button class="btn btn--gold btn--sm service-img-save" data-key="'+c.key+'">Guardar imagen</button></div>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+  grid.querySelectorAll('.service-img-zone').forEach(function(zone){
+    var key=zone.dataset.key;
+    var input=zone.querySelector('input[type="file"]');
+    zone.addEventListener('click',function(){input.click()});
+    zone.addEventListener('dragover',function(e){e.preventDefault();zone.style.borderColor='var(--gold)'});
+    zone.addEventListener('dragleave',function(){zone.style.borderColor=''});
+    zone.addEventListener('drop',function(e){e.preventDefault();zone.style.borderColor='';if(e.dataTransfer.files[0])handleServiceFile(key,e.dataTransfer.files[0])});
+    input.addEventListener('change',function(){if(input.files[0])handleServiceFile(key,input.files[0])});
+  });
+}
+
+function handleServiceFile(key,file){
+  if(!file||!file.type.startsWith('image/')){toast('Selecciona una imagen válida','err');return}
+  window._serviceImgFiles[key]=file;
+  var reader=new FileReader();
+  reader.onload=function(e){var img=document.getElementById('sImg_'+key);if(img)img.src=e.target.result;};
+  reader.readAsDataURL(file);
+}
+
+async function saveServiceImage(key){
+  var file=window._serviceImgFiles[key]||(function(){
+    var zone=document.querySelector('.service-img-zone[data-key="'+key+'"]');
+    var input=zone&&zone.querySelector('input[type="file"]');
+    return input&&input.files[0];
+  })();
+  if(!file){toast('Selecciona una imagen primero','err');return}
+  try{
+    var url=await uploadFile(file,'hero');
+    var {error}=await sb.from('site_content').upsert({key:key,value:url,section:'servicios',updated_at:new Date().toISOString()},{onConflict:'key'});
+    if(error)throw error;
+    delete window._serviceImgFiles[key];
+    toast('Imagen actualizada');
+    loadServicesImages();
   }catch(e){toast('Error: '+e.message,'err')}
 }
 

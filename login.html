@@ -37,6 +37,8 @@
         .auth-card__switch{text-align:center;margin-top:22px;font-size:0.95rem;color:var(--muted)}
         .auth-card__switch a{color:var(--gold);font-weight:600;cursor:pointer;transition:color 0.25s}
         .auth-card__switch a:hover{color:var(--gold-hi)}
+        .auth-card__remember{display:flex;align-items:center;gap:9px;margin:4px 0 20px;font-size:0.88rem;color:var(--muted);cursor:pointer;user-select:none}
+        .auth-card__remember input{width:17px;height:17px;accent-color:var(--gold);cursor:pointer}
         .auth-dashboard{display:none;flex-direction:column;align-items:center;text-align:center;gap:16px}
         .auth-dashboard__avatar{width:72px;height:72px;border-radius:50%;background:var(--gold-lo);display:flex;align-items:center;justify-content:center;font-size:2.1rem;color:#0a0a0a;font-weight:700;font-family:var(--font-h)}
         .auth-dashboard__name{font-family:var(--font-h);font-size:1.6rem;color:var(--white)}
@@ -76,8 +78,16 @@
                     <label class="auth-card__label" for="loginPassword">Contraseña</label>
                     <input class="auth-card__input" type="password" id="loginPassword" placeholder="••••••••" required autocomplete="current-password">
                 </div>
+                <label class="auth-card__remember">
+                    <input type="checkbox" id="rememberMe">
+                    Recuérdame en este equipo
+                </label>
                 <button class="auth-card__submit" type="submit" id="loginSubmit">Entrar</button>
             </form>
+
+            <div class="auth-card__switch">
+                ¿Eres administrador? <a href="admin-login.html">Accede al panel</a>
+            </div>
 
             <form id="registerForm" style="display:none">
                 <div class="auth-card__field">
@@ -109,6 +119,6 @@
 
     
 
-    <script src="assets/js/pages/login.js?v=20260819-fixes" defer></script>
+    <script src="assets/js/pages/login.js?v=20260820-admin" defer></script>
 </body>
 </html>

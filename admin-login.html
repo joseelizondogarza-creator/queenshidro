@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Acceso de administrador de Queens Hidro.">
+    <title>Acceso Administrador | Queens Hidro</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="canonical" href="https://queenshidro.com/admin-login.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Queens Hidro">
+    <meta property="og:title" content="Acceso Administrador | Queens Hidro">
+    <meta property="og:description" content="Acceso de administrador de Queens Hidro.">
+    <meta property="og:url" content="https://queenshidro.com/admin-login.html">
+    <meta property="og:image" content="https://queenshidro.com/assets/img/og-default.jpg">
+    <meta property="og:locale" content="es_MX">
+    <meta name="theme-color" content="#0a0a0c">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192.png">
+    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="assets/js/i18n.js" defer></script>
+    <script src="assets/js/site.js?v=20260820-admin" defer></script>
+    <style>
+        :root{--bg:#0a0a0c;--card:#141419;--card-hover:#1b1b22;--gold:#d4a845;--gold-hi:#e8c166;--gold-lo:#9c7a2e;--white:#fff;--muted:#9c9aa2;--red:#ff4d6d;--font-h:'BurfordBase','Noto Sans KR','Fraunces','Georgia',serif;--font-b:'Inter','Noto Sans KR','Segoe UI',system-ui,sans-serif;--font-m:'IBM Plex Mono',monospace}
+        .auth-page{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:100px 20px 40px;background:var(--bg)}
+        .auth-card{width:100%;max-width:420px;background:var(--card);border:1px solid rgba(212,168,69,0.18);border-radius:18px;padding:38px 32px;box-shadow:0 24px 60px rgba(0,0,0,0.45)}
+        .auth-card__logo{text-align:center;margin-bottom:24px}
+        .auth-card__logo img{height:56px;width:auto;margin:0 auto}
+        .auth-card__badge{display:inline-flex;align-items:center;gap:7px;margin:0 auto 18px;padding:6px 14px;border-radius:50px;background:rgba(212,168,69,0.12);color:var(--gold);font-family:var(--font-m);font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase}
+        .auth-card__badge{display:flex;width:fit-content}
+        .auth-card__title{text-align:center;font-family:var(--font-h);font-size:1.5rem;color:var(--white);margin:0 0 22px}
+        .auth-card__error{display:none;background:rgba(255,77,109,0.1);border:1px solid rgba(255,77,109,0.35);color:var(--red);border-radius:10px;padding:11px 14px;font-size:0.9rem;margin-bottom:16px}
+        .auth-card__field{margin-bottom:16px}
+        .auth-card__label{display:block;font-size:0.82rem;color:var(--muted);margin-bottom:7px;letter-spacing:0.03em}
+        .auth-card__input{width:100%;padding:13px 15px;border-radius:11px;background:#0d0d11;border:1.5px solid #2a2a33;color:var(--white);font-family:var(--font-b);font-size:0.95rem;transition:border-color 0.25s}
+        .auth-card__input:focus{outline:none;border-color:var(--gold)}
+        .auth-card__remember{display:flex;align-items:center;gap:9px;margin:4px 0 20px;font-size:0.88rem;color:var(--muted);cursor:pointer;user-select:none}
+        .auth-card__remember input{width:17px;height:17px;accent-color:var(--gold);cursor:pointer}
+        .auth-card__submit{width:100%;padding:14px;border-radius:50px;border:none;background:var(--gold);color:#0a0a0a;font-family:var(--font-b);font-weight:700;font-size:0.95rem;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;transition:background 0.3s}
+        .auth-card__submit:hover{background:var(--gold-hi)}
+        .auth-card__submit:disabled{opacity:0.6;cursor:not-allowed}
+        .auth-card__switch{text-align:center;margin-top:22px;font-size:0.92rem;color:var(--muted)}
+        .auth-card__switch a{color:var(--gold);font-weight:600;cursor:pointer;transition:color 0.25s}
+        .auth-card__switch a:hover{color:var(--gold-hi)}
+    </style>
+</head>
+<body data-nav="none">
+
+    <section class="auth-page">
+        <div class="auth-card">
+            <div class="auth-card__logo">
+                <img src="logo2.webp" alt="Queens Hidro" width="1155" height="404">
+            </div>
+
+            <div class="auth-card__badge"><i class="bi bi-shield-lock"></i> Acceso de administrador</div>
+
+            <h1 class="auth-card__title">Panel administrativo</h1>
+
+            <div class="auth-card__error" id="error"></div>
+
+            <form id="adminLoginForm">
+                <div class="auth-card__field">
+                    <label class="auth-card__label" for="adminEmail">Correo electrónico</label>
+                    <input class="auth-card__input" type="email" id="adminEmail" placeholder="admin@queenshidro.com" required autocomplete="email">
+                </div>
+                <div class="auth-card__field">
+                    <label class="auth-card__label" for="adminPassword">Contraseña</label>
+                    <input class="auth-card__input" type="password" id="adminPassword" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+                <label class="auth-card__remember">
+                    <input type="checkbox" id="rememberMe">
+                    Recuérdame en este equipo
+                </label>
+                <button class="auth-card__submit" type="submit" id="adminLoginSubmit">Entrar al panel</button>
+            </form>
+
+            <div class="auth-card__switch">
+                ¿Eres cliente? <a href="login.html">Ingresa a tu cuenta</a>
+            </div>
+        </div>
+    </section>
+
+    <script src="assets/js/pages/admin-login.js?v=20260820-admin" defer></script>
+</body>
+</html>
